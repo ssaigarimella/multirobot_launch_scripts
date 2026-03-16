@@ -9,7 +9,9 @@
 #   ./launch_delta_jetson.sh explore      # Same as above
 #   ./launch_delta_jetson.sh vio          # VIO only (no exploration)
 
-JETSON_HOST="delta@10.90.134.66"
+# JETSON_HOST="delta@10.90.134.66"
+JETSON_HOST="delta@10.90.164.137"
+
 JETSON_PASS="abc123"
 CONTAINER="isaac_ros_realsense"
 IMAGE="isaac_ros:dev-realsense"

@@ -1,15 +1,15 @@
 #!/bin/bash
-# launch_ghost_jetson.sh - Opens gnome-terminal tabs for the Ghost Jetson exploration stack
+# launch_delta_jetson.sh - Opens gnome-terminal tabs for the Delta Jetson exploration stack
 #
 # Run this from your LAPTOP (not the Jetson).
 # It SSHes into the Jetson and runs the full stack inside the Isaac ROS container.
 #
 # Usage:
-#   ./launch_ghost_jetson.sh              # Full exploration stack (default)
-#   ./launch_ghost_jetson.sh explore      # Same as above
-#   ./launch_ghost_jetson.sh vio          # VIO only (no exploration)
+#   ./launch_delta_jetson.sh              # Full exploration stack (default)
+#   ./launch_delta_jetson.sh explore      # Same as above
+#   ./launch_delta_jetson.sh vio          # VIO only (no exploration)
 
-# JETSON_HOST="ghost@10.90.185.57"
+# JETSON_HOST="delta@10.90.134.66"
 JETSON_HOST="ghost@10.90.232.186"
 
 JETSON_PASS="abc123"
@@ -29,7 +29,7 @@ case "$1" in
         echo "Press Enter to launch..."
         read
         do_ssh "
-            docker exec -it $CONTAINER bash -c '$DOCKER_SOURCE && \
+            docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && \
                 ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=False'
         "
         read -rp "Session ended. Press Enter to close."
@@ -42,7 +42,7 @@ case "$1" in
         echo "Press Enter to launch..."
         read
         do_ssh "
-            docker exec -it $CONTAINER bash -c '$DOCKER_SOURCE && \
+            docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && \
                 ros2 launch px4_offboard vio_bridge.launch.py'
         "
         read -rp "Session ended. Press Enter to close."
@@ -55,7 +55,7 @@ case "$1" in
         echo "Press Enter to launch..."
         read
         do_ssh "
-            docker exec -it $CONTAINER bash -c '$DOCKER_SOURCE && \
+            docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && \
                 ros2 launch active_exploration fis.launch.py flight_height:=1.0'
         "
         read -rp "Session ended. Press Enter to close."
@@ -68,22 +68,58 @@ case "$1" in
         echo "Press Enter to launch..."
         read
         do_ssh "
-            docker exec -it $CONTAINER bash -c '$DOCKER_SOURCE && \
+            docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && \
                 ros2 launch active_exploration exploration_manager.launch.py flight_height:=1.0'
         "
         read -rp "Session ended. Press Enter to close."
         ;;
+    --tab5)
+        # Tab 5: Lightweight Bag Recorder (inside Docker)
+        echo "=== Tab 5: Bag Recorder ==="
+        echo "Waiting for topics to be available..."
+        sleep 8
+        echo "Press Enter to start recording..."
+        read
+        BAG_DIR="/workspaces/isaac_ros-dev/bags"
+        BAG_NAME="flight_$(date +%Y%m%d_%H%M%S)"
+        echo "Recording to: $BAG_DIR/$BAG_NAME"
+        # Ensure bag directory exists with correct permissions (create as root, then chown to admin)
+        do_ssh "
+            docker exec -it $CONTAINER bash -c 'mkdir -p $BAG_DIR && chown admin:admin $BAG_DIR'
+        "
+        do_ssh "
+            docker exec -it -u admin $CONTAINER bash -c \"$DOCKER_SOURCE && \
+                ros2 bag record -o $BAG_DIR/$BAG_NAME \
+                    /visual_slam/tracking/odometry \
+                    /visual_slam/status \
+                    /camera0/imu \
+                    /tf \
+                    /tf_static \
+                    /fmu/out/vehicle_local_position \
+                    /fmu/out/vehicle_status \
+                    /fmu/out/battery_status \
+                    /fmu/in/trajectory_setpoint \
+                    /fmu/in/offboard_control_mode \
+                    /fis/frontier_centroids \
+                    /fis/frontier_viewpoints \
+                    /fis/frontier_gains \
+                    /exploration/state \
+                    /exploration/markers\"
+        "
+        read -rp "Recording stopped. Press Enter to close."
+        ;;
     -h|--help|help)
         echo "Usage:"
-        echo "  ./launch_ghost_jetson.sh              # Full exploration stack"
-        echo "  ./launch_ghost_jetson.sh explore      # Same as above"
-        echo "  ./launch_ghost_jetson.sh vio          # VIO only (no exploration)"
+        echo "  ./launch_delta_jetson.sh              # Full exploration stack"
+        echo "  ./launch_delta_jetson.sh explore      # Same as above"
+        echo "  ./launch_delta_jetson.sh vio          # VIO only (no exploration)"
         echo ""
         echo "Tabs:"
         echo "  1: cuVSLAM + RealSense + nvblox"
         echo "  2: VIO Bridge + DDS Agent (odom -> PX4)"
         echo "  3: FIS (frontier detection + viewpoints)"
         echo "  4: Exploration Manager (planner + offboard control)"
+        echo "  5: Bag Recorder (lightweight telemetry ~2MB/min)"
         echo ""
         echo "Workflow:"
         echo "  1. Press Enter in each tab (in order) to launch"
@@ -102,7 +138,7 @@ case "$1" in
         fi
 
         echo "============================================================"
-        echo " Ghost Jetson Exploration Stack (from laptop)"
+        echo " Delta Jetson Exploration Stack (from laptop)"
         echo " Mode:   $MISSION"
         echo " Remote: $JETSON_HOST"
         echo "============================================================"
@@ -129,8 +165,6 @@ docker run -dit \
     --name $CONTAINER \
     $IMAGE \
     /bin/bash && echo '[OK] Container is running.' || echo '[ERROR] Container failed to start.'
-docker exec $CONTAINER usermod -aG dialout admin
-echo '[INFO] Added admin to dialout group (for /dev/ttyUSB0 access).'
 SETUP_EOF
 
         # Verify container is running before opening tabs
@@ -156,6 +190,7 @@ SETUP_EOF
         else
             echo "Tab 3: FIS (Frontier Info Structure)"
             echo "Tab 4: Exploration Manager"
+            echo "Tab 5: Bag Recorder"
             echo ""
             echo "Press Enter in each tab to launch that component."
             echo "============================================================"
@@ -167,6 +202,8 @@ SETUP_EOF
             gnome-terminal --tab --title="3: FIS" -- "$SCRIPT" --tab3
             sleep 0.3
             gnome-terminal --tab --title="4: Explorer" -- "$SCRIPT" --tab4
+            sleep 0.3
+            gnome-terminal --tab --title="5: Bag Rec" -- "$SCRIPT" --tab5
         fi
         ;;
 esac
