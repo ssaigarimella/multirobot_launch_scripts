@@ -1,0 +1,96 @@
+# VIO Bridge - Quick Start
+
+## Overview
+
+Bridges cuVSLAM odometry (`/visual_slam/tracking/odometry`) to PX4's EKF2
+(`/fmu/in/vehicle_visual_odometry`) via MicroXRCE-DDS over serial.
+
+## Prerequisites
+
+- cuVSLAM + RealSense already running in the container
+- PX4 connected via USB-to-serial adapter (`/dev/ttyUSB0`)
+- scipy installed: `pip3 install scipy`
+
+## PX4 Parameters (set via QGroundControl)
+
+```
+UXRCE_DDS_CFG    = TELEM port used (e.g. 104 for TELEM4)
+SER_TELx_BAUD    = 921600
+EKF2_EV_CTRL     = 15    (fuse position + velocity + yaw)
+EKF2_EV_QMIN     = 1
+EKF2_HGT_REF     = 3     (vision)
+```
+
+## Build
+
+```bash
+docker exec -it isaac_ros_realsense bash
+cd /workspaces/isaac_ros-dev
+colcon build --packages-select px4_offboard
+source install/setup.bash
+```
+
+## Run
+
+### Option A: Launch file (agent + bridge together)
+
+```bash
+ros2 launch px4_offboard vio_bridge.launch.py
+```
+
+With custom serial device:
+
+```bash
+ros2 launch px4_offboard vio_bridge.launch.py serial_device:=/dev/ttyACM0
+```
+
+### Option B: Separate terminals
+
+Terminal 1 — XRCE-DDS Agent:
+
+```bash
+MicroXRCEAgent serial --dev /dev/ttyUSB0 -b 921600
+```
+
+Terminal 2 — VIO Bridge:
+
+```bash
+ros2 run px4_offboard vio_bridge.py
+```
+
+## Verify
+
+```bash
+# Check bridge is publishing to PX4
+ros2 topic hz /fmu/in/vehicle_visual_odometry
+
+# Inspect the data
+ros2 topic echo /fmu/in/vehicle_visual_odometry
+
+# Check cuVSLAM is feeding the bridge
+ros2 topic hz /visual_slam/tracking/odometry
+```
+
+## Configuration
+
+Camera pitch angle: `scripts/vio_bridge.py` line 29
+
+```python
+CAM_PITCH_DEG = 0.0   # 0 for straight-forward D435i, 30 for angled T265
+```
+
+## Data Flow
+
+```
+RealSense D435i
+    |
+[cuVSLAM / isaac_ros_visual_slam]
+    | /visual_slam/tracking/odometry (nav_msgs/Odometry)
+[VIO Bridge - vio_bridge.py]
+    | FLU -> NED/FRD conversion
+    | /fmu/in/vehicle_visual_odometry (px4_msgs/VehicleOdometry)
+[MicroXRCEAgent serial]
+    | uXRCE protocol over UART (921600 baud)
+[PX4 Flight Controller]
+    | EKF2 fuses VIO data
+```

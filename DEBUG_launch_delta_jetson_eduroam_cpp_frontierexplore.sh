@@ -16,66 +16,90 @@ JETSON_PASS="abc123"
 CONTAINER="isaac_ros_realsense"
 IMAGE="isaac_ros:dev-realsense"
 SCRIPT="$(readlink -f "$0")"
-DOCKER_SOURCE="cd /workspaces/isaac_ros-dev && source install/setup.bash"
+DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
 
 do_ssh() {
     sshpass -p "$JETSON_PASS" ssh -t -o StrictHostKeyChecking=no "$JETSON_HOST" "$1"
 }
 
+# Helper for SSH docker tabs
+ssh_docker_tab() {
+    local label="$1"
+    local cmd="$2"
+    echo "=== $label ==="
+    echo "Press Enter to launch..."
+    read
+    do_ssh "
+        docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && $cmd'
+    "
+    echo ""
+    echo "[$label exited. Press Enter to close tab.]"
+    read
+}
+
 case "$1" in
     --tab1)
-        # Tab 1: cuVSLAM + RealSense + nvblox (inside Docker)
-        echo "=== Tab 1: cuVSLAM + RealSense + nvblox ==="
-        echo "Press Enter to launch..."
-        read
-        do_ssh "
-            docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && \
-                ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=False'
-        "
-        read -rp "Session ended. Press Enter to close."
+        ssh_docker_tab "Tab 1: cuVSLAM + RealSense + nvblox" \
+            "ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=False"
         ;;
     --tab2)
-        # Tab 2: VIO bridge + MicroXRCE-DDS Agent (inside Docker)
-        echo "=== Tab 2: VIO Bridge + DDS Agent ==="
-        echo "Waiting for cuVSLAM to start..."
-        sleep 5
-        echo "Press Enter to launch..."
-        read
-        do_ssh "
-            docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && \
-                ros2 launch px4_offboard vio_bridge.launch.py'
-        "
-        read -rp "Session ended. Press Enter to close."
+        ssh_docker_tab "Tab 2: VIO Bridge + DDS Agent" \
+            "ros2 launch px4_offboard vio_bridge.launch.py"
         ;;
     --tab3)
-        # Tab 3: FIS - Frontier Info Structure (inside Docker)
-        echo "=== Tab 3: Frontier Info Structure (FIS) ==="
-        echo "Waiting for nvblox ESDF to be available..."
-        sleep 10
-        echo "Press Enter to launch..."
-        read
-        do_ssh "
-            docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && \
-                ros2 launch active_exploration fis.launch.py flight_height:=1.0'
-        "
-        read -rp "Session ended. Press Enter to close."
+        ssh_docker_tab "Tab 3: Frontier Info Structure (FIS)" \
+            "ros2 launch active_exploration fis.launch.py flight_height:=1.0"
         ;;
     --tab4)
-        # Tab 4: Exploration Manager (inside Docker)
-        echo "=== Tab 4: Exploration Manager ==="
-        echo "Waiting for FIS to start publishing frontiers..."
-        sleep 15
-        echo "Press Enter to launch..."
-        read
-        do_ssh "
-            docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && \
-                ros2 launch active_exploration exploration_manager.launch.py flight_height:=1.0'
-        "
-        read -rp "Session ended. Press Enter to close."
+        ssh_docker_tab "Tab 4: Reactive Depth Guard" \
+            "ros2 launch active_exploration reactive_guard.launch.py"
         ;;
     --tab5)
-        # Tab 5: Lightweight Bag Recorder (inside Docker)
-        echo "=== Tab 5: Bag Recorder ==="
+        ssh_docker_tab "Tab 5: Exploration Manager" \
+            "ros2 launch active_exploration exploration_manager.launch.py flight_height:=1.0"
+        ;;
+    --tab6)
+        ssh_docker_tab "Tab 6: Loop Closure (SuperPoint + LightGlue)" \
+            "python3 src/multi_drone_nvblox/scripts/loop_closure_sp_node.py --ros-args \
+                -p robot_namespace:=drone1 \
+                -p vocabulary_file:=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/models/sp_vocab_4096.pkl \
+                -p process_rate:=1.0 \
+                -p use_pcm:=True \
+                -p publish_tf:=True"
+        ;;
+    --tab7)
+        ssh_docker_tab "Tab 7: OctoMap Exchange (incremental)" \
+            "ros2 run multi_drone_nvblox octomap_exchange_node --ros-args \
+                -p robot_namespace:=drone1 \
+                -p resolution:=0.05 \
+                -p use_sim_time:=False"
+        ;;
+    --tab8)
+        # Tab 8 runs on the Jetson HOST (not Docker) — it manages WiFi + Zenoh
+        echo "=== Tab 8: Mesh + Zenoh Bridge ==="
+        echo ""
+        echo "This switches WiFi from eduroam to 802.11s mesh,"
+        echo "starts Zenoh to bridge SLAM topics, and restores"
+        echo "eduroam when you press Ctrl+C."
+        echo ""
+        echo "Node IDs: 1=delta, 2=buckshee, 3=ghost, 4=thunderstrike"
+        echo ""
+        read -rp "This drone's ID: " NODE_ID
+        read -rp "Peer drone IDs (space-separated, e.g. '3' or '2 3 4'): " PEER_IDS
+        echo ""
+        echo "Running mesh+zenoh on Jetson via SSH..."
+        do_ssh "sudo bash /mnt/nova_ssd/workspaces/isaac_ros-dev/launch_mesh_zenoh.sh $NODE_ID $PEER_IDS"
+        echo ""
+        echo "[Tab 8 exited. Press Enter to close tab.]"
+        read
+        ;;
+    --tab9)
+        ssh_docker_tab "Tab 9: Interactive Shell" \
+            "bash"
+        ;;
+    --tab10)
+        # Tab 10: Lightweight Bag Recorder (inside Docker)
+        echo "=== Tab 10: Bag Recorder ==="
         echo "Waiting for topics to be available..."
         sleep 8
         echo "Press Enter to start recording..."
@@ -106,7 +130,9 @@ case "$1" in
                     /exploration/state \
                     /exploration/markers\"
         "
-        read -rp "Recording stopped. Press Enter to close."
+        echo ""
+        echo "[Tab 10: Bag Recorder exited. Press Enter to close tab.]"
+        read
         ;;
     -h|--help|help)
         echo "Usage:"
@@ -118,8 +144,13 @@ case "$1" in
         echo "  1: cuVSLAM + RealSense + nvblox"
         echo "  2: VIO Bridge + DDS Agent (odom -> PX4)"
         echo "  3: FIS (frontier detection + viewpoints)"
-        echo "  4: Exploration Manager (planner + offboard control)"
-        echo "  5: Bag Recorder (lightweight telemetry ~2MB/min)"
+        echo "  4: Reactive Depth Guard"
+        echo "  5: Exploration Manager (planner + offboard control)"
+        echo "  6: Loop Closure (SuperPoint + LightGlue)"
+        echo "  7: OctoMap Exchange (incremental)"
+        echo "  8: Mesh + Zenoh Bridge (switches to 802.11s, runs on Jetson HOST)"
+        echo "  9: Interactive Shell (Docker + ROS2 sourced)"
+        echo " 10: Bag Recorder (lightweight telemetry ~2MB/min)"
         echo ""
         echo "Workflow:"
         echo "  1. Press Enter in each tab (in order) to launch"
@@ -145,26 +176,31 @@ case "$1" in
         echo ""
         echo "Setting up container on Jetson..."
 
-        # Remove old container and create fresh one (heredoc so $HOME expands on Jetson)
+        # Ensure container is running (reuse existing, don't destroy)
         sshpass -p "$JETSON_PASS" ssh -o StrictHostKeyChecking=no "$JETSON_HOST" bash -s <<SETUP_EOF
-docker rm -f $CONTAINER 2>/dev/null
-sleep 1
-echo '[INFO] Creating fresh container...'
-docker run -dit \
-    --privileged \
-    --network host \
-    --ipc host \
-    -v /mnt/nova_ssd/workspaces/isaac_ros-dev:/workspaces/isaac_ros-dev \
-    -v /mnt/nova_ssd/workspaces/Micro-XRCE-DDS-Agent:/workspaces/Micro-XRCE-DDS-Agent \
-    -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v \$HOME/.Xauthority:/home/admin/.Xauthority:rw \
-    -e DISPLAY \
-    -e NVIDIA_VISIBLE_DEVICES=all \
-    -e NVIDIA_DRIVER_CAPABILITIES=all \
-    --runtime nvidia \
-    --name $CONTAINER \
-    $IMAGE \
-    /bin/bash && echo '[OK] Container is running.' || echo '[ERROR] Container failed to start.'
+if docker ps --format '{{.Names}}' | grep -qx $CONTAINER; then
+    echo '[OK] Container $CONTAINER is already running.'
+elif docker ps -a --format '{{.Names}}' | grep -qx $CONTAINER; then
+    echo '[INFO] Container $CONTAINER exists but stopped. Starting...'
+    docker start $CONTAINER
+else
+    echo '[INFO] Creating container $CONTAINER...'
+    docker run -dit \
+        --privileged \
+        --network host \
+        --ipc host \
+        -v /mnt/nova_ssd/workspaces/isaac_ros-dev:/workspaces/isaac_ros-dev \
+        -v /mnt/nova_ssd/workspaces/Micro-XRCE-DDS-Agent:/workspaces/Micro-XRCE-DDS-Agent \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v \$HOME/.Xauthority:/home/admin/.Xauthority:rw \
+        -e DISPLAY \
+        -e NVIDIA_VISIBLE_DEVICES=all \
+        -e NVIDIA_DRIVER_CAPABILITIES=all \
+        --runtime nvidia \
+        --name $CONTAINER \
+        $IMAGE \
+        /bin/bash && echo '[OK] Container is running.' || echo '[ERROR] Container failed to start.'
+fi
 SETUP_EOF
 
         # Verify container is running before opening tabs
@@ -174,36 +210,53 @@ SETUP_EOF
             exit 1
         fi
 
-        echo ""
-        echo "Tab 1: cuVSLAM + RealSense + nvblox"
-        echo "Tab 2: VIO Bridge + DDS Agent"
-
         if [ "$MISSION" = "vio" ]; then
+            echo ""
+            echo "Tab 1: cuVSLAM + RealSense + nvblox"
+            echo "Tab 2: VIO Bridge + DDS Agent"
             echo ""
             echo "VIO-only mode: skipping exploration tabs."
             echo "Press Enter in each tab to launch that component."
             echo "============================================================"
 
-            gnome-terminal --tab --title="1: cuVSLAM" -- "$SCRIPT" --tab1
+            gnome-terminal --tab --title="1: cuVSLAM"    -- bash "$SCRIPT" --tab1
             sleep 0.3
-            gnome-terminal --tab --title="2: VIO + DDS" -- "$SCRIPT" --tab2
+            gnome-terminal --tab --title="2: VIO + DDS"  -- bash "$SCRIPT" --tab2
         else
-            echo "Tab 3: FIS (Frontier Info Structure)"
-            echo "Tab 4: Exploration Manager"
-            echo "Tab 5: Bag Recorder"
             echo ""
-            echo "Press Enter in each tab to launch that component."
+            echo " Tab 1: cuVSLAM + RealSense + nvblox"
+            echo " Tab 2: VIO Bridge + DDS Agent"
+            echo " Tab 3: FIS (frontier detection)"
+            echo " Tab 4: Reactive Depth Guard"
+            echo " Tab 5: Exploration Manager"
+            echo " Tab 6: Loop Closure (SuperPoint + LightGlue)"
+            echo " Tab 7: OctoMap Exchange (incremental)"
+            echo " Tab 8: Mesh + Zenoh (Jetson HOST, requires sudo)"
+            echo " Tab 9: Interactive Shell"
+            echo " Tab 10: Bag Recorder"
             echo "============================================================"
+            echo "Press Enter in each tab to launch that component."
+            echo ""
 
-            gnome-terminal --tab --title="1: cuVSLAM" -- "$SCRIPT" --tab1
+            gnome-terminal --tab --title="1: cuVSLAM"      -- bash "$SCRIPT" --tab1
             sleep 0.3
-            gnome-terminal --tab --title="2: VIO + DDS" -- "$SCRIPT" --tab2
+            gnome-terminal --tab --title="2: VIO + DDS"    -- bash "$SCRIPT" --tab2
             sleep 0.3
-            gnome-terminal --tab --title="3: FIS" -- "$SCRIPT" --tab3
+            gnome-terminal --tab --title="3: FIS"          -- bash "$SCRIPT" --tab3
             sleep 0.3
-            gnome-terminal --tab --title="4: Explorer" -- "$SCRIPT" --tab4
+            gnome-terminal --tab --title="4: Depth Guard"  -- bash "$SCRIPT" --tab4
             sleep 0.3
-            gnome-terminal --tab --title="5: Bag Rec" -- "$SCRIPT" --tab5
+            gnome-terminal --tab --title="5: Explorer"     -- bash "$SCRIPT" --tab5
+            sleep 0.3
+            gnome-terminal --tab --title="6: Loop Closure" -- bash "$SCRIPT" --tab6
+            sleep 0.3
+            gnome-terminal --tab --title="7: OctoMap"      -- bash "$SCRIPT" --tab7
+            sleep 0.3
+            gnome-terminal --tab --title="8: Zenoh"        -- bash "$SCRIPT" --tab8
+            sleep 0.3
+            gnome-terminal --tab --title="9: Shell"        -- bash "$SCRIPT" --tab9
+            sleep 0.3
+            gnome-terminal --tab --title="10: Bag Rec"     -- bash "$SCRIPT" --tab10
         fi
         ;;
 esac
