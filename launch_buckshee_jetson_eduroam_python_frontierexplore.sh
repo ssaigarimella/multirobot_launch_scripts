@@ -15,7 +15,20 @@ JETSON_PASS="abc123"
 CONTAINER="isaac_ros_realsense"
 IMAGE="isaac_ros:dev-realsense"
 SCRIPT="$(readlink -f "$0")"
-DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && export FASTRTPS_DEFAULT_PROFILES_FILE=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/fastdds_loopback.xml && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+
+# CLI flags: --rviz (enable RViz2), --debug (skip arm check)
+RVIZ_FLAG="False"
+DEBUG_ARM="false"
+export DEBUG_ARM
+for arg in "$@"; do
+    if [ "$arg" = "--rviz" ]; then
+        RVIZ_FLAG="True"
+    elif [ "$arg" = "--debug" ]; then
+        DEBUG_ARM="true"
+        export DEBUG_ARM
+    fi
+done
 
 do_ssh() {
     sshpass -p "$JETSON_PASS" ssh -t -o StrictHostKeyChecking=no "$JETSON_HOST" "$1"
@@ -39,7 +52,7 @@ ssh_docker_tab() {
 case "$1" in
     --tab1)
         ssh_docker_tab "Tab 1: cuVSLAM + RealSense + nvblox" \
-            "ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=False"
+            "ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=${RVIZ_FLAG}"
         ;;
     --tab2)
         ssh_docker_tab "Tab 2: VIO Bridge + DDS Agent" \
@@ -54,8 +67,11 @@ case "$1" in
             "ros2 launch active_exploration reactive_guard.launch.py"
         ;;
     --tab5)
+        # Check if --debug was passed as a subsequent arg
+        DEBUG_VAL="false"
+        for a in "$@"; do [ "$a" = "--debug" ] && DEBUG_VAL="true"; done
         ssh_docker_tab "Tab 5: Simple Exploration Planner" \
-            "ros2 launch active_exploration simple_planner_launch.py flight_height:=1.0"
+            "ros2 launch active_exploration simple_planner_launch.py flight_height:=1.0 debug_skip_arm_check:=${DEBUG_VAL}"
         ;;
     --tab6)
         ssh_docker_tab "Tab 6: Loop Closure (SuperPoint + LightGlue)" \
@@ -70,7 +86,9 @@ case "$1" in
         ssh_docker_tab "Tab 7: OctoMap Exchange (incremental)" \
             "ros2 run multi_drone_nvblox octomap_exchange_node --ros-args \
                 -p robot_namespace:=drone1 \
+                -p drone_id:=2 \
                 -p resolution:=0.05 \
+                -p alignment_config:=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/swarm_alignment.yaml \
                 -p use_sim_time:=False"
         ;;
     --tab8)
@@ -98,9 +116,13 @@ case "$1" in
         ;;
     -h|--help|help)
         echo "Usage:"
-        echo "  ./launch_buckshee_jetson.sh              # Full exploration stack"
-        echo "  ./launch_buckshee_jetson.sh explore      # Same as above"
+        echo "  ./launch_buckshee_jetson.sh [--rviz] [--debug]"
+        echo "  ./launch_buckshee_jetson.sh explore      # Full exploration stack (default)"
         echo "  ./launch_buckshee_jetson.sh vio          # VIO only (no exploration)"
+        echo ""
+        echo "Options:"
+        echo "  --rviz    Launch RViz2 with the cuVSLAM/nvblox pipeline (Tab 1)"
+        echo "  --debug   Skip arm check in exploration manager (for hand-carry testing)"
         echo ""
         echo "Tabs:"
         echo "  1: cuVSLAM + RealSense + nvblox"
@@ -198,7 +220,11 @@ SETUP_EOF
             echo "Press Enter in each tab to launch that component."
             echo ""
 
-            gnome-terminal --tab --title="1: cuVSLAM"      -- bash "$SCRIPT" --tab1
+            RVIZ_ARG=""
+            DEBUG_ARG=""
+            [ "$RVIZ_FLAG" = "True" ] && RVIZ_ARG="--rviz"
+            [ "$DEBUG_ARM" = "true" ] && DEBUG_ARG="--debug"
+            gnome-terminal --tab --title="1: cuVSLAM"      -- bash "$SCRIPT" --tab1 $RVIZ_ARG
             sleep 0.3
             gnome-terminal --tab --title="2: VIO + DDS"    -- bash "$SCRIPT" --tab2
             sleep 0.3
@@ -206,7 +232,7 @@ SETUP_EOF
             sleep 0.3
             gnome-terminal --tab --title="4: Depth Guard"  -- bash "$SCRIPT" --tab4
             sleep 0.3
-            gnome-terminal --tab --title="5: Explorer"     -- bash "$SCRIPT" --tab5
+            gnome-terminal --tab --title="5: Explorer"     -- bash "$SCRIPT" --tab5 $DEBUG_ARG
             sleep 0.3
             gnome-terminal --tab --title="6: Loop Closure" -- bash "$SCRIPT" --tab6
             sleep 0.3

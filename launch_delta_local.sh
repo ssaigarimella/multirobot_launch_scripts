@@ -7,7 +7,20 @@
 CONTAINER="isaac_ros_realsense"
 IMAGE="isaac_ros:dev-realsense"
 SCRIPT="$(readlink -f "$0")"
-SETUP="export ROS_LOCALHOST_ONLY=0 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+SETUP="export ROS_LOCALHOST_ONLY=0 && export FASTRTPS_DEFAULT_PROFILES_FILE=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/fastdds_loopback.xml && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+
+# CLI flags: --rviz (enable RViz2), --debug (skip arm check)
+RVIZ_FLAG="False"
+DEBUG_ARM="false"
+export DEBUG_ARM
+for arg in "$@"; do
+    if [ "$arg" = "--rviz" ]; then
+        RVIZ_FLAG="True"
+    elif [ "$arg" = "--debug" ]; then
+        DEBUG_ARM="true"
+        export DEBUG_ARM
+    fi
+done
 
 # Ensure Docker container is running
 ensure_container() {
@@ -57,7 +70,7 @@ docker_tab() {
 case "$1" in
     --tab1)
         docker_tab "Tab 1: cuVSLAM + RealSense + nvblox" \
-            "ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=False"
+            "ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=${RVIZ_FLAG}"
         ;;
     --tab2)
         docker_tab "Tab 2: VIO Bridge + DDS Agent" \
@@ -72,8 +85,11 @@ case "$1" in
             "ros2 launch active_exploration reactive_guard.launch.py"
         ;;
     --tab5)
-        docker_tab "Tab 5: Exploration Manager" \
-            "ros2 launch active_exploration exploration_manager.launch.py flight_height:=1.0"
+        # Check if --debug was passed as a subsequent arg
+        DEBUG_VAL="false"
+        for a in "$@"; do [ "$a" = "--debug" ] && DEBUG_VAL="true"; done
+        docker_tab "Tab 5: Simple Exploration Planner" \
+            "ros2 launch active_exploration simple_planner_launch.py flight_height:=1.0 debug_skip_arm_check:=${DEBUG_VAL}"
         ;;
     --tab6)
         docker_tab "Tab 6: Loop Closure (SuperPoint + LightGlue)" \
@@ -88,7 +104,9 @@ case "$1" in
         docker_tab "Tab 7: OctoMap Exchange (incremental)" \
             "ros2 run multi_drone_nvblox octomap_exchange_node --ros-args \
                 -p robot_namespace:=drone1 \
+                -p drone_id:=1 \
                 -p resolution:=0.05 \
+                -p alignment_config:=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/swarm_alignment.yaml \
                 -p use_sim_time:=False"
         ;;
     --tab8)
@@ -116,10 +134,14 @@ case "$1" in
             "bash"
         ;;
     -h|--help)
-        echo "Usage: ./launch_delta_local.sh"
+        echo "Usage: ./launch_delta_local.sh [--rviz]"
         echo ""
         echo "Opens 9 gnome-terminal tabs, each inside Docker with ROS2 sourced."
         echo "Press Enter in each tab to launch that component."
+        echo ""
+        echo "Options:"
+        echo "  --rviz    Launch RViz2 with the cuVSLAM/nvblox pipeline (Tab 1)"
+        echo "  --debug   Skip arm check in exploration manager (for hand-carry testing)"
         echo ""
         echo "Tabs:"
         echo "  1: cuVSLAM + RealSense + nvblox"
@@ -134,7 +156,7 @@ case "$1" in
         exit 0
         ;;
     *)
-        # Default: ensure container is running, then open all 9 tabs
+        # Default: ensure container is running, then open all 10 tabs
         ensure_container
         echo "============================================================"
         echo " Delta Jetson - Local Launch (9 tabs)"
@@ -145,14 +167,18 @@ case "$1" in
         echo " Tab 4: Reactive Depth Guard"
         echo " Tab 5: Exploration Manager"
         echo " Tab 6: Loop Closure (SuperPoint + LightGlue)"
-        echo " Tab 7: OctoMap Exchange (incremental)"
+        echo " Tab 7: OctoMap Exchange + Initial Alignment"
         echo " Tab 8: Mesh + Zenoh (HOST, requires sudo)"
         echo " Tab 9: Interactive Shell"
         echo "============================================================"
         echo "Press Enter in each tab to launch that component."
         echo ""
 
-        gnome-terminal --tab --title="1: cuVSLAM"      -- bash "$SCRIPT" --tab1
+        RVIZ_ARG=""
+        DEBUG_ARG=""
+        [ "$RVIZ_FLAG" = "True" ] && RVIZ_ARG="--rviz"
+        [ "$DEBUG_ARM" = "true" ] && DEBUG_ARG="--debug"
+        gnome-terminal --tab --title="1: cuVSLAM"      -- bash "$SCRIPT" --tab1 $RVIZ_ARG
         sleep 0.3
         gnome-terminal --tab --title="2: VIO + DDS"    -- bash "$SCRIPT" --tab2
         sleep 0.3
@@ -160,7 +186,7 @@ case "$1" in
         sleep 0.3
         gnome-terminal --tab --title="4: Depth Guard"  -- bash "$SCRIPT" --tab4
         sleep 0.3
-        gnome-terminal --tab --title="5: Explorer"     -- bash "$SCRIPT" --tab5
+        gnome-terminal --tab --title="5: Explorer"     -- bash "$SCRIPT" --tab5 $DEBUG_ARG
         sleep 0.3
         gnome-terminal --tab --title="6: Loop Closure" -- bash "$SCRIPT" --tab6
         sleep 0.3
