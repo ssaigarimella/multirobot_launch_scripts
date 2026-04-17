@@ -1,5 +1,5 @@
 #!/bin/bash
-# launch_delta_jetson.sh - Opens gnome-terminal tabs for the Delta Jetson exploration stack
+# launch_delta_jetson.sh - Opens Terminal tabs for the Delta Jetson exploration stack
 #
 # Run this from your LAPTOP (not the Jetson).
 # It SSHes into the Jetson and runs the full stack inside the Isaac ROS container.
@@ -16,7 +16,10 @@ JETSON_HOST="delta@192.168.0.59"
 JETSON_PASS="abc123"
 CONTAINER="isaac_ros_realsense"
 IMAGE="isaac_ros:dev-realsense"
-SCRIPT="$(readlink -f "$0")"
+
+# Mac-compatible absolute path resolution (readlink -f is GNU-only)
+SCRIPT="$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
+
 DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && export FASTRTPS_DEFAULT_PROFILES_FILE=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/fastdds_loopback.xml && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
 
 # CLI flags: --rviz (enable RViz2), --debug (skip arm check)
@@ -51,6 +54,30 @@ ssh_docker_tab() {
     read
 }
 
+# Open a new tab in the current Terminal window on macOS.
+# Writes the command to a temp file to avoid AppleScript quoting issues.
+open_tab() {
+    local title="$1"
+    local cmd="$2"
+    local tmpfile
+    # macOS mktemp requires X's at the end with no file extension in the template
+    tmpfile=$(mktemp /tmp/jetson_XXXXXX)
+    cat > "$tmpfile" <<TABSCRIPT
+#!/bin/bash
+printf '\033]0;${title}\007'
+${cmd}
+echo ""
+echo "[${title} exited. Press Enter to close tab.]"
+read
+TABSCRIPT
+    chmod +x "$tmpfile"
+    # Create a new tab via keystroke, then run the script inside it
+    osascript \
+        -e 'tell application "Terminal" to activate' \
+        -e 'tell application "System Events" to keystroke "t" using {command down}' \
+        -e "tell application \"Terminal\" to do script \"bash '$tmpfile'\" in front window"
+}
+
 case "$1" in
     --tab1)
         ssh_docker_tab "Tab 1: cuVSLAM + RealSense + nvblox" \
@@ -69,7 +96,6 @@ case "$1" in
             "ros2 launch active_exploration reactive_guard.launch.py"
         ;;
     --tab5)
-        # Check if --debug was passed as a subsequent arg
         DEBUG_VAL="false"
         for a in "$@"; do [ "$a" = "--debug" ] && DEBUG_VAL="true"; done
         ssh_docker_tab "Tab 5: Simple Exploration Planner" \
@@ -94,7 +120,6 @@ case "$1" in
                 -p use_sim_time:=False"
         ;;
     --tab8)
-        # Tab 8 runs on the Jetson HOST (not Docker) — it manages WiFi + Zenoh
         echo "=== Tab 8: Mesh + Zenoh Bridge ==="
         echo ""
         echo "This switches WiFi from eduroam to 802.11s mesh,"
@@ -145,11 +170,10 @@ case "$1" in
         exit 0
         ;;
     *)
-        # Default: set up container, then open gnome-terminal tabs
         MISSION="${1:-explore}"
 
         if ! command -v sshpass &>/dev/null; then
-            echo "sshpass required: sudo apt install sshpass"
+            echo "sshpass required: brew install hudochenkov/sshpass/sshpass"
             exit 1
         fi
 
@@ -195,6 +219,11 @@ SETUP_EOF
             exit 1
         fi
 
+        RVIZ_ARG=""
+        DEBUG_ARG=""
+        [ "$RVIZ_FLAG" = "True" ] && RVIZ_ARG="--rviz"
+        [ "$DEBUG_ARM" = "true" ] && DEBUG_ARG="--debug"
+
         if [ "$MISSION" = "vio" ]; then
             echo ""
             echo "Tab 1: cuVSLAM + RealSense + nvblox"
@@ -204,9 +233,9 @@ SETUP_EOF
             echo "Press Enter in each tab to launch that component."
             echo "============================================================"
 
-            gnome-terminal --tab --title="1: cuVSLAM"    -- bash "$SCRIPT" --tab1
+            open_tab "1: cuVSLAM"   "bash \"$SCRIPT\" --tab1 $RVIZ_ARG"
             sleep 0.3
-            gnome-terminal --tab --title="2: VIO + DDS"  -- bash "$SCRIPT" --tab2
+            open_tab "2: VIO + DDS" "bash \"$SCRIPT\" --tab2"
         else
             echo ""
             echo " Tab 1: cuVSLAM + RealSense + nvblox"
@@ -222,27 +251,23 @@ SETUP_EOF
             echo "Press Enter in each tab to launch that component."
             echo ""
 
-            RVIZ_ARG=""
-            DEBUG_ARG=""
-            [ "$RVIZ_FLAG" = "True" ] && RVIZ_ARG="--rviz"
-            [ "$DEBUG_ARM" = "true" ] && DEBUG_ARG="--debug"
-            gnome-terminal --tab --title="1: cuVSLAM"      -- bash "$SCRIPT" --tab1 $RVIZ_ARG
+            open_tab "1: cuVSLAM"      "bash \"$SCRIPT\" --tab1 $RVIZ_ARG"
             sleep 0.3
-            gnome-terminal --tab --title="2: VIO + DDS"    -- bash "$SCRIPT" --tab2
+            open_tab "2: VIO + DDS"    "bash \"$SCRIPT\" --tab2"
             sleep 0.3
-            gnome-terminal --tab --title="3: FIS"          -- bash "$SCRIPT" --tab3
+            open_tab "3: FIS"          "bash \"$SCRIPT\" --tab3"
             sleep 0.3
-            gnome-terminal --tab --title="4: Depth Guard"  -- bash "$SCRIPT" --tab4
+            open_tab "4: Depth Guard"  "bash \"$SCRIPT\" --tab4"
             sleep 0.3
-            gnome-terminal --tab --title="5: Explorer"     -- bash "$SCRIPT" --tab5 $DEBUG_ARG
+            open_tab "5: Explorer"     "bash \"$SCRIPT\" --tab5 $DEBUG_ARG"
             sleep 0.3
-            gnome-terminal --tab --title="6: Loop Closure" -- bash "$SCRIPT" --tab6
+            open_tab "6: Loop Closure" "bash \"$SCRIPT\" --tab6"
             sleep 0.3
-            gnome-terminal --tab --title="7: OctoMap"      -- bash "$SCRIPT" --tab7
+            open_tab "7: OctoMap"      "bash \"$SCRIPT\" --tab7"
             sleep 0.3
-            gnome-terminal --tab --title="8: Zenoh"        -- bash "$SCRIPT" --tab8
+            open_tab "8: Zenoh"        "bash \"$SCRIPT\" --tab8"
             sleep 0.3
-            gnome-terminal --tab --title="9: Shell"        -- bash "$SCRIPT" --tab9
+            open_tab "9: Shell"        "bash \"$SCRIPT\" --tab9"
         fi
         ;;
 esac
