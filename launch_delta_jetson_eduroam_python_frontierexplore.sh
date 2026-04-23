@@ -9,16 +9,16 @@
 #   ./launch_delta_jetson.sh explore      # Same as above
 #   ./launch_delta_jetson.sh vio          # VIO only (no exploration)
 
-# JETSON_HOST="delta@10.90.134.66"
-# JETSON_HOST="delta@10.90.164.137"
-JETSON_HOST="delta@192.168.0.59"
-
+JETSON_HOST="delta@10.90.236.91"
 
 JETSON_PASS="abc123"
 CONTAINER="isaac_ros_realsense"
 IMAGE="isaac_ros:dev-realsense"
 SCRIPT="$(readlink -f "$0")"
-DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && export FASTRTPS_DEFAULT_PROFILES_FILE=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/fastdds_loopback.xml && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+# DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && export FASTRTPS_DEFAULT_PROFILES_FILE=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/fastdds_loopback.xml && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+
+
 
 # CLI flags: --rviz (enable RViz2), --debug (skip arm check)
 RVIZ_FLAG="False"

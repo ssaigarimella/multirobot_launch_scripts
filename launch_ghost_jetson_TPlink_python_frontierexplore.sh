@@ -9,7 +9,7 @@
 #   ./launch_ghost_jetson.sh explore      # Same as above
 #   ./launch_ghost_jetson.sh vio          # VIO only (no exploration)
 
-JETSON_HOST="ghost@10.90.228.175"
+JETSON_HOST="ghost@192.168.0.102"
 
 JETSON_PASS="abc123"
 CONTAINER="isaac_ros_realsense"
