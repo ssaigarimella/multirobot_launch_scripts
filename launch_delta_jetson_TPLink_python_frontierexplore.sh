@@ -1,15 +1,15 @@
 #!/bin/bash
-# launch_buckshee_jetson.sh - Opens gnome-terminal tabs for the Buckshee Jetson exploration stack
+# launch_delta_jetson.sh - Opens gnome-terminal tabs for the Delta Jetson exploration stack
 #
 # Run this from your LAPTOP (not the Jetson).
 # It SSHes into the Jetson and runs the full stack inside the Isaac ROS container.
 #
 # Usage:
-#   ./launch_buckshee_jetson.sh              # Full exploration stack (default)
-#   ./launch_buckshee_jetson.sh explore      # Same as above
-#   ./launch_buckshee_jetson.sh vio          # VIO only (no exploration)
+#   ./launch_delta_jetson.sh              # Full exploration stack (default)
+#   ./launch_delta_jetson.sh explore      # Same as above
+#   ./launch_delta_jetson.sh vio          # VIO only (no exploration)
 
-JETSON_HOST="buckshee@10.90.179.174"
+JETSON_HOST="delta@10.90.236.91"
 
 JETSON_PASS="abc123"
 CONTAINER="isaac_ros_realsense"
@@ -17,6 +17,8 @@ IMAGE="isaac_ros:dev-realsense"
 SCRIPT="$(readlink -f "$0")"
 # DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && export FASTRTPS_DEFAULT_PROFILES_FILE=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/fastdds_loopback.xml && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
 DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+
+
 
 # CLI flags: --rviz (enable RViz2), --debug (skip arm check)
 RVIZ_FLAG="False"
@@ -87,7 +89,7 @@ case "$1" in
         ssh_docker_tab "Tab 7: OctoMap Exchange (incremental)" \
             "ros2 run multi_drone_nvblox octomap_exchange_node --ros-args \
                 -p robot_namespace:=drone1 \
-                -p drone_id:=2 \
+                -p drone_id:=1 \
                 -p resolution:=0.05 \
                 -p alignment_config:=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/swarm_alignment.yaml \
                 -p use_sim_time:=False"
@@ -117,9 +119,9 @@ case "$1" in
         ;;
     -h|--help|help)
         echo "Usage:"
-        echo "  ./launch_buckshee_jetson.sh [--rviz] [--debug]"
-        echo "  ./launch_buckshee_jetson.sh explore      # Full exploration stack (default)"
-        echo "  ./launch_buckshee_jetson.sh vio          # VIO only (no exploration)"
+        echo "  ./launch_delta_jetson.sh [--rviz] [--debug]"
+        echo "  ./launch_delta_jetson.sh explore      # Full exploration stack (default)"
+        echo "  ./launch_delta_jetson.sh vio          # VIO only (no exploration)"
         echo ""
         echo "Options:"
         echo "  --rviz    Launch RViz2 with the cuVSLAM/nvblox pipeline (Tab 1)"
@@ -153,7 +155,7 @@ case "$1" in
         fi
 
         echo "============================================================"
-        echo " Buckshee Jetson Exploration Stack (from laptop)"
+        echo " Delta Jetson Exploration Stack (from laptop)"
         echo " Mode:   $MISSION"
         echo " Remote: $JETSON_HOST"
         echo "============================================================"
