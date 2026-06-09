@@ -1,5 +1,5 @@
 #!/bin/bash
-# launch_thunderstrike_jetson.sh - Opens gnome-terminal tabs for the Thunderstrike Jetson exploration stack
+# launch_buckshee_jetson.sh - Opens gnome-terminal tabs for the Buckshee Jetson exploration stack
 #
 # Run this from your LAPTOP (not the Jetson).
 # It SSHes into the Jetson and runs the full stack inside the Isaac ROS container.
@@ -10,19 +10,19 @@
 # re-attaches to the live session. Requires tmux on the Jetson (sudo apt install tmux).
 #
 # Usage:
-#   ./launch_thunderstrike_jetson.sh              # Full exploration stack (default)
-#   ./launch_thunderstrike_jetson.sh explore      # Same as above
-#   ./launch_thunderstrike_jetson.sh vio          # VIO only (no exploration)
-#   ./launch_thunderstrike_jetson.sh kill         # Kill all tmux sessions on the Jetson
+#   ./launch_buckshee_jetson.sh              # Full exploration stack (default)
+#   ./launch_buckshee_jetson.sh explore      # Same as above
+#   ./launch_buckshee_jetson.sh vio          # VIO only (no exploration)
+#   ./launch_buckshee_jetson.sh kill         # Kill all tmux sessions on the Jetson
 
 # eduroam
-# JETSON_HOST="thunderstrike@10.90.158.195"
+# JETSON_HOST="buckshee@10.90.179.174"
 
 # IFL TPLINK router
-JETSON_HOST="thunderstrike@192.168.0.70"
+JETSON_HOST="buckshee@192.168.0.60"
 
 # iPhone
-# JETSON_HOST="thunderstrike@172.20.10.13"
+# JETSON_HOST="buckshee@172.20.10.10"
 
 
 JETSON_PASS="abc123"
@@ -31,9 +31,9 @@ IMAGE="isaac_ros:dev-realsense"
 SCRIPT="$(readlink -f "$0")"
 # DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && export FASTRTPS_DEFAULT_PROFILES_FILE=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/fastdds_loopback.xml && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
 # NOTE: PX4 param UXRCE_DDS_DOM_ID must EQUAL this ROS_DOMAIN_ID (set via QGC +
-# FMU reboot; ghost=3 was done 2026-06-09 — VERIFY/SET thunderstrike=4 in QGC before flying!). If they differ, PX4's /fmu/* topics
+# FMU reboot; ghost=3 was done 2026-06-09 — VERIFY/SET buckshee=2 in QGC before flying!). If they differ, PX4's /fmu/* topics
 # land on a different DDS domain and EKF2 silently gets no VIO (see ghost_debug/POSTMORTEM.md).
-DOCKER_SOURCE="export ROS_DOMAIN_ID=4 ROS_LOCALHOST_ONLY=0 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+DOCKER_SOURCE="export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=0 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
 
 
 # CLI flags: --rviz (enable RViz2), --debug (skip arm check)
@@ -105,7 +105,7 @@ case "$1" in
     --tab6)
         ssh_docker_tab "Tab 6: Loop Closure (SuperPoint + LightGlue)" \
             "python3 src/multi_drone_nvblox/scripts/loop_closure_sp_node.py --ros-args \
-                -p robot_namespace:=drone4 \
+                -p robot_namespace:=drone2 \
                 -p vocabulary_file:=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/models/sp_vocab_4096.pkl \
                 -p process_rate:=1.0 \
                 -p use_pcm:=True \
@@ -114,8 +114,8 @@ case "$1" in
     --tab7)
         ssh_docker_tab "Tab 7: OctoMap Exchange (incremental)" \
             "ros2 run multi_drone_nvblox octomap_exchange_node --ros-args \
-                -p robot_namespace:=drone4 \
-                -p drone_id:=4 \
+                -p robot_namespace:=drone2 \
+                -p drone_id:=2 \
                 -p resolution:=0.05 \
                 -p alignment_config:=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/swarm_alignment.yaml \
                 -p use_sim_time:=False"
@@ -134,8 +134,8 @@ case "$1" in
         read -rp "This drone's ID: " NODE_ID
         read -rp "Peer drone IDs (space-separated, e.g. '3' or '2 3 4'): " PEER_IDS
         echo ""
-        echo "Running mesh+zenoh on Jetson via SSH (tmux session 'ts_mesh_zenoh')..."
-        do_ssh "tmux new-session -A -s ts_mesh_zenoh \"sudo bash /mnt/nova_ssd/workspaces/isaac_ros-dev/launch_mesh_zenoh.sh $NODE_ID $PEER_IDS\""
+        echo "Running mesh+zenoh on Jetson via SSH (tmux session 'bk_mesh_zenoh')..."
+        do_ssh "tmux new-session -A -s bk_mesh_zenoh \"sudo bash /mnt/nova_ssd/workspaces/isaac_ros-dev/launch_mesh_zenoh.sh $NODE_ID $PEER_IDS\""
         echo ""
         echo "[Tab 8 detached or exited. Press Enter to close tab.]"
         read
@@ -151,10 +151,10 @@ case "$1" in
         ;;
     -h|--help|help)
         echo "Usage:"
-        echo "  ./launch_thunderstrike_jetson.sh [--rviz] [--debug]"
-        echo "  ./launch_thunderstrike_jetson.sh explore      # Full exploration stack (default)"
-        echo "  ./launch_thunderstrike_jetson.sh vio          # VIO only (no exploration)"
-        echo "  ./launch_thunderstrike_jetson.sh kill         # Kill all tmux sessions on the Jetson"
+        echo "  ./launch_buckshee_jetson.sh [--rviz] [--debug]"
+        echo "  ./launch_buckshee_jetson.sh explore      # Full exploration stack (default)"
+        echo "  ./launch_buckshee_jetson.sh vio          # VIO only (no exploration)"
+        echo "  ./launch_buckshee_jetson.sh kill         # Kill all tmux sessions on the Jetson"
         echo ""
         echo "Options:"
         echo "  --rviz    Launch RViz2 with the cuVSLAM/nvblox pipeline (Tab 1)"
@@ -173,7 +173,7 @@ case "$1" in
         echo ""
         echo "tmux: every tab runs in a named tmux session on the Jetson, so an SSH"
         echo "      drop detaches instead of killing the node. Re-run a tab to re-attach."
-        echo "      Tear everything down with: ./launch_thunderstrike_jetson.sh kill"
+        echo "      Tear everything down with: ./launch_buckshee_jetson.sh kill"
         echo ""
         echo "Workflow:"
         echo "  1. Press Enter in each tab (in order) to launch"
@@ -192,7 +192,7 @@ case "$1" in
         fi
 
         echo "============================================================"
-        echo " Thunderstrike Jetson Exploration Stack (from laptop)"
+        echo " Buckshee Jetson Exploration Stack (from laptop)"
         echo " Mode:   $MISSION"
         echo " Remote: $JETSON_HOST"
         echo "============================================================"
