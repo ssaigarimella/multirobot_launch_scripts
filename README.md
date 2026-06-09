@@ -9,10 +9,10 @@ and runs each component in a named tmux session (survives SSH drops; re-run a ta
 
 | Drone | ID / ROS_DOMAIN_ID | Script | TP-Link IP | iPhone IP |
 |---|---|---|---|---|
-| delta | 1 | `launch_delta_jetson_eduroam_python_frontierexplore_tmux.sh` | 192.168.0.40 (TODO verify) | 172.20.10.12 |
-| buckshee | 2 | `launch_buckshee_jetson_eduroam_python_frontierexplore_tmux.sh` | 192.168.0.60 | 172.20.10.10 |
-| ghost | 3 | `launch_ghost_jetson_eduroam_python_frontierexplore_tmux.sh` | 192.168.0.50 | 172.20.10.11 |
-| thunderstrike | 4 | `launch_thunderstrike_jetson_eduroam_python_frontierexplore_tmux.sh` | 192.168.0.70 | 172.20.10.13 |
+| delta | 1 | `launch_delta_frontierexplore_tmux.sh` | 192.168.0.40 (TODO verify) | 172.20.10.12 |
+| buckshee | 2 | `launch_buckshee_frontierexplore_tmux.sh` | 192.168.0.60 | 172.20.10.10 |
+| ghost | 3 | `launch_ghost_frontierexplore_tmux.sh` | 192.168.0.50 | 172.20.10.11 |
+| thunderstrike | 4 | `launch_thunderstrike_frontierexplore_tmux.sh` | 192.168.0.70 | 172.20.10.13 |
 
 Usage: `./launch_<drone>_..._tmux.sh [explore|vio|kill] [--rviz] [--debug]` — see `--help`.
 
