@@ -1,0 +1,426 @@
+[INFO] [launch]: All log files can be found below /home/admin/.ros/log/1970-01-0
+1-01-10-24-921758-ghost-107804
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [MicroXRCEAgent-1]: process started with pid [107940]
+[INFO] [vio_bridge-2]: process started with pid [107942]
+[MicroXRCEAgent-1] [4225.052802] info     | TermiosAgentLinux.cpp | init
+             | running...             | fd: 3
+[MicroXRCEAgent-1] [4225.053353] info     | Root.cpp           | set_verbose_lev
+el        | logger setup           | verbose_level: 4
+[vio_bridge-2] [INFO] [0000004225.056232736] [vio_bridge]: VIO bridge started (C
+++). Pitch compensation: 20.0 deg
+[MicroXRCEAgent-1] [4225.800054] info     | Root.cpp           | create_client
+          | create                 | client_key: 0x00000001, session_id: 0x81
+[MicroXRCEAgent-1] [4225.800116] info     | SessionManager.hpp | establish_sessi
+on        | session established    | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [4225.811586] info     | ProxyClient.cpp    | create_particip
+ant       | participant created    | client_key: 0x00000001, participant_id: 0x0
+01(1)
+[MicroXRCEAgent-1] [4225.814915] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x800(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.815073] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+0(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.815576] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+0(6), subscriber_id: 0x800(4)
+[MicroXRCEAgent-1] [4225.819344] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x801(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.819381] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+1(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.819600] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+1(6), subscriber_id: 0x801(4)
+[MicroXRCEAgent-1] [4225.823350] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x802(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.823397] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+2(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.823636] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+2(6), subscriber_id: 0x802(4)
+[MicroXRCEAgent-1] [4225.826904] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x803(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.826944] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+3(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.827151] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+3(6), subscriber_id: 0x803(4)
+[MicroXRCEAgent-1] [4225.830391] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x804(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.830431] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+4(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.830633] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+4(6), subscriber_id: 0x804(4)
+[MicroXRCEAgent-1] [4225.834296] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x805(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.834339] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+5(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.834550] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+5(6), subscriber_id: 0x805(4)
+[MicroXRCEAgent-1] [4225.838965] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x806(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.839010] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+6(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.839213] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+6(6), subscriber_id: 0x806(4)
+[MicroXRCEAgent-1] [4225.844704] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x807(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.844781] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+7(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.845079] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+7(6), subscriber_id: 0x807(4)
+[MicroXRCEAgent-1] [4225.848410] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x808(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.848603] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+8(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.848905] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+8(6), subscriber_id: 0x808(4)
+[MicroXRCEAgent-1] [4225.852651] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x809(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.852735] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+9(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.853147] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+9(6), subscriber_id: 0x809(4)
+[MicroXRCEAgent-1] [4225.856328] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80A(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.856382] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+A(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.856654] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+A(6), subscriber_id: 0x80A(4)
+[MicroXRCEAgent-1] [4225.859964] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80B(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.860028] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+B(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.860320] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+B(6), subscriber_id: 0x80B(4)
+[MicroXRCEAgent-1] [4225.864162] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80C(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.864227] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+C(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.864512] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+C(6), subscriber_id: 0x80C(4)
+[MicroXRCEAgent-1] [4225.868692] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80D(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.868764] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+D(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.869098] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+D(6), subscriber_id: 0x80D(4)
+[MicroXRCEAgent-1] [4225.873141] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80E(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.873231] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+E(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.873554] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+E(6), subscriber_id: 0x80E(4)
+[MicroXRCEAgent-1] [4225.878748] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80F(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.878820] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+F(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.879141] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+F(6), subscriber_id: 0x80F(4)
+[MicroXRCEAgent-1] [4225.882878] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x810(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.882945] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+0(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.883241] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+0(6), subscriber_id: 0x810(4)
+[MicroXRCEAgent-1] [4225.886829] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x811(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.886899] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+1(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.887179] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+1(6), subscriber_id: 0x811(4)
+[MicroXRCEAgent-1] [4225.890556] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x812(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.890614] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+2(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.890871] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+2(6), subscriber_id: 0x812(4)
+[MicroXRCEAgent-1] [4225.894899] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x813(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.894956] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+3(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.895181] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+3(6), subscriber_id: 0x813(4)
+[MicroXRCEAgent-1] [4225.899517] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x814(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.899989] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+4(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.900385] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+4(6), subscriber_id: 0x814(4)
+[MicroXRCEAgent-1] [4225.903623] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x815(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.903740] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+5(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.904106] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+5(6), subscriber_id: 0x815(4)
+[MicroXRCEAgent-1] [4225.908372] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x816(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.908423] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+6(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.908667] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+6(6), subscriber_id: 0x816(4)
+[MicroXRCEAgent-1] [4225.912612] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x817(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.912712] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+7(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.913178] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+7(6), subscriber_id: 0x817(4)
+[MicroXRCEAgent-1] [4225.916443] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x818(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.916516] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+8(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.917000] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+8(6), subscriber_id: 0x818(4)
+[MicroXRCEAgent-1] [4225.920098] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x819(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.920183] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+9(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.920513] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+9(6), subscriber_id: 0x819(4)
+[MicroXRCEAgent-1] [4225.923513] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x81A(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.923591] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+A(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.923937] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+A(6), subscriber_id: 0x81A(4)
+[MicroXRCEAgent-1] [4225.927765] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x81B(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.927833] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+B(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.928117] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+B(6), subscriber_id: 0x81B(4)
+[MicroXRCEAgent-1] [4225.931861] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x81C(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.931930] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+C(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4225.932311] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+C(6), subscriber_id: 0x81C(4)
+[MicroXRCEAgent-1] [4225.937344] info     | ProxyClient.cpp    | create_replier
+          | replier created        | client_key: 0x00000001, requester_id: 0x800
+(7), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.013870] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x013(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.014000] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x013
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.014807] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x01
+3(5), publisher_id: 0x013(3)
+[MicroXRCEAgent-1] [4232.020394] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x057(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.020484] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x057
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.021070] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x05
+7(5), publisher_id: 0x057(3)
+[MicroXRCEAgent-1] [4232.025532] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x05D(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.025596] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x05D
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.026204] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x05
+D(5), publisher_id: 0x05D(3)
+[MicroXRCEAgent-1] [4232.032340] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x08D(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.032407] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x08D
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.033566] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x08
+D(5), publisher_id: 0x08D(3)
+[MicroXRCEAgent-1] [4232.039129] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0B4(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.039234] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0B4
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.039943] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0B
+4(5), publisher_id: 0x0B4(3)
+[MicroXRCEAgent-1] [4232.046051] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0CB(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.046125] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0CB
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.046542] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0C
+B(5), publisher_id: 0x0CB(3)
+[MicroXRCEAgent-1] [4232.050814] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0E2(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.050891] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0E2
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.051641] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0E
+2(5), publisher_id: 0x0E2(3)
+[MicroXRCEAgent-1] [4232.055776] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0F2(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.055843] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0F2
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.056512] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0F
+2(5), publisher_id: 0x0F2(3)
+[MicroXRCEAgent-1] [4232.061054] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0F9(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.061118] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0F9
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.061742] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0F
+9(5), publisher_id: 0x0F9(3)
+[MicroXRCEAgent-1] [4232.065608] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0F6(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.065673] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0F6
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.066543] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0F
+6(5), publisher_id: 0x0F6(3)
+[MicroXRCEAgent-1] [4232.070405] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x100(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.070520] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x100
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.071270] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x10
+0(5), publisher_id: 0x100(3)
+[MicroXRCEAgent-1] [4232.077000] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x105(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.077117] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x105
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.077730] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x10
+5(5), publisher_id: 0x105(3)
+[MicroXRCEAgent-1] [4232.082451] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x10A(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.082564] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x10A
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [4232.083286] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x10
+A(5), publisher_id: 0x10A(3)
+[vio_bridge-2] [INFO] [0000004237.000215904] [vio_bridge]: VIO #200: pos_ned=(-0
+.000, 0.003, 0.001) vel_frd=(0.001, 0.001, -0.000)
+[vio_bridge-2] [INFO] [0000004243.680384224] [vio_bridge]: VIO #400: pos_ned=(-0
+.000, 0.004, -0.000) vel_frd=(0.000, -0.000, -0.000)
+[vio_bridge-2] [INFO] [0000004250.359620960] [vio_bridge]: VIO #600: pos_ned=(0.
+000, 0.004, -0.001) vel_frd=(-0.000, -0.000, -0.000)
+[vio_bridge-2] [INFO] [0000004257.039276704] [vio_bridge]: VIO #800: pos_ned=(-0
+.000, 0.005, -0.002) vel_frd=(0.000, 0.000, 0.000)
+[vio_bridge-2] [INFO] [0000004263.733563680] [vio_bridge]: VIO #1000: pos_ned=(-
+0.001, 0.005, -0.001) vel_frd=(-0.000, -0.000, -0.000)
+[vio_bridge-2] [INFO] [0000004270.391757344] [vio_bridge]: VIO #1200: pos_ned=(-
+0.001, 0.004, -0.000) vel_frd=(-0.002, -0.001, 0.001)
+[vio_bridge-2] [INFO] [0000004277.074246752] [vio_bridge]: VIO #1400: pos_ned=(-
+0.001, 0.004, -0.001) vel_frd=(-0.000, 0.001, -0.001)
+[vio_bridge-2] [INFO] [0000004283.756742144] [vio_bridge]: VIO #1600: pos_ned=(-
+0.001, 0.003, -0.005) vel_frd=(-0.000, -0.000, -0.000)
+[vio_bridge-2] [INFO] [0000004290.436659520] [vio_bridge]: VIO #1800: pos_ned=(-
+0.000, 0.005, -0.006) vel_frd=(-0.000, 0.002, -0.002)
+[vio_bridge-2] [INFO] [0000004297.120339936] [vio_bridge]: VIO #2000: pos_ned=(0
+.001, 0.009, -0.007) vel_frd=(-0.001, -0.000, 0.001)
+[vio_bridge-2] [INFO] [0000004303.798296960] [vio_bridge]: VIO #2200: pos_ned=(0
+.007, 0.015, -0.009) vel_frd=(0.002, 0.002, -0.002)
+[vio_bridge-2] [INFO] [0000004310.475772384] [vio_bridge]: VIO #2400: pos_ned=(0
+.009, 0.015, -0.012) vel_frd=(0.001, -0.000, 0.001)
+[vio_bridge-2] [INFO] [0000004317.145983424] [vio_bridge]: VIO #2600: pos_ned=(0
+.007, 0.011, -0.011) vel_frd=(0.002, 0.001, -0.001)
+

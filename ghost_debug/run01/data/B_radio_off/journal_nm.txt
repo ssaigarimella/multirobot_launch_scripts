@@ -1,0 +1,3 @@
+Dec 31 19:52:26 ghost NetworkManager[521]: <info>  [3146.2621] manager: rfkill: Wi-Fi now disabled by radio killswitch
+Dec 31 19:52:26 ghost NetworkManager[521]: <info>  [3146.2622] device (wlP1p1s0): state change: activated -> unavailable (reason 'none', sys-iface-state: 'managed')
+Dec 31 19:52:26 ghost NetworkManager[521]: <info>  [3146.3106] manager: NetworkManager state is now CONNECTED_LOCAL

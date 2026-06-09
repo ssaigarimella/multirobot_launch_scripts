@@ -1,0 +1,11 @@
+[19:49:39] run01 starting. wifi_if=wlP1p1s0 active_conn='TP-Link_073A 1'
+[19:49:39] PHASE A: wifi ON
+[19:50:05] waiting 75s for stack startup
+[19:51:20] capturing bundle -> /home/ghost/ghost_debug_run01/A_wifi_on
+[19:52:20] bundle done: /home/ghost/ghost_debug_run01/A_wifi_on
+[19:52:26] PHASE B: rfkill block wifi
+[19:52:57] waiting 75s for stack startup
+[19:54:12] capturing bundle -> /home/ghost/ghost_debug_run01/B_radio_off
+[19:55:12] bundle done: /home/ghost/ghost_debug_run01/B_radio_off
+[19:55:18] restoring wifi: rfkill unblock
+[19:55:26] wifi restored (ping gateway OK)

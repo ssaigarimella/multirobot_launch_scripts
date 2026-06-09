@@ -4,10 +4,16 @@
 # Run this from your LAPTOP (not the Jetson).
 # It SSHes into the Jetson and runs the full stack inside the Isaac ROS container.
 #
+# tmux-hardened variant: every remote command runs inside a NAMED tmux session on
+# the Jetson. If the SSH link drops (e.g. iPhone hotspot sleeping/throttling), the
+# ROS nodes keep running on the Jetson instead of getting SIGHUP'd. Re-running a tab
+# re-attaches to the live session. Requires tmux on the Jetson (sudo apt install tmux).
+#
 # Usage:
 #   ./launch_thunderstrike_jetson.sh              # Full exploration stack (default)
 #   ./launch_thunderstrike_jetson.sh explore      # Same as above
 #   ./launch_thunderstrike_jetson.sh vio          # VIO only (no exploration)
+#   ./launch_thunderstrike_jetson.sh kill         # Kill all tmux sessions on the Jetson
 
 # JETSON_HOST="thunderstrike@10.90.158.195"
 JETSON_HOST="thunderstrike@192.168.0.70"
@@ -17,7 +23,7 @@ JETSON_PASS="abc123"
 CONTAINER="isaac_ros_realsense"
 IMAGE="isaac_ros:dev-realsense"
 SCRIPT="$(readlink -f "$0")"
-# DOCKER_SOURCE="export ROS_DOMAIN_ID=4 ROS_LOCALHOST_ONLY=0 && export FASTRTPS_DEFAULT_PROFILES_FILE=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/fastdds_loopback.xml && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+# DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && export FASTRTPS_DEFAULT_PROFILES_FILE=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/fastdds_loopback.xml && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
 DOCKER_SOURCE="export ROS_DOMAIN_ID=4 ROS_LOCALHOST_ONLY=1 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
 
 
@@ -34,22 +40,32 @@ for arg in "$@"; do
     fi
 done
 
+# SSH with keepalives so brief stalls on a flaky link don't trigger a disconnect.
 do_ssh() {
-    sshpass -p "$JETSON_PASS" ssh -t -o StrictHostKeyChecking=no "$JETSON_HOST" "$1"
+    sshpass -p "$JETSON_PASS" ssh -t \
+        -o StrictHostKeyChecking=no \
+        -o ServerAliveInterval=15 \
+        -o ServerAliveCountMax=4 \
+        "$JETSON_HOST" "$1"
 }
 
-# Helper for SSH docker tabs
+# Helper for SSH docker tabs.
+# Runs the command inside a named tmux session on the Jetson:
+#   - SSH drops  -> tmux detaches, the node keeps running on the Jetson.
+#   - re-run tab -> "new-session -A" re-attaches to the live session.
 ssh_docker_tab() {
     local label="$1"
     local cmd="$2"
+    local sess="${label//[^a-zA-Z0-9]/_}"   # tmux-safe session name (no spaces/colons)
     echo "=== $label ==="
+    echo "(tmux session '$sess' on Jetson — survives SSH drops; re-run this tab to re-attach)"
     echo "Press Enter to launch..."
     read
-    do_ssh "
-        docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && $cmd'
-    "
+    # Append '; exec bash' so the tmux pane STAYS OPEN if the command crashes —
+    # otherwise tmux destroys the window on exit and you never see the error.
+    do_ssh "tmux new-session -A -s $sess \"docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && $cmd; ec=\$?; echo; echo ===== process exited code \$ec - pane kept open, Ctrl-b d to detach =====; exec bash'\""
     echo ""
-    echo "[$label exited. Press Enter to close tab.]"
+    echo "[$label detached or exited. Press Enter to close tab.]"
     read
 }
 
@@ -96,7 +112,8 @@ case "$1" in
                 -p use_sim_time:=False"
         ;;
     --tab8)
-        # Tab 8 runs on the Jetson HOST (not Docker) — it manages WiFi + Zenoh
+        # Tab 8 runs on the Jetson HOST (not Docker) — it manages WiFi + Zenoh.
+        # Wrapped in tmux because switching WiFi to the mesh DROPS this SSH link by design.
         echo "=== Tab 8: Mesh + Zenoh Bridge ==="
         echo ""
         echo "This switches WiFi from eduroam to 802.11s mesh,"
@@ -108,21 +125,27 @@ case "$1" in
         read -rp "This drone's ID: " NODE_ID
         read -rp "Peer drone IDs (space-separated, e.g. '3' or '2 3 4'): " PEER_IDS
         echo ""
-        echo "Running mesh+zenoh on Jetson via SSH..."
-        do_ssh "sudo bash /mnt/nova_ssd/workspaces/isaac_ros-dev/launch_mesh_zenoh.sh $NODE_ID $PEER_IDS"
+        echo "Running mesh+zenoh on Jetson via SSH (tmux session 'ts_mesh_zenoh')..."
+        do_ssh "tmux new-session -A -s ts_mesh_zenoh \"sudo bash /mnt/nova_ssd/workspaces/isaac_ros-dev/launch_mesh_zenoh.sh $NODE_ID $PEER_IDS\""
         echo ""
-        echo "[Tab 8 exited. Press Enter to close tab.]"
+        echo "[Tab 8 detached or exited. Press Enter to close tab.]"
         read
         ;;
     --tab9)
         ssh_docker_tab "Tab 9: Interactive Shell" \
             "bash"
         ;;
+    kill|--kill)
+        echo "Killing all tmux sessions on $JETSON_HOST ..."
+        do_ssh "tmux kill-server 2>/dev/null; echo '[OK] tmux sessions cleared.'"
+        exit 0
+        ;;
     -h|--help|help)
         echo "Usage:"
         echo "  ./launch_thunderstrike_jetson.sh [--rviz] [--debug]"
         echo "  ./launch_thunderstrike_jetson.sh explore      # Full exploration stack (default)"
         echo "  ./launch_thunderstrike_jetson.sh vio          # VIO only (no exploration)"
+        echo "  ./launch_thunderstrike_jetson.sh kill         # Kill all tmux sessions on the Jetson"
         echo ""
         echo "Options:"
         echo "  --rviz    Launch RViz2 with the cuVSLAM/nvblox pipeline (Tab 1)"
@@ -138,6 +161,10 @@ case "$1" in
         echo "  7: OctoMap Exchange (incremental)"
         echo "  8: Mesh + Zenoh Bridge (switches to 802.11s, runs on Jetson HOST)"
         echo "  9: Interactive Shell (Docker + ROS2 sourced)"
+        echo ""
+        echo "tmux: every tab runs in a named tmux session on the Jetson, so an SSH"
+        echo "      drop detaches instead of killing the node. Re-run a tab to re-attach."
+        echo "      Tear everything down with: ./launch_thunderstrike_jetson.sh kill"
         echo ""
         echo "Workflow:"
         echo "  1. Press Enter in each tab (in order) to launch"
@@ -162,6 +189,10 @@ case "$1" in
         echo "============================================================"
         echo ""
         echo "Setting up container on Jetson..."
+
+        # Ensure tmux is installed on the Jetson host (needed to survive SSH drops).
+        sshpass -p "$JETSON_PASS" ssh -o StrictHostKeyChecking=no "$JETSON_HOST" \
+            "command -v tmux >/dev/null || sudo apt-get install -y tmux"
 
         # Ensure container is running (reuse existing, don't destroy)
         sshpass -p "$JETSON_PASS" ssh -o StrictHostKeyChecking=no "$JETSON_HOST" bash -s <<SETUP_EOF

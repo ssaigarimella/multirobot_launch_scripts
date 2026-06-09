@@ -1,0 +1,17 @@
+WARNING: topic [/visual_slam/tracking/odometry] does not appear to be published yet
+average rate: 30.663
+	min: 0.009s max: 0.052s std dev: 0.00792s window: 32
+average rate: 30.294
+	min: 0.009s max: 0.052s std dev: 0.00575s window: 62
+average rate: 30.205
+	min: 0.009s max: 0.052s std dev: 0.00480s window: 93
+average rate: 30.123
+	min: 0.009s max: 0.052s std dev: 0.00427s window: 123
+average rate: 30.090
+	min: 0.009s max: 0.052s std dev: 0.00407s window: 154
+average rate: 30.064
+	min: 0.009s max: 0.052s std dev: 0.00376s window: 184
+average rate: 30.043
+	min: 0.009s max: 0.052s std dev: 0.00356s window: 214
+average rate: 30.047
+	min: 0.009s max: 0.052s std dev: 0.00357s window: 245

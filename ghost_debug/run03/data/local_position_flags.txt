@@ -1,0 +1,7 @@
+xy_valid: true
+z_valid: true
+v_xy_valid: true
+v_z_valid: true
+x: -0.1382981687784195
+y: 0.01766865700483322
+z: -0.2699223756790161

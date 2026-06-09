@@ -9,14 +9,22 @@
 #   ./launch_buckshee_jetson.sh explore      # Same as above
 #   ./launch_buckshee_jetson.sh vio          # VIO only (no exploration)
 
-JETSON_HOST="buckshee@10.90.179.174"
+# JETSON_HOST="buckshee@10.90.179.174"
+# JETSON_HOST="buckshee@192.168.0.178"
+
+# IFL TPLINK router
+# JETSON_HOST="buckshee@192.168.0.60"
+
+# iphone router
+JETSON_HOST="buckshee@172.20.10.10"
+
 
 JETSON_PASS="abc123"
 CONTAINER="isaac_ros_realsense"
 IMAGE="isaac_ros:dev-realsense"
 SCRIPT="$(readlink -f "$0")"
 # DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && export FASTRTPS_DEFAULT_PROFILES_FILE=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/fastdds_loopback.xml && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
-DOCKER_SOURCE="export ROS_LOCALHOST_ONLY=0 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
+DOCKER_SOURCE="export ROS_DOMAIN_ID=2 ROS_LOCALHOST_ONLY=0 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
 
 # CLI flags: --rviz (enable RViz2), --debug (skip arm check)
 RVIZ_FLAG="False"
@@ -77,7 +85,7 @@ case "$1" in
     --tab6)
         ssh_docker_tab "Tab 6: Loop Closure (SuperPoint + LightGlue)" \
             "python3 src/multi_drone_nvblox/scripts/loop_closure_sp_node.py --ros-args \
-                -p robot_namespace:=drone1 \
+                -p robot_namespace:=drone2 \
                 -p vocabulary_file:=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/models/sp_vocab_4096.pkl \
                 -p process_rate:=1.0 \
                 -p use_pcm:=True \
@@ -86,7 +94,7 @@ case "$1" in
     --tab7)
         ssh_docker_tab "Tab 7: OctoMap Exchange (incremental)" \
             "ros2 run multi_drone_nvblox octomap_exchange_node --ros-args \
-                -p robot_namespace:=drone1 \
+                -p robot_namespace:=drone2 \
                 -p drone_id:=2 \
                 -p resolution:=0.05 \
                 -p alignment_config:=/workspaces/isaac_ros-dev/src/multi_drone_nvblox/config/swarm_alignment.yaml \

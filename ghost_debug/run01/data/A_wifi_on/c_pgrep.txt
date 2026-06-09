@@ -1,0 +1,8 @@
+13235 bash -c export ROS_DOMAIN_ID=3 ROS_LOCALHOST_ONLY=0 PYTHONUNBUFFERED=1 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash && ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=False; ec=$?; echo; echo ===== process exited code $ec =====; exec bash
+13256 /usr/bin/python3 /opt/ros/humble/bin/ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=False
+13270 /opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args --log-level info --ros-args -r __node:=vslam_container
+13272 /opt/ros/humble/lib/rclcpp_components/component_container_mt --ros-args --log-level info --ros-args -r __node:=nvblox_container
+14960 bash -c export ROS_DOMAIN_ID=3 ROS_LOCALHOST_ONLY=0 PYTHONUNBUFFERED=1 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash && ros2 launch px4_offboard vio_bridge.launch.py; ec=$?; echo; echo ===== process exited code $ec =====; exec bash
+15020 /usr/bin/python3 /opt/ros/humble/bin/ros2 launch px4_offboard vio_bridge.launch.py
+15044 MicroXRCEAgent serial --dev /dev/ttyUSB0 -b 921600
+15046 /workspaces/isaac_ros-dev/install/px4_offboard/lib/px4_offboard/vio_bridge --ros-args -r __node:=vio_bridge

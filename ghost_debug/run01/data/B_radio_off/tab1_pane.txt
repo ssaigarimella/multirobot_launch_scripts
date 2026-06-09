@@ -1,0 +1,1805 @@
+[INFO] [launch]: All log files can be found below /home/admin/.ros/log/1970-01-0
+1-00-52-39-298449-ghost-21756
+[INFO] [launch]: Default logging verbosity is set to INFO
+Using container type: component_container_mt, with arguments: ['--ros-args', '--
+log-level', <launch.substitutions.launch_configuration.LaunchConfiguration objec
+t at 0xffff8276cd90>]
+Using container type: component_container_mt, with arguments: ['--ros-args', '--
+log-level', <launch.substitutions.launch_configuration.LaunchConfiguration objec
+t at 0xffff8276cd90>]
+Using container type: component_container_mt, with arguments: ['--ros-args', '--
+log-level', 'info']
+Using container type: component_container_mt, with arguments: ['--ros-args', '--
+log-level', 'info']
+[INFO] [launch.user]: Starting realsense with name: camera0, running splitter: T
+rue
+[INFO] [launch.user]: Adding nodes [ /nvblox_node ] to container nvblox_containe
+r.
+[INFO] [launch.user]: Starting nvblox with the 'realsense' camera in 'static' mo
+de.
+[INFO] [launch.user]: Adding nodes [ /camera0/ ] to container vslam_container.
+[INFO] [odom_correction-1]: process started with pid [21795]
+[INFO] [component_container_mt-2]: process started with pid [21797]
+[INFO] [component_container_mt-3]: process started with pid [21799]
+[odom_correction-1] [INFO] [0000003159.534938048] [odom_correction]: Odom correc
+tion started (pitch=20.0 deg). Publishing gravity-corrected odom -> camera0_link
+ TF.
+[component_container_mt-3] [INFO] [0000003159.722317152] [nvblox_container]: Loa
+d Library: /workspaces/isaac_ros-dev/install/nvblox_ros/lib/libnvblox_ros_lib.so
+[component_container_mt-2] [INFO] [0000003159.740147136] [vslam_container]: Load
+ Library: /workspaces/isaac_ros-dev/install/realsense2_camera/lib/librealsense2_
+camera.so
+[component_container_mt-3] [INFO] [0000003159.813694944] [nvblox_container]: Fou
+nd class: rclcpp_components::NodeFactoryTemplate<nvblox::NvbloxNode>
+[component_container_mt-3] [INFO] [0000003159.813796544] [nvblox_container]: Ins
+tantiate class: rclcpp_components::NodeFactoryTemplate<nvblox::NvbloxNode>
+[component_container_mt-2] [INFO] [0000003159.874765728] [vslam_container]: Foun
+d class: rclcpp_components::NodeFactoryTemplate<realsense2_camera::RealSenseNode
+Factory>
+[component_container_mt-2] [INFO] [0000003159.875823520] [vslam_container]: Inst
+antiate class: rclcpp_components::NodeFactoryTemplate<realsense2_camera::RealSen
+seNodeFactory>
+[component_container_mt-2] [INFO] [0000003159.920440416] [camera0.camera]: RealS
+ense ROS v4.51.1
+[component_container_mt-2] [INFO] [0000003159.921138560] [camera0.camera]: Built
+ with LibRealSense v2.55.1
+[component_container_mt-2] [INFO] [0000003159.921164768] [camera0.camera]: Runni
+ng with LibRealSense v2.55.1
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera0/camera'
+ in container 'vslam_container'
+[component_container_mt-3] [INFO] [0000003159.933326240] [nvblox_node]: Create n
+vblox cuda stream with type: kBlocking
+[component_container_mt-2]  01/01 00:52:39,947 WARNING [281471985576160] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:52:39,958 WARNING [281471985576160] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:52:39,968 ERROR [281471985576160] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:52:39,968 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:52:39,969 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff4800ebf0, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:52:39,970 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:52:39,970 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003159.970275424] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003159.970399296] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] WARNING: Logging before InitGoogleLogging() is writte
+n to STDERR
+[component_container_mt-3] I0101 00:52:40.320819 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:40.333227 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:40.333515 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox15VoxelBlockLayerINS_9TsdfVoxelEEE, voxel_size: 0.0
+5, and memory_type: kDevice to LayerCake.
+[INFO] [launch.user]: Starting cuVSLAM with base_frame: camera0_link
+[INFO] [launch.user]: Adding nodes [ /visual_slam_node ] to container vslam_cont
+ainer.
+[component_container_mt-2] [INFO] [0000003160.486178944] [vslam_container]: Load
+ Library: /workspaces/isaac_ros-dev/install/isaac_ros_visual_slam/lib/libvisual_
+slam_node.so
+[component_container_mt-2] [INFO] [0000003160.566724032] [vslam_container]: Foun
+d class: rclcpp_components::NodeFactoryTemplate<nvidia::isaac_ros::visual_slam::
+VisualSlamNode>
+[component_container_mt-2] [INFO] [0000003160.566839808] [vslam_container]: Inst
+antiate class: rclcpp_components::NodeFactoryTemplate<nvidia::isaac_ros::visual_
+slam::VisualSlamNode>
+[component_container_mt-2] [INFO] [0000003160.589444320] [NitrosContext]: [Nitro
+sContext] Loading extension: gxf/lib/std/libgxf_std.so
+[component_container_mt-2] [INFO] [0000003160.591203456] [NitrosContext]: [Nitro
+sContext] Loading extension: gxf/lib/libgxf_isaac_gxf_helpers.so
+[component_container_mt-2] [INFO] [0000003160.597644768] [NitrosContext]: [Nitro
+sContext] Loading extension: gxf/lib/libgxf_isaac_sight.so
+[component_container_mt-2] [INFO] [0000003160.603985088] [NitrosContext]: [Nitro
+sContext] Loading extension: gxf/lib/libgxf_isaac_atlas.so
+[component_container_mt-2] 1970-01-01 00:52:40.618 WARN  external/com_nvidia_gxf
+/gxf/std/program.cpp@538: No GXF scheduler specified.
+[component_container_mt-2] [INFO] [0000003160.618934624] [NitrosContext]: [Nitro
+sContext] Loading extension: gxf/lib/multimedia/libgxf_multimedia.so
+[component_container_mt-2] [INFO] [0000003160.629339840] [visual_slam_node.Manag
+edNitrosSubscriber]: Starting Managed Nitros Subscriber
+[component_container_mt-2] [INFO] [0000003160.631258368] [visual_slam_node.Manag
+edNitrosSubscriber]: Starting Managed Nitros Subscriber
+[component_container_mt-2] [INFO] [0000003160.657924640] [visual_slam_node]: cuV
+SLAM version: 12.6
+[component_container_mt-2] [INFO] [0000003160.791713216] [visual_slam_node]: Tim
+e taken by CUVSLAM_WarmUpGPU(): 0.133714
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/visual_slam_nod
+e' in container 'vslam_container'
+[component_container_mt-3] I0101 00:52:40.798903 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:40.800381 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:40.803341 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox15VoxelBlockLayerINS_10ColorVoxelEEE, voxel_size: 0
+.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-3] I0101 00:52:41.347487 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:41.348502 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:41.351576 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox15VoxelBlockLayerINS_14FreespaceVoxelEEE, voxel_siz
+e: 0.05, and memory_type: kDevice to LayerCake.
+[INFO] [launch.user]: Adding nodes [ /camera0/realsense_splitter_node ] to conta
+iner vslam_container.
+[component_container_mt-2] [INFO] [0000003161.478103392] [vslam_container]: Load
+ Library: /workspaces/isaac_ros-dev/install/realsense_splitter/lib/librealsense_
+splitter_component.so
+[component_container_mt-2] [INFO] [0000003161.482150752] [vslam_container]: Foun
+d class: rclcpp_components::NodeFactoryTemplate<nvblox::RealsenseSplitterNode>
+[component_container_mt-2] [INFO] [0000003161.482247104] [vslam_container]: Inst
+antiate class: rclcpp_components::NodeFactoryTemplate<nvblox::RealsenseSplitterN
+ode>
+[component_container_mt-2] [INFO] [0000003161.488599488] [camera0.realsense_spli
+tter_node]: Creating a RealsenseSplitterNode().
+[component_container_mt-2] [INFO] [0000003161.488730176] [camera0.realsense_spli
+tter_node]: invert_emitter_logic=true
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera0/realsen
+se_splitter_node' in container 'vslam_container'
+[component_container_mt-3] I0101 00:52:41.682741 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:41.683431 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:41.685702 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox15VoxelBlockLayerINS_14OccupancyVoxelEEE, voxel_siz
+e: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-3] I0101 00:52:42.209168 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:42.210219 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:42.210391 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox15VoxelBlockLayerINS_9EsdfVoxelEEE, voxel_size: 0.0
+5, and memory_type: kDevice to LayerCake.
+[component_container_mt-3] I0101 00:52:42.219740 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:42.220755 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:42.220949 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox10BlockLayerINS_9MeshBlockEEE, voxel_size: 0.05, an
+d memory_type: kDevice to LayerCake.
+[component_container_mt-3] I0101 00:52:42.220990 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelB
+lockLayerINS_9TsdfVoxelEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:42.221002 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelB
+lockLayerINS_10ColorVoxelEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:42.221010 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelB
+lockLayerINS_14FreespaceVoxelEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:42.221019 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelB
+lockLayerINS_14OccupancyVoxelEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:42.221036 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelB
+lockLayerINS_9EsdfVoxelEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:42.221048 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_10BlockL
+ayerINS_9MeshBlockEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:42.591173 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:42.592077 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:42.592248 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox15VoxelBlockLayerINS_9TsdfVoxelEEE, voxel_size: 0.0
+5, and memory_type: kDevice to LayerCake.
+[component_container_mt-3] I0101 00:52:43.025466 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:43.027291 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:43.027462 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox15VoxelBlockLayerINS_10ColorVoxelEEE, voxel_size: 0
+.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-3] I0101 00:52:43.581548 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:43.582422 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:43.582583 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox15VoxelBlockLayerINS_14FreespaceVoxelEEE, voxel_siz
+e: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-3] I0101 00:52:43.918995 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:43.919832 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:43.920000 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox15VoxelBlockLayerINS_14OccupancyVoxelEEE, voxel_siz
+e: 0.05, and memory_type: kDevice to LayerCake.
+[component_container_mt-3] I0101 00:52:44.443378 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:44.444144 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:44.444310 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox15VoxelBlockLayerINS_9EsdfVoxelEEE, voxel_size: 0.0
+5, and memory_type: kDevice to LayerCake.
+[component_container_mt-3] I0101 00:52:44.453528 21841 block_memory_pool_impl.h:
+65] Expanding the memory pool with 65536 blocks. Number of allocated blocks: 655
+36
+[component_container_mt-3] I0101 00:52:44.455089 21841 gpu_hash_interface_impl.c
+uh:83] Creating a GPUHashImpl with requested capacity of 4096 blocks. Real capac
+ity: 4096
+[component_container_mt-3] I0101 00:52:44.455247 21841 layer_cake_impl.h:32] Add
+ing Layer with type: N6nvblox10BlockLayerINS_9MeshBlockEEE, voxel_size: 0.05, an
+d memory_type: kDevice to LayerCake.
+[component_container_mt-3] I0101 00:52:44.455273 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelB
+lockLayerINS_9TsdfVoxelEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:44.455289 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelB
+lockLayerINS_10ColorVoxelEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:44.455296 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelB
+lockLayerINS_14FreespaceVoxelEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:44.455300 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelB
+lockLayerINS_14OccupancyVoxelEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:44.455304 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_15VoxelB
+lockLayerINS_9EsdfVoxelEEEEE to LayerCake.
+[component_container_mt-3] I0101 00:52:44.455309 21841 layer_cake_streamer_impl.
+h:79] Adding Streamer with type: N6nvblox25LayerStreamerOldestBlocksINS_10BlockL
+ayerINS_9MeshBlockEEEEE to LayerCake.
+[component_container_mt-3] [INFO] [0000003164.459314720] [nvblox_node]: Initiali
+ze Mapper:
+[component_container_mt-3] [INFO] [0000003164.459411520] [nvblox_node]: static_m
+apper.do_depth_preprocessing: 0
+[component_container_mt-3] [INFO] [0000003164.459440800] [nvblox_node]: static_m
+apper.depth_preprocessing_num_dilations: 3
+[component_container_mt-3] [INFO] [0000003164.459474752] [nvblox_node]: static_m
+apper.esdf_slice_min_height: -0.1
+[component_container_mt-3] [INFO] [0000003164.459489408] [nvblox_node]: static_m
+apper.esdf_slice_max_height: 0.3
+[component_container_mt-3] [INFO] [0000003164.459501216] [nvblox_node]: static_m
+apper.esdf_slice_height: 0
+[component_container_mt-3] [INFO] [0000003164.459512064] [nvblox_node]: static_m
+apper.exclude_last_view_from_decay: 1
+[component_container_mt-3] [INFO] [0000003164.459523264] [nvblox_node]: static_m
+apper.projective_integrator_max_integration_distance_m: 10
+[component_container_mt-3] [INFO] [0000003164.459535296] [nvblox_node]: static_m
+apper.lidar_projective_integrator_max_integration_distance_m: 10
+[component_container_mt-3] [INFO] [0000003164.459546848] [nvblox_node]: static_m
+apper.projective_integrator_truncation_distance_vox: 4
+[component_container_mt-3] [INFO] [0000003164.459565024] [nvblox_node]: static_m
+apper.projective_integrator_weighting_mode: inverse_square_tsdf_distance_penalty
+[component_container_mt-3] [INFO] [0000003164.459581152] [nvblox_node]: static_m
+apper.projective_integrator_max_weight: 5
+[component_container_mt-3] [INFO] [0000003164.459592512] [nvblox_node]: static_m
+apper.projective_tsdf_integrator_invalid_depth_decay_factor: -1
+[component_container_mt-3] [INFO] [0000003164.459614560] [nvblox_node]: static_m
+apper.free_region_occupancy_probability: 0.45
+[component_container_mt-3] [INFO] [0000003164.459627136] [nvblox_node]: static_m
+apper.occupied_region_occupancy_probability: 0.55
+[component_container_mt-3] [INFO] [0000003164.459638368] [nvblox_node]: static_m
+apper.unobserved_region_occupancy_probability: 0.5
+[component_container_mt-3] [INFO] [0000003164.459649216] [nvblox_node]: static_m
+apper.occupied_region_half_width_m: 0.1
+[component_container_mt-3] [INFO] [0000003164.459659552] [nvblox_node]: static_m
+apper.raycast_subsampling_factor: 4
+[component_container_mt-3] [INFO] [0000003164.459669600] [nvblox_node]: static_m
+apper.workspace_bounds_type: unbounded
+[component_container_mt-3] [INFO] [0000003164.459685024] [nvblox_node]: static_m
+apper.workspace_bounds_min_height_m: -0.5
+[component_container_mt-3] [INFO] [0000003164.459697152] [nvblox_node]: static_m
+apper.workspace_bounds_max_height_m: 10
+[component_container_mt-3] [INFO] [0000003164.459707680] [nvblox_node]: static_m
+apper.workspace_bounds_min_corner_x_m: 0
+[component_container_mt-3] [INFO] [0000003164.459717888] [nvblox_node]: static_m
+apper.workspace_bounds_max_corner_x_m: 0
+[component_container_mt-3] [INFO] [0000003164.459728256] [nvblox_node]: static_m
+apper.workspace_bounds_min_corner_y_m: 0
+[component_container_mt-3] [INFO] [0000003164.459738592] [nvblox_node]: static_m
+apper.workspace_bounds_max_corner_y_m: 0
+[component_container_mt-3] [INFO] [0000003164.459748640] [nvblox_node]: static_m
+apper.esdf_integrator_min_weight: 0.1
+[component_container_mt-3] [INFO] [0000003164.459758560] [nvblox_node]: static_m
+apper.esdf_integrator_max_site_distance_vox: 2
+[component_container_mt-3] [INFO] [0000003164.459768640] [nvblox_node]: static_m
+apper.esdf_integrator_max_distance_m: 2
+[component_container_mt-3] [INFO] [0000003164.459779040] [nvblox_node]: static_m
+apper.mesh_integrator_min_weight: 0.1
+[component_container_mt-3] [INFO] [0000003164.459797184] [nvblox_node]: static_m
+apper.mesh_integrator_weld_vertices: 1
+[component_container_mt-3] [INFO] [0000003164.459808384] [nvblox_node]: static_m
+apper.decay_integrator_deallocate_decayed_blocks: 0
+[component_container_mt-3] [INFO] [0000003164.459819424] [nvblox_node]: static_m
+apper.tsdf_decay_factor: 0.95
+[component_container_mt-3] [INFO] [0000003164.459831168] [nvblox_node]: static_m
+apper.tsdf_decayed_weight_threshold: 0.001
+[component_container_mt-3] [INFO] [0000003164.459840800] [nvblox_node]: static_m
+apper.tsdf_set_free_distance_on_decayed: 0
+[component_container_mt-3] [INFO] [0000003164.459850880] [nvblox_node]: static_m
+apper.tsdf_decayed_free_distance_vox: 4
+[component_container_mt-3] [INFO] [0000003164.459861280] [nvblox_node]: static_m
+apper.free_region_decay_probability: 0.55
+[component_container_mt-3] [INFO] [0000003164.459871648] [nvblox_node]: static_m
+apper.occupied_region_decay_probability: 0.4
+[component_container_mt-3] [INFO] [0000003164.459881120] [nvblox_node]: static_m
+apper.occupancy_decay_to_free: 0
+[component_container_mt-3] [INFO] [0000003164.459980928] [nvblox_node]: static_m
+apper.max_tsdf_distance_for_occupancy_m: 0.15
+[component_container_mt-3] [INFO] [0000003164.460011200] [nvblox_node]: static_m
+apper.max_unobserved_to_keep_consecutive_occupancy_ms: 200
+[component_container_mt-3] [INFO] [0000003164.460024416] [nvblox_node]: static_m
+apper.min_duration_since_occupied_for_freespace_ms: 1000
+[component_container_mt-3] [INFO] [0000003164.460033664] [nvblox_node]: static_m
+apper.min_consecutive_occupancy_duration_for_reset_ms: 2000
+[component_container_mt-3] [INFO] [0000003164.460042784] [nvblox_node]: static_m
+apper.check_neighborhood: 1
+[component_container_mt-3] [INFO] [0000003164.460051200] [nvblox_node]: Initiali
+ze Mapper:
+[component_container_mt-3] [INFO] [0000003164.460061536] [nvblox_node]: dynamic_
+mapper.do_depth_preprocessing: 0
+[component_container_mt-3] [INFO] [0000003164.460080864] [nvblox_node]: dynamic_
+mapper.depth_preprocessing_num_dilations: 4
+[component_container_mt-3] [INFO] [0000003164.460094688] [nvblox_node]: dynamic_
+mapper.esdf_slice_min_height: -0.1
+[component_container_mt-3] [INFO] [0000003164.460105536] [nvblox_node]: dynamic_
+mapper.esdf_slice_max_height: 0.3
+[component_container_mt-3] [INFO] [0000003164.460116064] [nvblox_node]: dynamic_
+mapper.esdf_slice_height: 0
+[component_container_mt-3] [INFO] [0000003164.460125888] [nvblox_node]: dynamic_
+mapper.exclude_last_view_from_decay: 0
+[component_container_mt-3] [INFO] [0000003164.460135360] [nvblox_node]: dynamic_
+mapper.projective_integrator_max_integration_distance_m: 7
+[component_container_mt-3] [INFO] [0000003164.460146112] [nvblox_node]: dynamic_
+mapper.lidar_projective_integrator_max_integration_distance_m: 10
+[component_container_mt-3] [INFO] [0000003164.460157344] [nvblox_node]: dynamic_
+mapper.projective_integrator_truncation_distance_vox: 4
+[component_container_mt-3] [INFO] [0000003164.460166880] [nvblox_node]: dynamic_
+mapper.projective_integrator_weighting_mode: kInverseSquareWeight
+[component_container_mt-3] [WARN] [0000003164.460175584] [nvblox_node]: Requeste
+d weighting function: "kInverseSquareWeight" not recognized. Defaulting to: kInv
+erseSquareWeight
+[component_container_mt-3] [INFO] [0000003164.460186656] [nvblox_node]: dynamic_
+mapper.projective_integrator_max_weight: 5
+[component_container_mt-3] [INFO] [0000003164.460196768] [nvblox_node]: dynamic_
+mapper.projective_tsdf_integrator_invalid_depth_decay_factor: -1
+[component_container_mt-3] [INFO] [0000003164.460206912] [nvblox_node]: dynamic_
+mapper.free_region_occupancy_probability: 0.3
+[component_container_mt-3] [INFO] [0000003164.460216800] [nvblox_node]: dynamic_
+mapper.occupied_region_occupancy_probability: 0.7
+[component_container_mt-3] [INFO] [0000003164.460234336] [nvblox_node]: dynamic_
+mapper.unobserved_region_occupancy_probability: 0.5
+[component_container_mt-3] [INFO] [0000003164.460245760] [nvblox_node]: dynamic_
+mapper.occupied_region_half_width_m: 0.1
+[component_container_mt-3] [INFO] [0000003164.460255552] [nvblox_node]: dynamic_
+mapper.raycast_subsampling_factor: 4
+[component_container_mt-3] [INFO] [0000003164.460265280] [nvblox_node]: dynamic_
+mapper.workspace_bounds_type: kUnbounded
+[component_container_mt-3] [WARN] [0000003164.460274176] [nvblox_node]: Requeste
+d workspace bounds type: "kUnbounded" not recognized. Defaulting to: kUnbounded
+[component_container_mt-3] [INFO] [0000003164.460284864] [nvblox_node]: dynamic_
+mapper.workspace_bounds_min_height_m: 0
+[component_container_mt-3] [INFO] [0000003164.460294784] [nvblox_node]: dynamic_
+mapper.workspace_bounds_max_height_m: 1
+[component_container_mt-3] [INFO] [0000003164.460304448] [nvblox_node]: dynamic_
+mapper.workspace_bounds_min_corner_x_m: 0
+[component_container_mt-3] [INFO] [0000003164.460314080] [nvblox_node]: dynamic_
+mapper.workspace_bounds_max_corner_x_m: 0
+[component_container_mt-3] [INFO] [0000003164.460323968] [nvblox_node]: dynamic_
+mapper.workspace_bounds_min_corner_y_m: 2
+[component_container_mt-3] [INFO] [0000003164.460333376] [nvblox_node]: dynamic_
+mapper.workspace_bounds_max_corner_y_m: 2
+[component_container_mt-3] [INFO] [0000003164.460344192] [nvblox_node]: dynamic_
+mapper.esdf_integrator_min_weight: 0.0001
+[component_container_mt-3] [INFO] [0000003164.460358048] [nvblox_node]: dynamic_
+mapper.esdf_integrator_max_site_distance_vox: 1
+[component_container_mt-3] [INFO] [0000003164.460369024] [nvblox_node]: dynamic_
+mapper.esdf_integrator_max_distance_m: 2
+[component_container_mt-3] [INFO] [0000003164.460379008] [nvblox_node]: dynamic_
+mapper.mesh_integrator_min_weight: 0.0001
+[component_container_mt-3] [INFO] [0000003164.460395584] [nvblox_node]: dynamic_
+mapper.mesh_integrator_weld_vertices: 1
+[component_container_mt-3] [INFO] [0000003164.460406560] [nvblox_node]: dynamic_
+mapper.decay_integrator_deallocate_decayed_blocks: 1
+[component_container_mt-3] [INFO] [0000003164.460416768] [nvblox_node]: dynamic_
+mapper.tsdf_decay_factor: 0.95
+[component_container_mt-3] [INFO] [0000003164.460427360] [nvblox_node]: dynamic_
+mapper.tsdf_decayed_weight_threshold: 0.001
+[component_container_mt-3] [INFO] [0000003164.460436576] [nvblox_node]: dynamic_
+mapper.tsdf_set_free_distance_on_decayed: 0
+[component_container_mt-3] [INFO] [0000003164.460446432] [nvblox_node]: dynamic_
+mapper.tsdf_decayed_free_distance_vox: 4
+[component_container_mt-3] [INFO] [0000003164.460485984] [nvblox_node]: dynamic_
+mapper.free_region_decay_probability: 0.55
+[component_container_mt-3] [INFO] [0000003164.460501664] [nvblox_node]: dynamic_
+mapper.occupied_region_decay_probability: 0.4
+[component_container_mt-3] [INFO] [0000003164.460512096] [nvblox_node]: dynamic_
+mapper.occupancy_decay_to_free: 0
+[component_container_mt-3] [INFO] [0000003164.460522464] [nvblox_node]: dynamic_
+mapper.max_tsdf_distance_for_occupancy_m: 0.15
+[component_container_mt-3] [INFO] [0000003164.460532512] [nvblox_node]: dynamic_
+mapper.max_unobserved_to_keep_consecutive_occupancy_ms: 200
+[component_container_mt-3] [INFO] [0000003164.460542048] [nvblox_node]: dynamic_
+mapper.min_duration_since_occupied_for_freespace_ms: 1000
+[component_container_mt-3] [INFO] [0000003164.460550912] [nvblox_node]: dynamic_
+mapper.min_consecutive_occupancy_duration_for_reset_ms: 2000
+[component_container_mt-3] [INFO] [0000003164.460559360] [nvblox_node]: dynamic_
+mapper.check_neighborhood: 1
+[component_container_mt-3] [INFO] [0000003164.460571456] [nvblox_node]: Initiali
+ze MultiMapper:
+[component_container_mt-3] [INFO] [0000003164.460585024] [nvblox_node]: multi_ma
+pper.connected_mask_component_size_threshold: 2000
+[component_container_mt-3] [INFO] [0000003164.460604192] [nvblox_node]: multi_ma
+pper.remove_small_connected_components: 1
+[component_container_mt-3] [INFO] [0000003164.460756000] [nvblox_node]: NvbloxNo
+de::subscribeToTopics()
+[component_container_mt-3] [INFO] [0000003164.461005504] [nvblox_node]: Subscrib
+ing input topics with QoS: SENSOR_DATA
+[component_container_mt-3] [INFO] [0000003164.463325056] [NitrosContext]: [Nitro
+sContext] Loading extension: gxf/lib/std/libgxf_std.so
+[component_container_mt-3] [INFO] [0000003164.464970976] [NitrosContext]: [Nitro
+sContext] Loading extension: gxf/lib/libgxf_isaac_gxf_helpers.so
+[component_container_mt-3] [INFO] [0000003164.470122272] [NitrosContext]: [Nitro
+sContext] Loading extension: gxf/lib/libgxf_isaac_sight.so
+[component_container_mt-3] [INFO] [0000003164.475721760] [NitrosContext]: [Nitro
+sContext] Loading extension: gxf/lib/libgxf_isaac_atlas.so
+[component_container_mt-3] 1970-01-01 00:52:44.487 WARN  external/com_nvidia_gxf
+/gxf/std/program.cpp@538: No GXF scheduler specified.
+[component_container_mt-3] [INFO] [0000003164.488400544] [NitrosContext]: [Nitro
+sContext] Loading extension: gxf/lib/multimedia/libgxf_multimedia.so
+[component_container_mt-3] [INFO] [0000003164.494599392] [nvblox_node.ManagedNit
+rosSubscriber]: Starting Managed Nitros Subscriber
+[component_container_mt-3] [INFO] [0000003164.496714528] [nvblox_node.ManagedNit
+rosSubscriber]: Starting Managed Nitros Subscriber
+[component_container_mt-3] [INFO] [0000003164.497833856] [nvblox_node]: NvbloxNo
+de::setupTimers()
+[component_container_mt-3] [INFO] [0000003164.497924224] [nvblox_node]: NvbloxNo
+de::advertiseTopics()
+[component_container_mt-3] [INFO] [0000003164.503297600] [nvblox_node]: NvbloxNo
+de::advertiseServices()
+[component_container_mt-3] [INFO] [0000003164.507141632] [nvblox_node]: Started
+up nvblox node in frame odom and voxel size 0.05
+[component_container_mt-3] [INFO] [0000003164.507208384] [nvblox_node]: Mapping
+type: kStaticTsdf
+[component_container_mt-3] [INFO] [0000003164.508293664] [nvblox_node]: nvblox p
+arameters:
+[component_container_mt-3] nvblox_node
+[component_container_mt-3]     cuda_stream_type: kBlocking
+[component_container_mt-3]     global_frame: odom
+[component_container_mt-3]     voxel_size: 0.050000
+[component_container_mt-3]     max_back_projection_distance: 7.000000
+[component_container_mt-3]     layer_visualization_min_tsdf_weight: 0.100000
+[component_container_mt-3]     layer_visualization_exclusion_height_m: 10.000000
+[component_container_mt-3]     layer_visualization_exclusion_radius_m: 7.000000
+[component_container_mt-3]     layer_streamer_bandwidth_limit_mbps: -1.000000
+[component_container_mt-3]     distance_map_unknown_value_optimistic: 1000.00000
+0
+[component_container_mt-3]     distance_map_unknown_value_pessimistic: -1000.000
+000
+[component_container_mt-3]     esdf_mode: 3d
+[component_container_mt-3]     mapping_type: static_tsdf
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/nvblox_node' in
+ container 'nvblox_container'
+[component_container_mt-3]     pose_frame: base_link
+[component_container_mt-3]     map_clearing_frame_id: camera0_link
+[component_container_mt-3]     after_shutdown_map_save_path:
+[component_container_mt-3]     esdf_slice_bounds_visualization_attachment_frame_
+id: camera0_link
+[component_container_mt-3]     esdf_slice_height_attachment_frame_id: camera0_li
+nk
+[component_container_mt-3]     workspace_height_bounds_visualization_attachment_
+frame_id: base_link
+[component_container_mt-3]     publish_esdf_distance_slice: 1
+[component_container_mt-3]     use_color: 1
+[component_container_mt-3]     use_depth: 1
+[component_container_mt-3]     use_segmentation: 0
+[component_container_mt-3]     use_lidar: 0
+[component_container_mt-3]     use_non_equal_vertical_fov_lidar_params: 0
+[component_container_mt-3]     print_timings_to_console: 0
+[component_container_mt-3]     print_rates_to_console: 0
+[component_container_mt-3]     print_queue_drops_to_console: 0
+[component_container_mt-3]     print_delays_to_console: 0
+[component_container_mt-3]     layer_visualization_undo_gamma_correction: 0
+[component_container_mt-3]     output_pessimistic_distance_map: 1
+[component_container_mt-3]     num_cameras: 1
+[component_container_mt-3]     lidar_width: 1800
+[component_container_mt-3]     lidar_height: 31
+[component_container_mt-3]     tick_period_ms: 10
+[component_container_mt-3]     print_statistics_on_console_period_ms: 10000
+[component_container_mt-3]     maximum_input_queue_length: 10
+[component_container_mt-3]     back_projection_subsampling: 1
+[component_container_mt-3]     lidar_vertical_fov_rad: 0.523599
+[component_container_mt-3]     lidar_min_valid_range_m: 0.100000
+[component_container_mt-3]     lidar_max_valid_range_m: 50.000000
+[component_container_mt-3]     min_angle_below_zero_elevation_rad: 0.349066
+[component_container_mt-3]     max_angle_above_zero_elevation_rad: 0.261799
+[component_container_mt-3]     esdf_slice_bounds_visualization_side_length: 10.0
+00000
+[component_container_mt-3]     esdf_slice_height_offset: 0.000000
+[component_container_mt-3]     workspace_height_bounds_visualization_side_length
+: 10.000000
+[component_container_mt-3]     integrate_depth_rate_hz: 40.000000
+[component_container_mt-3]     integrate_color_rate_hz: 5.000000
+[component_container_mt-3]     integrate_lidar_rate_hz: 40.000000
+[component_container_mt-3]     update_mesh_rate_hz: 5.000000
+[component_container_mt-3]     update_esdf_rate_hz: 10.000000
+[component_container_mt-3]     publish_layer_rate_hz: 5.000000
+[component_container_mt-3]     publish_debug_vis_rate_hz: 2.000000
+[component_container_mt-3]     decay_tsdf_rate_hz: 0.000000
+[component_container_mt-3]     decay_dynamic_occupancy_rate_hz: 0.000000
+[component_container_mt-3]     clear_map_outside_radius_rate_hz: 0.000000
+[component_container_mt-3]     map_clearing_radius_m: -1.000000
+[component_container_mt-3]     esdf_and_gradients_unobserved_value: -1000.000000
+[component_container_mt-3]     multi_mapper
+[component_container_mt-3]         connected_mask_component_size_threshold: 2000
+[component_container_mt-3]         background_mapper
+[component_container_mt-3]             voxel_size_m: 0.050000
+[component_container_mt-3]             memory_type: kDevice
+[component_container_mt-3]             projective_layer_type: kTsdf
+[component_container_mt-3]             esdf_mode: kUnset
+[component_container_mt-3]             do_depth_preprocessing: 0
+[component_container_mt-3]             depth_preprocessing_num_dilations: 3
+[component_container_mt-3]             exclude_last_view_from_decay: 1
+[component_container_mt-3]             camera_tsdf_integrator
+[component_container_mt-3]                 max_weight:: 5.000000
+[component_container_mt-3]                 marked_unobserved_voxels_distance_m::
+ -1.000000
+[component_container_mt-3]                 marked_unobserved_voxels_weight:: 0.1
+00000
+[component_container_mt-3]                 weighting_function_type:: kInverseSqu
+areTsdfDistancePenalty
+[component_container_mt-3]                 invalid_depth_decay_factor:: -1.00000
+0
+[component_container_mt-3]                 projective_integrator
+[component_container_mt-3]                     lidar_linear_interpolation_max_al
+lowable_difference_vox:: 2.000000
+[component_container_mt-3]                     lidar_nearest_interpolation_max_a
+llowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-3]                     truncation_distance_vox:: 4.00000
+0
+[component_container_mt-3]                     max_integration_distance_m:: 10.0
+00000
+[component_container_mt-3]                     view_calculator
+[component_container_mt-3]                         raycast_subsampling_factor: 4
+[component_container_mt-3]                         workspace_bounds_type: kUnbou
+nded
+[component_container_mt-3]                         workspace_bounds_min_height_m
+: -0.500000
+[component_container_mt-3]                         workspace_bounds_max_height_m
+: 10.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_y
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_y
+_m: 0.000000
+[component_container_mt-3]             lidar_tsdf_integrator
+[component_container_mt-3]                 max_weight:: 5.000000
+[component_container_mt-3]                 marked_unobserved_voxels_distance_m::
+ -1.000000
+[component_container_mt-3]                 marked_unobserved_voxels_weight:: 0.1
+00000
+[component_container_mt-3]                 weighting_function_type:: kInverseSqu
+areWeight
+[component_container_mt-3]                 invalid_depth_decay_factor:: -1.00000
+0
+[component_container_mt-3]                 projective_integrator
+[component_container_mt-3]                     lidar_linear_interpolation_max_al
+lowable_difference_vox:: 2.000000
+[component_container_mt-3]                     lidar_nearest_interpolation_max_a
+llowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-3]                     truncation_distance_vox:: 4.00000
+0
+[component_container_mt-3]                     max_integration_distance_m:: 10.0
+00000
+[component_container_mt-3]                     view_calculator
+[component_container_mt-3]                         raycast_subsampling_factor: 4
+[component_container_mt-3]                         workspace_bounds_type: kUnbou
+nded
+[component_container_mt-3]                         workspace_bounds_min_height_m
+: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_height_m
+: 1.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_y
+_m: 2.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_y
+_m: 2.000000
+[component_container_mt-3]             projective_color_integrator
+[component_container_mt-3]                 sphere_tracing_ray_subsampling_factor
+:: 4
+[component_container_mt-3]                 max_weight:: 5.000000
+[component_container_mt-3]                 weighting_function_type:: kInverseSqu
+areTsdfDistancePenalty
+[component_container_mt-3]                 projective_integrator
+[component_container_mt-3]                     lidar_linear_interpolation_max_al
+lowable_difference_vox:: 2.000000
+[component_container_mt-3]                     lidar_nearest_interpolation_max_a
+llowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-3]                     truncation_distance_vox:: 4.00000
+0
+[component_container_mt-3]                     max_integration_distance_m:: 10.0
+00000
+[component_container_mt-3]                     view_calculator
+[component_container_mt-3]                         raycast_subsampling_factor: 4
+[component_container_mt-3]                         workspace_bounds_type: kUnbou
+nded
+[component_container_mt-3]                         workspace_bounds_min_height_m
+: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_height_m
+: 1.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_y
+_m: 2.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_y
+_m: 2.000000
+[component_container_mt-3]                 view_calculator
+[component_container_mt-3]                     raycast_subsampling_factor: 4
+[component_container_mt-3]                     workspace_bounds_type: kUnbounded
+[component_container_mt-3]                     workspace_bounds_min_height_m: -0
+.500000
+[component_container_mt-3]                     workspace_bounds_max_height_m: 10
+.000000
+[component_container_mt-3]                     workspace_bounds_min_corner_x_m:
+0.000000
+[component_container_mt-3]                     workspace_bounds_max_corner_x_m:
+0.000000
+[component_container_mt-3]                     workspace_bounds_min_corner_y_m:
+0.000000
+[component_container_mt-3]                     workspace_bounds_max_corner_y_m:
+0.000000
+[component_container_mt-3]             camera_occupancy_integrator
+[component_container_mt-3]                 free_region_log_odds:: -0.200671
+[component_container_mt-3]                 occupied_region_log_odds:: 0.200671
+[component_container_mt-3]                 unobserved_region_log_odds:: 0.000000
+[component_container_mt-3]                 occupied_region_half_width_m:: 0.1000
+00
+[component_container_mt-3]                 projective_integrator
+[component_container_mt-3]                     lidar_linear_interpolation_max_al
+lowable_difference_vox:: 2.000000
+[component_container_mt-3]                     lidar_nearest_interpolation_max_a
+llowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-3]                     truncation_distance_vox:: 4.00000
+0
+[component_container_mt-3]                     max_integration_distance_m:: 10.0
+00000
+[component_container_mt-3]                     view_calculator
+[component_container_mt-3]                         raycast_subsampling_factor: 4
+[component_container_mt-3]                         workspace_bounds_type: kUnbou
+nded
+[component_container_mt-3]                         workspace_bounds_min_height_m
+: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_height_m
+: 1.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_y
+_m: 2.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_y
+_m: 2.000000
+[component_container_mt-3]             lidar_occupancy_integrator
+[component_container_mt-3]                 free_region_log_odds:: -0.200671
+[component_container_mt-3]                 occupied_region_log_odds:: 0.200671
+[component_container_mt-3]                 unobserved_region_log_odds:: 0.000000
+[component_container_mt-3]                 occupied_region_half_width_m:: 0.1000
+00
+[component_container_mt-3]                 projective_integrator
+[component_container_mt-3]                     lidar_linear_interpolation_max_al
+lowable_difference_vox:: 2.000000
+[component_container_mt-3]                     lidar_nearest_interpolation_max_a
+llowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-3]                     truncation_distance_vox:: 4.00000
+0
+[component_container_mt-3]                     max_integration_distance_m:: 10.0
+00000
+[component_container_mt-3]                     view_calculator
+[component_container_mt-3]                         raycast_subsampling_factor: 4
+[component_container_mt-3]                         workspace_bounds_type: kUnbou
+nded
+[component_container_mt-3]                         workspace_bounds_min_height_m
+: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_height_m
+: 1.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_y
+_m: 2.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_y
+_m: 2.000000
+[component_container_mt-3]             esdf_integrator
+[component_container_mt-3]                 max_esdf_distance_m:: 2.000000
+[component_container_mt-3]                 max_tsdf_site_distance_vox:: 2.000000
+[component_container_mt-3]                 tsdf_min_weight:: 0.100000
+[component_container_mt-3]                 occupied_threshold_log_odds:: 0.00000
+0
+[component_container_mt-3]                 esdf_slice_min_height:: -0.100000
+[component_container_mt-3]                 esdf_slice_max_height:: 0.300000
+[component_container_mt-3]                 esdf_slice_height:: 0.000000
+[component_container_mt-3]                 slice_height_above_plane_m:: 0.000000
+[component_container_mt-3]                 slice_height_thickness_m:: 0.100000
+[component_container_mt-3]             mesh_integrator
+[component_container_mt-3]                 min_weight:: 0.100000
+[component_container_mt-3]                 cutoff_distance_vox:: 5.000000
+[component_container_mt-3]                 weld_vertices:: 1
+[component_container_mt-3]             occupancy_decay_integrator
+[component_container_mt-3]                 free_space_decay_log_odds:: 0.200671
+[component_container_mt-3]                 occupied_space_decay_log_odds:: -0.40
+5465
+[component_container_mt-3]                 decay_to_log_odds_:: 0.000000
+[component_container_mt-3]                 decay_integrator
+[component_container_mt-3]                     deallocate_decayed_blocks:: 0
+[component_container_mt-3]             tsdf_decay_integrator
+[component_container_mt-3]                 decay_factor:: 0.950000
+[component_container_mt-3]                 decayed_weight_theshold:: 0.001000
+[component_container_mt-3]                 set_free_distance_on_decayed:: 0
+[component_container_mt-3]                 free_distance_vox:: 4.000000
+[component_container_mt-3]                 decay_integrator
+[component_container_mt-3]                     deallocate_decayed_blocks:: 0
+[component_container_mt-3]             freespace_integrator
+[component_container_mt-3]                 max_tsdf_distance_for_occupancy_m:: 0
+.150000
+[component_container_mt-3]                 max_unobserved_to_keep_consecutive_oc
+cupancy_ms:: 200
+[component_container_mt-3]                 min_duration_since_occupied_for_frees
+pace_ms:: 1000
+[component_container_mt-3]                 min_consecutive_occupancy_duration_fo
+r_reset_ms:: 2000
+[component_container_mt-3]                 check_neighborhood:: 1
+[component_container_mt-3]         foreground_mapper
+[component_container_mt-3]             voxel_size_m: 0.050000
+[component_container_mt-3]             memory_type: kDevice
+[component_container_mt-3]             projective_layer_type: kNone
+[component_container_mt-3]             esdf_mode: kUnset
+[component_container_mt-3]             do_depth_preprocessing: 0
+[component_container_mt-3]             depth_preprocessing_num_dilations: 4
+[component_container_mt-3]             exclude_last_view_from_decay: 0
+[component_container_mt-3]             camera_tsdf_integrator
+[component_container_mt-3]                 max_weight:: 5.000000
+[component_container_mt-3]                 marked_unobserved_voxels_distance_m::
+ -1.000000
+[component_container_mt-3]                 marked_unobserved_voxels_weight:: 0.1
+00000
+[component_container_mt-3]                 weighting_function_type:: kInverseSqu
+areWeight
+[component_container_mt-3]                 invalid_depth_decay_factor:: -1.00000
+0
+[component_container_mt-3]                 projective_integrator
+[component_container_mt-3]                     lidar_linear_interpolation_max_al
+lowable_difference_vox:: 2.000000
+[component_container_mt-3]                     lidar_nearest_interpolation_max_a
+llowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-3]                     truncation_distance_vox:: 4.00000
+0
+[component_container_mt-3]                     max_integration_distance_m:: 7.00
+0000
+[component_container_mt-3]                     view_calculator
+[component_container_mt-3]                         raycast_subsampling_factor: 4
+[component_container_mt-3]                         workspace_bounds_type: kUnbou
+nded
+[component_container_mt-3]                         workspace_bounds_min_height_m
+: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_height_m
+: 1.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_y
+_m: 2.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_y
+_m: 2.000000
+[component_container_mt-3]             lidar_tsdf_integrator
+[component_container_mt-3]                 max_weight:: 5.000000
+[component_container_mt-3]                 marked_unobserved_voxels_distance_m::
+ -1.000000
+[component_container_mt-3]                 marked_unobserved_voxels_weight:: 0.1
+00000
+[component_container_mt-3]                 weighting_function_type:: kInverseSqu
+areWeight
+[component_container_mt-3]                 invalid_depth_decay_factor:: -1.00000
+0
+[component_container_mt-3]                 projective_integrator
+[component_container_mt-3]                     lidar_linear_interpolation_max_al
+lowable_difference_vox:: 2.000000
+[component_container_mt-3]                     lidar_nearest_interpolation_max_a
+llowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-3]                     truncation_distance_vox:: 4.00000
+0
+[component_container_mt-3]                     max_integration_distance_m:: 10.0
+00000
+[component_container_mt-3]                     view_calculator
+[component_container_mt-3]                         raycast_subsampling_factor: 4
+[component_container_mt-3]                         workspace_bounds_type: kUnbou
+nded
+[component_container_mt-3]                         workspace_bounds_min_height_m
+: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_height_m
+: 1.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_y
+_m: 2.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_y
+_m: 2.000000
+[component_container_mt-3]             projective_color_integrator
+[component_container_mt-3]                 sphere_tracing_ray_subsampling_factor
+:: 4
+[component_container_mt-3]                 max_weight:: 5.000000
+[component_container_mt-3]                 weighting_function_type:: kInverseSqu
+areWeight
+[component_container_mt-3]                 projective_integrator
+[component_container_mt-3]                     lidar_linear_interpolation_max_al
+lowable_difference_vox:: 2.000000
+[component_container_mt-3]                     lidar_nearest_interpolation_max_a
+llowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-3]                     truncation_distance_vox:: 4.00000
+0
+[component_container_mt-3]                     max_integration_distance_m:: 7.00
+0000
+[component_container_mt-3]                     view_calculator
+[component_container_mt-3]                         raycast_subsampling_factor: 4
+[component_container_mt-3]                         workspace_bounds_type: kUnbou
+nded
+[component_container_mt-3]                         workspace_bounds_min_height_m
+: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_height_m
+: 1.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_y
+_m: 2.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_y
+_m: 2.000000
+[component_container_mt-3]                 view_calculator
+[component_container_mt-3]                     raycast_subsampling_factor: 4
+[component_container_mt-3]                     workspace_bounds_type: kUnbounded
+[component_container_mt-3]                     workspace_bounds_min_height_m: 0.
+000000
+[component_container_mt-3]                     workspace_bounds_max_height_m: 1.
+000000
+[component_container_mt-3]                     workspace_bounds_min_corner_x_m:
+0.000000
+[component_container_mt-3]                     workspace_bounds_max_corner_x_m:
+0.000000
+[component_container_mt-3]                     workspace_bounds_min_corner_y_m:
+2.000000
+[component_container_mt-3]                     workspace_bounds_max_corner_y_m:
+2.000000
+[component_container_mt-3]             camera_occupancy_integrator
+[component_container_mt-3]                 free_region_log_odds:: -0.847298
+[component_container_mt-3]                 occupied_region_log_odds:: 0.847298
+[component_container_mt-3]                 unobserved_region_log_odds:: 0.000000
+[component_container_mt-3]                 occupied_region_half_width_m:: 0.1000
+00
+[component_container_mt-3]                 projective_integrator
+[component_container_mt-3]                     lidar_linear_interpolation_max_al
+lowable_difference_vox:: 2.000000
+[component_container_mt-3]                     lidar_nearest_interpolation_max_a
+llowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-3]                     truncation_distance_vox:: 4.00000
+0
+[component_container_mt-3]                     max_integration_distance_m:: 7.00
+0000
+[component_container_mt-3]                     view_calculator
+[component_container_mt-3]                         raycast_subsampling_factor: 4
+[component_container_mt-3]                         workspace_bounds_type: kUnbou
+nded
+[component_container_mt-3]                         workspace_bounds_min_height_m
+: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_height_m
+: 1.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_y
+_m: 2.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_y
+_m: 2.000000
+[component_container_mt-3]             lidar_occupancy_integrator
+[component_container_mt-3]                 free_region_log_odds:: -0.847298
+[component_container_mt-3]                 occupied_region_log_odds:: 0.847298
+[component_container_mt-3]                 unobserved_region_log_odds:: 0.000000
+[component_container_mt-3]                 occupied_region_half_width_m:: 0.1000
+00
+[component_container_mt-3]                 projective_integrator
+[component_container_mt-3]                     lidar_linear_interpolation_max_al
+lowable_difference_vox:: 2.000000
+[component_container_mt-3]                     lidar_nearest_interpolation_max_a
+llowable_dist_to_ray_vox:: 0.500000
+[component_container_mt-3]                     truncation_distance_vox:: 4.00000
+0
+[component_container_mt-3]                     max_integration_distance_m:: 10.0
+00000
+[component_container_mt-3]                     view_calculator
+[component_container_mt-3]                         raycast_subsampling_factor: 4
+[component_container_mt-3]                         workspace_bounds_type: kUnbou
+nded
+[component_container_mt-3]                         workspace_bounds_min_height_m
+: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_height_m
+: 1.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_x
+_m: 0.000000
+[component_container_mt-3]                         workspace_bounds_min_corner_y
+_m: 2.000000
+[component_container_mt-3]                         workspace_bounds_max_corner_y
+_m: 2.000000
+[component_container_mt-3]             esdf_integrator
+[component_container_mt-3]                 max_esdf_distance_m:: 2.000000
+[component_container_mt-3]                 max_tsdf_site_distance_vox:: 1.000000
+[component_container_mt-3]                 tsdf_min_weight:: 0.000100
+[component_container_mt-3]                 occupied_threshold_log_odds:: 0.00000
+0
+[component_container_mt-3]                 esdf_slice_min_height:: -0.100000
+[component_container_mt-3]                 esdf_slice_max_height:: 0.300000
+[component_container_mt-3]                 esdf_slice_height:: 0.000000
+[component_container_mt-3]                 slice_height_above_plane_m:: 0.000000
+[component_container_mt-3]                 slice_height_thickness_m:: 0.100000
+[component_container_mt-3]             mesh_integrator
+[component_container_mt-3]                 min_weight:: 0.000100
+[component_container_mt-3]                 cutoff_distance_vox:: 5.000000
+[component_container_mt-3]                 weld_vertices:: 1
+[component_container_mt-3]             occupancy_decay_integrator
+[component_container_mt-3]                 free_space_decay_log_odds:: 0.200671
+[component_container_mt-3]                 occupied_space_decay_log_odds:: -0.40
+5465
+[component_container_mt-3]                 decay_to_log_odds_:: 0.000000
+[component_container_mt-3]                 decay_integrator
+[component_container_mt-3]                     deallocate_decayed_blocks:: 1
+[component_container_mt-3]             tsdf_decay_integrator
+[component_container_mt-3]                 decay_factor:: 0.950000
+[component_container_mt-3]                 decayed_weight_theshold:: 0.001000
+[component_container_mt-3]                 set_free_distance_on_decayed:: 0
+[component_container_mt-3]                 free_distance_vox:: 4.000000
+[component_container_mt-3]                 decay_integrator
+[component_container_mt-3]                     deallocate_decayed_blocks:: 1
+[component_container_mt-3]             freespace_integrator
+[component_container_mt-3]                 max_tsdf_distance_for_occupancy_m:: 0
+.150000
+[component_container_mt-3]                 max_unobserved_to_keep_consecutive_oc
+cupancy_ms:: 200
+[component_container_mt-3]                 min_duration_since_occupied_for_frees
+pace_ms:: 1000
+[component_container_mt-3]                 min_consecutive_occupancy_duration_fo
+r_reset_ms:: 2000
+[component_container_mt-3]                 check_neighborhood:: 1
+[component_container_mt-3]         image_masker
+[component_container_mt-3]             occlusion_threshold_m:: 0.250000
+[component_container_mt-3]         ground_plane_estimator
+[component_container_mt-3]             ground_points_candidates_min_z_m:: -0.100
+000
+[component_container_mt-3]             ground_points_candidates_max_z_m:: 0.1500
+00
+[component_container_mt-3]             ransac_plane_fitter
+[component_container_mt-3]                 num_ransac_iterations:: 1000
+[component_container_mt-3]                 ransac_distance_threshold_m:: 0.20000
+0
+[component_container_mt-3]             tsdf_zero_crossings_extractor
+[component_container_mt-3]                 min_tsdf_weight:: 0.100000
+[component_container_mt-3]                 max_crossings:: 360000
+[component_container_mt-3]
+[component_container_mt-3] [INFO] [0000003164.509414848] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003165.538127552] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:52:46,004 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:52:46,014 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:52:46,024 ERROR [281470492010720] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:52:46,024 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:52:46,025 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff4800caf0, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:52:46,025 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:52:46,025 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003166.025713216] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003166.025804640] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003166.558277920] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003167.588127680] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003168.618153216] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003169.638141632] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003170.668157600] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003171.698314944] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:52:52,058 WARNING [281471994030304] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:52:52,068 WARNING [281471994030304] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:52:52,078 ERROR [281471994030304] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:52:52,078 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:52:52,079 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48012ee0, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:52:52,079 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:52:52,079 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003172.079722112] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003172.079806240] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003172.738141184] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003173.758166432] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003174.788263424] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003175.808166720] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003176.838050176] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003177.868644352] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:52:58,116 WARNING [281470279084256] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:52:58,126 WARNING [281470279084256] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:52:58,136 ERROR [281470279084256] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:52:58,136 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:52:58,137 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48014d10, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:52:58,137 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:52:58,137 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003178.137329504] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003178.137426976] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003178.918248128] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003179.938159456] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003180.968173312] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003181.978260288] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003183.008169120] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003184.038260800] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:53:04,190 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:04,201 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:04,211 ERROR [281470492010720] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:53:04,212 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:53:04,212 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff4801c730, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:53:04,212 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:53:04,212 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003184.212902080] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003184.213012736] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003185.068403616] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003186.108286336] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003187.158157664] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003188.188247584] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003189.208257408] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003190.248285024] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:53:10,279 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:10,290 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:10,300 ERROR [281470270630112] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:53:10,300 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:53:10,301 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48001d80, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:53:10,301 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:53:10,301 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003190.301823488] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003190.301925120] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003191.258260544] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003192.308250944] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003193.339587808] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003194.368166144] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003195.388400800] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:53:16,349 WARNING [281470279084256] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:16,359 WARNING [281470279084256] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:16,369 ERROR [281470279084256] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:53:16,369 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:53:16,370 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48013220, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:53:16,370 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:53:16,370 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003196.370232192] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003196.370322080] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003196.418306816] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003197.458259712] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003198.478830176] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003199.508117280] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003200.528231840] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003201.558173152] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:53:22,437 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:22,448 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:22,458 ERROR [281470492010720] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:53:22,458 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:53:22,459 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48010d00, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:53:22,459 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:53:22,459 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003202.459174272] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003202.459275232] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003202.568692736] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003203.618976768] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003204.648224736] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003205.678261536] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003206.688398880] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003207.738333056] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:53:28,496 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:28,506 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:28,516 ERROR [281470270630112] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:53:28,517 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:53:28,517 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48016360, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:53:28,517 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:53:28,517 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003208.517656480] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003208.517735040] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003208.768163456] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003209.778229216] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003210.808274528] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003211.828376096] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003212.878195648] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003213.918109568] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:53:34,579 WARNING [281470279084256] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:34,589 WARNING [281470279084256] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:34,599 ERROR [281470279084256] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:53:34,600 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:53:34,601 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48011a50, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:53:34,601 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:53:34,601 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003214.601164672] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003214.601282816] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003214.948197600] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003215.978170080] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003217.008438912] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003218.028299584] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003219.058098496] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003220.088197408] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:53:40,647 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:40,658 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:40,668 ERROR [281470492010720] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:53:40,668 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:53:40,669 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48008320, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:53:40,669 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:53:40,669 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003220.669637440] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003220.669727392] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003221.108263200] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003222.138276416] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003223.168190752] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003224.208198592] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003225.229051040] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003226.278166272] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:53:46,717 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:46,727 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:46,737 ERROR [281470270630112] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:53:46,738 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:53:46,739 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48001830, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:53:46,739 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:53:46,739 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003226.739568832] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003226.739680416] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003227.308215840] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003228.358275328] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003229.398206592] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003230.438180416] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003231.468148928] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003232.488325280] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:53:52,781 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:52,791 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:52,801 ERROR [281470492010720] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:53:52,801 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:53:52,810 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48025ef0, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:53:52,810 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:53:52,810 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003232.810816992] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003232.810899520] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003233.528181280] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003234.548231872] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003235.558532960] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003236.598277696] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003237.629047968] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003238.648442784] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:53:58,842 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:58,852 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:53:58,862 ERROR [281470270630112] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:53:58,863 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:53:58,863 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff4800af60, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:53:58,863 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:53:58,863 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003238.863732896] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003238.863817184] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003239.658252800] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003240.688265888] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003241.718287488] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003242.768251648] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003243.818120608] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003244.848171008] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:54:04,888 WARNING [281470262175968] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:04,898 WARNING [281470262175968] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:04,909 ERROR [281470262175968] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:54:04,909 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:54:04,910 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48031b80, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:54:04,910 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:54:04,910 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003244.910759008] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003244.910846048] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003245.878806976] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003246.898180384] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003247.928209792] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003248.978215104] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003250.028114528] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:54:10,932 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:10,943 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:10,953 ERROR [281470492010720] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:54:10,953 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:54:10,954 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff4802c090, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:54:10,954 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:54:10,954 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003250.954191104] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003250.954343712] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003251.058154048] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003252.088158208] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003253.118073504] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003254.148233280] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003255.188090112] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003256.208103296] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:54:16,976 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:16,986 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:16,996 ERROR [281470270630112] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:54:16,997 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:54:16,998 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48014d10, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:54:16,998 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:54:16,998 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003256.998177152] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003256.998267392] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003257.238100576] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003258.268156864] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003259.298161824] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003260.318180576] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003261.348054656] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003262.378166304] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:54:23,022 WARNING [281470262175968] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:23,032 WARNING [281470262175968] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:23,042 ERROR [281470262175968] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:54:23,042 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:54:23,043 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48010810, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:54:23,043 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:54:23,043 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003263.043924608] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003263.044020832] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003263.408158464] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003264.429184608] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003265.458149504] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003266.488120288] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003267.508163296] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003268.538163072] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:54:29,123 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:29,133 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:29,143 ERROR [281470492010720] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:54:29,143 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:54:29,145 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff4802e760, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:54:29,145 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:54:29,145 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003269.145077760] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003269.145155968] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003269.578122976] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003270.608163488] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003271.638151744] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003272.678145312] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003273.728150528] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003274.748284608] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:54:35,178 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:35,189 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:35,199 ERROR [281470270630112] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:54:35,199 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:54:35,200 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48010d00, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:54:35,200 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:54:35,200 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003275.200826400] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003275.200931808] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003275.798165312] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003276.828189536] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003277.858184928] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003278.888182752] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003279.928145600] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003280.948866848] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:54:41,269 WARNING [281470279084256] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:41,280 WARNING [281470279084256] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:41,290 ERROR [281470279084256] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:54:41,291 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:54:41,292 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff4802ad30, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:54:41,292 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:54:41,292 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003281.292840416] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003281.292950656] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003281.978183296] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003282.998152256] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003284.018152160] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003285.038138592] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003286.088143328] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003287.138176352] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:54:47,328 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:47,338 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:47,349 ERROR [281470492010720] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:54:47,349 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:54:47,349 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff480100d0, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:54:47,349 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:54:47,349 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003287.349741696] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003287.349830016] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003288.158367072] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003289.178924512] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003290.218138880] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003291.258158304] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003292.288154944] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003293.328161568] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:54:53,385 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:53,395 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:53,406 ERROR [281470270630112] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:54:53,406 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:54:53,408 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff4803da70, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:54:53,408 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:54:53,408 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003293.408525696] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003293.408616992] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003294.348164064] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003295.378702400] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003296.418153152] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003297.458694688] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003298.478164544] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:54:59,469 WARNING [281470253721824] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:59,479 WARNING [281470253721824] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:54:59,489 ERROR [281470253721824] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:54:59,489 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:54:59,490 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48017d90, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:54:59,490 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:54:59,490 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003299.490413952] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003299.490536736] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003299.498285728] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003300.538278976] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003301.568227264] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003302.588220384] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003303.598336192] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003304.628271104] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:55:05,551 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:55:05,561 WARNING [281470492010720] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:55:05,571 ERROR [281470492010720] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:55:05,571 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:55:05,572 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48017d90, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:55:05,572 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:55:05,572 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003305.572560160] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003305.572677248] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003305.658089920] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003306.698187520] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003307.728198208] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003308.778152160] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003309.798143680] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-3] [INFO] [0000003310.818171744] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+[component_container_mt-2]  01/01 00:55:11,616 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:55:11,626 WARNING [281470270630112] (handle
+-libusb.h:110) failed to claim usb interface, interface 0, is busy - retrying...
+[component_container_mt-2]  01/01 00:55:11,637 ERROR [281470270630112] (handle-l
+ibusb.h:125) failed to claim usb interface: 0, error: RS2_USB_STATUS_BUSY
+[component_container_mt-2]  01/01 00:55:11,637 ERROR [281472010938592] (uvc-sens
+or.cpp:412) acquire_power failed: failed to set power state
+[component_container_mt-2]  01/01 00:55:11,637 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_create_device( info_list:0xffff48014d00, index:0 ) UNKNOWN] failed to s
+et power state
+[component_container_mt-2]  01/01 00:55:11,637 ERROR [281472010938592] (rs.cpp:2
+37) [rs2_delete_device( device:nullptr ) UNKNOWN] null pointer passed for argume
+nt "device"
+[component_container_mt-2]  01/01 00:55:11,637 WARNING [281472010938592] (rs.cpp
+:373) null pointer passed for argument "device"
+[component_container_mt-2] [WARN] [0000003311.637742496] [camera0.camera]: Devic
+e 1/1 failed with exception: failed to set power state
+[component_container_mt-2] [ERROR] [0000003311.637852064] [camera0.camera]: The
+requested device with  is NOT found. Will Try again.
+[component_container_mt-3] [INFO] [0000003311.838255392] [nvblox_node]: Lookup t
+ransform failed for frame camera0_link. Layer pointclouds not published
+

@@ -1,0 +1,15 @@
+GENERAL.DEVICE:                         wlP1p1s0
+GENERAL.TYPE:                           wifi
+GENERAL.HWADDR:                         DC:4A:9E:37:9E:FB
+GENERAL.MTU:                            1500
+GENERAL.STATE:                          100 (connected)
+GENERAL.CONNECTION:                     TP-Link_073A 1
+GENERAL.CON-PATH:                       /org/freedesktop/NetworkManager/ActiveConnection/2
+IP4.ADDRESS[1]:                         192.168.0.50/24
+IP4.GATEWAY:                            192.168.0.1
+IP4.ROUTE[1]:                           dst = 192.168.0.0/24, nh = 0.0.0.0, mt = 600
+IP4.ROUTE[2]:                           dst = 0.0.0.0/0, nh = 192.168.0.1, mt = 600
+IP4.DNS[1]:                             192.168.0.1
+IP6.ADDRESS[1]:                         fe80::7fae:bd51:ee2b:a7c8/64
+IP6.GATEWAY:                            --
+IP6.ROUTE[1]:                           dst = fe80::/64, nh = ::, mt = 1024

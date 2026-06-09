@@ -1,0 +1,150 @@
+[Wed Dec 31 19:49:48 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:48 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:48 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input207
+[Wed Dec 31 19:49:48 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:48 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:48 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input208
+[Wed Dec 31 19:49:48 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:48 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:48 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input209
+[Wed Dec 31 19:49:48 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:48 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:48 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input210
+[Wed Dec 31 19:49:48 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:48 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:48 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input211
+[Wed Dec 31 19:49:49 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:49 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:49 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input212
+[Wed Dec 31 19:49:49 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:49 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:49 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input213
+[Wed Dec 31 19:49:49 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:49 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:49 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input214
+[Wed Dec 31 19:49:49 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:49 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:49 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input215
+[Wed Dec 31 19:49:49 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:49 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:49 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input216
+[Wed Dec 31 19:49:49 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:49 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:49 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input217
+[Wed Dec 31 19:49:49 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:49 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:49 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input218
+[Wed Dec 31 19:49:49 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:49 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:49 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input219
+[Wed Dec 31 19:49:50 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:50 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:50 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input220
+[Wed Dec 31 19:49:50 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:50 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:50 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input221
+[Wed Dec 31 19:49:50 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:50 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:50 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input222
+[Wed Dec 31 19:49:50 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:50 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:50 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input223
+[Wed Dec 31 19:49:50 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:50 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:50 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input224
+[Wed Dec 31 19:49:50 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:50 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:50 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input225
+[Wed Dec 31 19:49:50 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:50 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:50 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input226
+[Wed Dec 31 19:49:50 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:50 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:50 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input227
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input228
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input229
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input230
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input231
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input232
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input233
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:51 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:51 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.4: Unknown video format 36315752-1a66-a242-9065-d01814a8ef8a
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input234
+[Wed Dec 31 19:49:52 1969] uvcvideo 2-1.4:1.1: Unknown video format 00000050-0000-0010-8000-00aa00389b71
+[Wed Dec 31 19:49:52 1969] usb 2-1.4: Found UVC 1.50 device Intel(R) RealSense(TM) Depth Camera 435i (8086:0b3a)
+[Wed Dec 31 19:49:52 1969] input: Intel(R) RealSense(TM) Depth Ca as /devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.4/2-1.4:1.0/input/input235
+[Wed Dec 31 19:49:53 1969] hid-generic 0003:8086:0B3A.0018: hidraw0: USB HID v1.10 Device [Intel(R) RealSense(TM) Depth Camera 435i Intel(R) RealSense(TM) Depth Camera 435i] on usb-3610000.usb-1.4/input5
+[Wed Dec 31 19:49:53 1969] hid-generic 0003:8086:0B3A.0019: hidraw0: USB HID v1.10 Device [Intel(R) RealSense(TM) Depth Camera 435i Intel(R) RealSense(TM) Depth Camera 435i] on usb-3610000.usb-1.4/input5
+[Wed Dec 31 19:52:25 1969] wlP1p1s0: deauthenticating from e4:fa:c4:57:07:39 by local choice (Reason: 3=DEAUTH_LEAVING)
+[Wed Dec 31 19:52:25 1969] rtw_8822ce 0001:01:00.0: sta e4:fa:c4:57:07:39 with macid 0 left
+[Wed Dec 31 19:52:25 1969] rtw_8822ce 0001:01:00.0: stop vif dc:4a:9e:37:9e:fb on port 0

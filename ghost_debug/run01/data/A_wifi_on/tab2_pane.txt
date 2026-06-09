@@ -1,0 +1,1728 @@
+[INFO] [launch]: All log files can be found below /home/admin/.ros/log/1970-01-0
+1-00-50-06-749508-ghost-15020
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [MicroXRCEAgent-1]: process started with pid [15044]
+[INFO] [vio_bridge-2]: process started with pid [15046]
+[MicroXRCEAgent-1] [3006.834063] info     | TermiosAgentLinux.cpp | init
+             | running...             | fd: 3
+[MicroXRCEAgent-1] [3006.834675] info     | Root.cpp           | set_verbose_lev
+el        | logger setup           | verbose_level: 4
+[MicroXRCEAgent-1] [3006.837420] info     | Root.cpp           | create_client
+          | create                 | client_key: 0x00000001, session_id: 0x81
+[MicroXRCEAgent-1] [3006.837474] info     | SessionManager.hpp | establish_sessi
+on        | session established    | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.837527] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.837537] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.837591] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.837672] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.837928] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838095] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838107] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838129] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838146] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838166] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838172] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838176] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838565] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838678] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838700] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838709] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838715] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838732] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838740] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838753] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.838794] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840312] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840381] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840405] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840424] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840446] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840467] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840486] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840504] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840523] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840543] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840561] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840591] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840610] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840629] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840647] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840665] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840682] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840700] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840720] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840738] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840756] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840773] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840797] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.840882] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841116] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841135] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841175] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841388] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841509] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841528] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841549] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841578] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841785] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841827] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.841852] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.842009] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.842083] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.842248] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.842396] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.842663] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.842945] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843075] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843101] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843122] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843141] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843161] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843181] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843200] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843219] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843238] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843257] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843328] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843408] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843518] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843642] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843788] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.843916] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844045] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844098] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844226] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844263] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844294] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844314] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844379] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844459] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844644] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844713] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.844946] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845014] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845227] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845357] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845416] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845529] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845557] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845578] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845598] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845617] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845637] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845657] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845742] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845823] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.845999] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.846064] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.846199] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.846321] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.846454] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.846579] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847169] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847229] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847287] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847325] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847372] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847432] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847466] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847489] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847513] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847532] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847550] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847570] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847589] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847620] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.847977] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848255] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848275] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848281] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848299] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848317] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848324] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848329] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848554] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848586] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848595] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848743] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848760] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848804] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.848913] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849292] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849307] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849314] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849327] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849333] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849418] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849526] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849588] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849822] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849949] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849967] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849977] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.849997] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.850067] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.850263] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.850301] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.850489] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.850502] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.850551] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.850629] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.850715] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851121] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851137] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851150] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851155] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851160] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851356] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851369] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851419] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851528] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851658] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851698] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851756] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851928] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851956] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.851990] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852069] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852286] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852334] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852377] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852458] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852546] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852625] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852727] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852799] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852875] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.852962] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853134] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853168] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853262] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853335] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853525] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853539] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853587] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853853] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853892] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853924] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853945] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.853990] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854117] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854218] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854322] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854400] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854471] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854555] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854660] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854729] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854826] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854945] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.854988] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855083] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855170] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855252] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855323] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855405] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855503] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855605] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855660] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855784] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855837] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.855929] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856002] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856086] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856240] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856301] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856403] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856474] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856563] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856643] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856756] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856800] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.856892] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857044] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[vio_bridge-2] [INFO] [0000003006.855958688] [vio_bridge]: VIO bridge started (C
+++). Pitch compensation: 20.0 deg
+[MicroXRCEAgent-1] [3006.857583] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857619] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857648] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857669] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857688] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857720] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857768] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857826] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857856] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857877] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.857913] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858027] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858112] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858240] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858297] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858376] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858470] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858579] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858641] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858760] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858804] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858915] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.858985] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.859082] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.859179] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.859333] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.859360] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.859469] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.859511] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.859694] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.859936] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.859997] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860022] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860072] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860095] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860115] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860215] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860298] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860455] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860529] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860567] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860642] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860722] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860805] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.860888] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861055] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861085] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861177] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861334] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861357] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861455] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861562] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861588] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861653] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861734] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861814] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.861897] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862003] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862105] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862227] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862298] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862397] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862476] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862552] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862641] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862706] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862797] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.862883] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.863158] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.863177] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.863327] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.863420] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.863432] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865126] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865163] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865169] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865173] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865178] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865182] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865186] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865197] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865202] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865206] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865210] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865217] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865221] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865226] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865230] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865251] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865257] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865261] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865265] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865269] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865273] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865404] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865488] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865548] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865653] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865708] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865739] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865829] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865910] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.865985] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866073] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866186] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866289] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866379] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866443] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866535] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866618] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866673] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866790] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866866] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.866912] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.867000] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.867111] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.867334] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.867347] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.867528] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.867611] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.867626] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.867808] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.867822] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.867886] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868072] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868216] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868278] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868307] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868365] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868394] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868415] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868553] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868758] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868804] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868848] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868907] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868947] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.868996] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869111] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869258] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869304] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869403] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869476] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869562] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869662] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869716] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869838] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869901] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.869964] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.870071] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.870173] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.870280] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.870455] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.870468] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.870508] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871516] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871551] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871565] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871571] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871577] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871582] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871587] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871642] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871652] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871658] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871665] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871670] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871725] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871736] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871813] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871884] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.871961] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.872043] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.872162] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.872253] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.872393] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.872438] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.872929] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873000] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873009] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873016] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873020] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873024] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873089] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873286] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873319] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873367] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873949] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873970] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873976] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873980] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873984] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873988] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.873992] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874053] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874086] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874168] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874254] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874331] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874451] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874510] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874594] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874727] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874759] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874839] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874913] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.874992] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875090] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875214] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875297] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875528] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875541] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875617] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875641] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875806] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875873] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875956] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.875963] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876050] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876193] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876263] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876353] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876445] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876560] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876584] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876669] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876752] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876833] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.876945] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877001] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877085] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877222] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877303] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877384] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877547] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877612] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877646] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877774] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877800] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.877887] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878018] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878055] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878174] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878264] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878339] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878420] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878500] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878583] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878679] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878751] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878829] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.878991] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.879215] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.879298] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.879357] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.879375] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.879450] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880484] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880563] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880570] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880575] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880579] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880633] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880713] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880728] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880778] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880787] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880792] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880797] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880801] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880857] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880864] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.880956] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.881268] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.881318] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.881328] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.881409] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.881416] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.881433] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.881593] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.882828] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.882974] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883034] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883046] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883053] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883058] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883062] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883176] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883200] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883686] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883709] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883715] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883744] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883750] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883757] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883763] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883783] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883790] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883794] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883799] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883803] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883814] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883819] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883823] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883828] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883835] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883840] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.883930] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884017] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884124] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884278] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884331] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884821] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884838] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884875] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884884] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884901] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884909] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884914] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.884974] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.885040] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.885157] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.885258] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.885326] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.885410] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.885507] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.885577] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.885654] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.885749] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.885963] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886122] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886139] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886159] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886502] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886520] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886552] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886559] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886608] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886634] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886714] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886808] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886893] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.886962] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887038] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887154] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887246] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887355] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887434] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887496] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887593] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887656] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887741] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887820] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.887905] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888032] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888226] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888309] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888319] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888430] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888548] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888561] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888632] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888713] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888794] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.888884] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889003] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889050] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889159] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889264] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889328] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889425] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889496] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889576] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889705] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889752] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889822] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.889903] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890030] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890113] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890212] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890314] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890375] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890456] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890539] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890633] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890728] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890792] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890880] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.890958] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891037] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891247] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891268] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891346] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891416] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891493] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891577] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891655] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891736] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891819] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891916] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.891994] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892068] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892214] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892292] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892382] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892459] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892543] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892660] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892718] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892792] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892874] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.892983] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.893039] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.893161] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.893253] info     | SessionManager.hpp | establish_sessi
+on        | session re-established | client_key: 0x00000001, address: 1
+[MicroXRCEAgent-1] [3006.911677] info     | ProxyClient.cpp    | create_particip
+ant       | participant created    | client_key: 0x00000001, participant_id: 0x0
+01(1)
+[MicroXRCEAgent-1] [3007.109990] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x800(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.110186] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+0(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.110684] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+0(6), subscriber_id: 0x800(4)
+[MicroXRCEAgent-1] [3007.114110] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x801(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.114238] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+1(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.114718] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+1(6), subscriber_id: 0x801(4)
+[MicroXRCEAgent-1] [3007.118675] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x802(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.118795] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+2(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.119312] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+2(6), subscriber_id: 0x802(4)
+[MicroXRCEAgent-1] [3007.123271] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x803(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.123339] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+3(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.123737] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+3(6), subscriber_id: 0x803(4)
+[MicroXRCEAgent-1] [3007.127381] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x804(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.127450] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+4(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.127782] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+4(6), subscriber_id: 0x804(4)
+[MicroXRCEAgent-1] [3007.132885] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x805(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.132987] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+5(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.133367] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+5(6), subscriber_id: 0x805(4)
+[MicroXRCEAgent-1] [3007.136851] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x806(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.136959] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+6(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.137356] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+6(6), subscriber_id: 0x806(4)
+[MicroXRCEAgent-1] [3007.140808] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x807(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.140962] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+7(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.141403] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+7(6), subscriber_id: 0x807(4)
+[MicroXRCEAgent-1] [3007.145193] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x808(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.145278] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+8(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.145662] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+8(6), subscriber_id: 0x808(4)
+[MicroXRCEAgent-1] [3007.149304] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x809(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.149400] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+9(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.149730] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+9(6), subscriber_id: 0x809(4)
+[MicroXRCEAgent-1] [3007.153701] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80A(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.153763] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+A(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.154072] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+A(6), subscriber_id: 0x80A(4)
+[MicroXRCEAgent-1] [3007.157727] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80B(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.157788] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+B(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.158067] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+B(6), subscriber_id: 0x80B(4)
+[MicroXRCEAgent-1] [3007.162423] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80C(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.162668] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+C(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.163308] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+C(6), subscriber_id: 0x80C(4)
+[MicroXRCEAgent-1] [3007.166791] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80D(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.166943] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+D(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.167285] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+D(6), subscriber_id: 0x80D(4)
+[MicroXRCEAgent-1] [3007.170544] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80E(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.170608] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+E(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.171006] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+E(6), subscriber_id: 0x80E(4)
+[MicroXRCEAgent-1] [3007.175524] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x80F(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.176067] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x80
+F(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.177256] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x80
+F(6), subscriber_id: 0x80F(4)
+[MicroXRCEAgent-1] [3007.181195] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x810(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.181806] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+0(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.183633] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+0(6), subscriber_id: 0x810(4)
+[MicroXRCEAgent-1] [3007.187573] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x811(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.187919] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+1(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.190775] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+1(6), subscriber_id: 0x811(4)
+[MicroXRCEAgent-1] [3007.194291] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x812(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.194540] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+2(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.195557] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+2(6), subscriber_id: 0x812(4)
+[MicroXRCEAgent-1] [3007.198818] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x813(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.199843] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+3(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.200855] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+3(6), subscriber_id: 0x813(4)
+[MicroXRCEAgent-1] [3007.205142] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x814(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.205813] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+4(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.206246] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+4(6), subscriber_id: 0x814(4)
+[MicroXRCEAgent-1] [3007.209666] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x815(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.209730] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+5(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.209999] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+5(6), subscriber_id: 0x815(4)
+[MicroXRCEAgent-1] [3007.214164] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x816(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.215079] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+6(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.215481] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+6(6), subscriber_id: 0x816(4)
+[MicroXRCEAgent-1] [3007.219246] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x817(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.219324] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+7(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.219634] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+7(6), subscriber_id: 0x817(4)
+[MicroXRCEAgent-1] [3007.223572] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x818(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.223616] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+8(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.223861] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+8(6), subscriber_id: 0x818(4)
+[MicroXRCEAgent-1] [3007.227740] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x819(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.227980] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+9(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.229372] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+9(6), subscriber_id: 0x819(4)
+[MicroXRCEAgent-1] [3007.234067] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x81A(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.234633] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+A(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.237136] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+A(6), subscriber_id: 0x81A(4)
+[MicroXRCEAgent-1] [3007.240461] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x81B(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.240530] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+B(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.240869] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+B(6), subscriber_id: 0x81B(4)
+[MicroXRCEAgent-1] [3007.245165] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x81C(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.245257] info     | ProxyClient.cpp    | create_subscrib
+er        | subscriber created     | client_key: 0x00000001, subscriber_id: 0x81
+C(4), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3007.245516] info     | ProxyClient.cpp    | create_dataread
+er        | datareader created     | client_key: 0x00000001, datareader_id: 0x81
+C(6), subscriber_id: 0x81C(4)
+[MicroXRCEAgent-1] [3007.250584] info     | ProxyClient.cpp    | create_replier
+          | replier created        | client_key: 0x00000001, requester_id: 0x800
+(7), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.333733] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x013(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.333854] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x013
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.334222] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x01
+3(5), publisher_id: 0x013(3)
+[MicroXRCEAgent-1] [3013.340053] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x057(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.340149] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x057
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.340425] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x05
+7(5), publisher_id: 0x057(3)
+[MicroXRCEAgent-1] [3013.344660] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x05D(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.344771] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x05D
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.345131] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x05
+D(5), publisher_id: 0x05D(3)
+[MicroXRCEAgent-1] [3013.349945] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x08D(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.350006] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x08D
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.350272] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x08
+D(5), publisher_id: 0x08D(3)
+[MicroXRCEAgent-1] [3013.354898] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0B4(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.355207] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0B4
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.356405] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0B
+4(5), publisher_id: 0x0B4(3)
+[MicroXRCEAgent-1] [3013.363045] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0CB(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.363133] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0CB
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.363469] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0C
+B(5), publisher_id: 0x0CB(3)
+[MicroXRCEAgent-1] [3013.367415] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0E2(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.367475] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0E2
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.367648] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0E
+2(5), publisher_id: 0x0E2(3)
+[MicroXRCEAgent-1] [3013.373067] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0F2(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.373324] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0F2
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.374486] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0F
+2(5), publisher_id: 0x0F2(3)
+[MicroXRCEAgent-1] [3013.379086] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0F9(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.379875] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0F9
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.381223] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0F
+9(5), publisher_id: 0x0F9(3)
+[MicroXRCEAgent-1] [3013.385428] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x0F6(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.385951] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x0F6
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.386792] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x0F
+6(5), publisher_id: 0x0F6(3)
+[MicroXRCEAgent-1] [3013.390579] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x100(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.390705] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x100
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.392067] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x10
+0(5), publisher_id: 0x100(3)
+[MicroXRCEAgent-1] [3013.397700] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x105(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.398069] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x105
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.399191] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x10
+5(5), publisher_id: 0x105(3)
+[MicroXRCEAgent-1] [3013.403754] info     | ProxyClient.cpp    | create_topic
+          | topic created          | client_key: 0x00000001, topic_id: 0x10A(2),
+ participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.404032] info     | ProxyClient.cpp    | create_publishe
+r         | publisher created      | client_key: 0x00000001, publisher_id: 0x10A
+(3), participant_id: 0x001(1)
+[MicroXRCEAgent-1] [3013.404430] info     | ProxyClient.cpp    | create_datawrit
+er        | datawriter created     | client_key: 0x00000001, datawriter_id: 0x10
+A(5), publisher_id: 0x10A(3)
+[vio_bridge-2] [INFO] [0000003015.126265600] [vio_bridge]: VIO #200: pos_ned=(-0
+.001, 0.000, -0.001) vel_frd=(0.001, 0.001, -0.001)
+[vio_bridge-2] [INFO] [0000003021.801664288] [vio_bridge]: VIO #400: pos_ned=(-0
+.001, 0.001, 0.000) vel_frd=(0.000, -0.000, -0.000)
+[vio_bridge-2] [INFO] [0000003028.482516384] [vio_bridge]: VIO #600: pos_ned=(0.
+000, 0.002, 0.000) vel_frd=(0.000, -0.000, -0.000)
+[vio_bridge-2] [INFO] [0000003035.159670048] [vio_bridge]: VIO #800: pos_ned=(-0
+.001, 0.003, 0.002) vel_frd=(0.000, -0.000, -0.000)
+[vio_bridge-2] [INFO] [0000003041.846510944] [vio_bridge]: VIO #1000: pos_ned=(-
+0.000, 0.004, 0.003) vel_frd=(0.000, 0.000, 0.001)
+[vio_bridge-2] [INFO] [0000003048.523783136] [vio_bridge]: VIO #1200: pos_ned=(0
+.002, 0.004, 0.004) vel_frd=(-0.000, -0.000, -0.000)
+[vio_bridge-2] [INFO] [0000003055.187269632] [vio_bridge]: VIO #1400: pos_ned=(0
+.004, 0.006, 0.003) vel_frd=(0.000, 0.000, -0.000)
+[vio_bridge-2] [INFO] [0000003061.870973408] [vio_bridge]: VIO #1600: pos_ned=(0
+.005, 0.007, 0.003) vel_frd=(0.002, 0.002, 0.001)
+[vio_bridge-2] [INFO] [0000003068.558293920] [vio_bridge]: VIO #1800: pos_ned=(0
+.006, 0.007, 0.002) vel_frd=(0.000, 0.000, -0.000)
+[vio_bridge-2] [INFO] [0000003075.229879104] [vio_bridge]: VIO #2000: pos_ned=(0
+.005, 0.006, 0.001) vel_frd=(0.000, 0.000, 0.000)
+[vio_bridge-2] [INFO] [0000003081.915497376] [vio_bridge]: VIO #2200: pos_ned=(0
+.005, 0.005, 0.003) vel_frd=(0.000, -0.000, 0.000)
+[vio_bridge-2] [INFO] [0000003088.590261888] [vio_bridge]: VIO #2400: pos_ned=(0
+.004, 0.004, 0.003) vel_frd=(-0.000, 0.000, 0.000)
+[vio_bridge-2] [INFO] [0000003095.284091456] [vio_bridge]: VIO #2600: pos_ned=(0
+.005, 0.007, 0.001) vel_frd=(-0.000, 0.000, 0.000)
+[vio_bridge-2] [INFO] [0000003101.954097120] [vio_bridge]: VIO #2800: pos_ned=(0
+.006, 0.006, 0.001) vel_frd=(0.000, 0.000, -0.000)
+[vio_bridge-2] [INFO] [0000003108.642151328] [vio_bridge]: VIO #3000: pos_ned=(0
+.006, 0.007, 0.002) vel_frd=(0.000, 0.000, 0.000)
+[vio_bridge-2] [INFO] [0000003115.291507232] [vio_bridge]: VIO #3200: pos_ned=(0
+.005, 0.005, 0.003) vel_frd=(-0.001, -0.000, -0.000)
+[vio_bridge-2] [INFO] [0000003121.969090432] [vio_bridge]: VIO #3400: pos_ned=(0
+.005, 0.006, 0.003) vel_frd=(-0.000, 0.002, -0.001)
+[vio_bridge-2] [INFO] [0000003128.661900384] [vio_bridge]: VIO #3600: pos_ned=(0
+.006, 0.007, 0.001) vel_frd=(0.001, -0.001, -0.000)
+[vio_bridge-2] [INFO] [0000003135.329673120] [vio_bridge]: VIO #3800: pos_ned=(0
+.006, 0.007, 0.001) vel_frd=(0.001, 0.002, -0.002)
+

@@ -1,0 +1,9 @@
+GENERAL.DEVICE:                         wlP1p1s0
+GENERAL.TYPE:                           wifi
+GENERAL.HWADDR:                         DC:4A:9E:37:9E:FB
+GENERAL.MTU:                            1500
+GENERAL.STATE:                          20 (unavailable)
+GENERAL.CONNECTION:                     --
+GENERAL.CON-PATH:                       --
+IP4.GATEWAY:                            --
+IP6.GATEWAY:                            --

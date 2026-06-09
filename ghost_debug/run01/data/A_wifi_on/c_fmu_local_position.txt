@@ -1,0 +1,2 @@
+Could not determine the type for the passed topic
+WARNING: topic [/fmu/out/vehicle_local_position] does not appear to be published yet

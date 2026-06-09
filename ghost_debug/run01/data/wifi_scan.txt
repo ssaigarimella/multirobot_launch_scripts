@@ -1,0 +1,248 @@
+BSS e2:98:06:07:0b:e6(on wlP1p1s0)
+	freq: 2412
+	signal: -64.00 dBm
+	SSID: SmartLife-0BE6
+BSS 42:f5:20:e3:24:4f(on wlP1p1s0)
+	freq: 2412
+	signal: -68.00 dBm
+	SSID: SmartLife-244F
+BSS e4:fa:c4:57:07:3a(on wlP1p1s0)
+	freq: 2442
+	signal: -36.00 dBm
+	SSID: TP-Link_073A
+BSS e6:fa:c4:17:07:3a(on wlP1p1s0)
+	freq: 2442
+	signal: -36.00 dBm
+	SSID: TP-Link_Guest_073A
+BSS dc:62:79:ee:70:e2(on wlP1p1s0)
+	freq: 2452
+	signal: -58.00 dBm
+	SSID: VIC Snap Remote
+BSS 56:07:7d:f7:de:44(on wlP1p1s0)
+	freq: 2452
+	signal: -51.00 dBm
+	SSID: ARLWAN
+BSS d8:b1:90:1c:1c:7c(on wlP1p1s0)
+	freq: 5180
+	signal: -88.00 dBm
+	SSID: GTvisitor
+BSS d8:b1:90:1c:1c:7f(on wlP1p1s0)
+	freq: 5180
+	signal: -87.00 dBm
+	SSID: fanTM
+BSS d8:b1:90:1c:1c:7b(on wlP1p1s0)
+	freq: 5180
+	signal: -87.00 dBm
+	SSID: GTRI-Device
+BSS 5a:07:7d:f7:de:41(on wlP1p1s0)
+	freq: 5180
+	signal: -57.00 dBm
+	SSID: 
+BSS 54:07:7d:f7:de:47(on wlP1p1s0)
+	freq: 5180
+	signal: -57.00 dBm
+	SSID: ARLWAN
+BSS d8:b1:90:1c:1c:7e(on wlP1p1s0)
+	freq: 5180
+	signal: -87.00 dBm
+	SSID: GTother
+BSS 38:90:a5:a6:d9:a0(on wlP1p1s0)
+	freq: 5220
+	signal: -85.00 dBm
+	SSID: fanTM
+BSS 38:90:a5:a6:d9:a1(on wlP1p1s0)
+	freq: 5220
+	signal: -82.00 dBm
+	SSID: GTother
+BSS 38:90:a5:a6:d9:a2(on wlP1p1s0)
+	freq: 5220
+	signal: -80.00 dBm
+	SSID: eduroam
+BSS 38:90:a5:a6:d9:a3(on wlP1p1s0)
+	freq: 5220
+	signal: -82.00 dBm
+	SSID: GTvisitor
+BSS 38:90:a5:a6:d9:a4(on wlP1p1s0)
+	freq: 5220
+	signal: -80.00 dBm
+	SSID: GTRI-Device
+BSS f4:db:e6:26:75:21(on wlP1p1s0)
+	freq: 5280
+	signal: -85.00 dBm
+	SSID: GTother
+BSS f4:db:e6:26:75:22(on wlP1p1s0)
+	freq: 5280
+	signal: -84.00 dBm
+	SSID: eduroam
+BSS f4:db:e6:26:75:23(on wlP1p1s0)
+	freq: 5280
+	signal: -85.00 dBm
+	SSID: GTvisitor
+BSS f4:db:e6:26:75:24(on wlP1p1s0)
+	freq: 5280
+	signal: -84.00 dBm
+	SSID: GTRI-Device
+BSS 38:90:a5:a6:d1:cc(on wlP1p1s0)
+	freq: 5280
+	signal: -86.00 dBm
+	SSID: GTvisitor
+BSS 38:90:a5:a6:d1:cb(on wlP1p1s0)
+	freq: 5280
+	signal: -89.00 dBm
+	SSID: GTRI-Device
+BSS f4:db:e6:26:75:20(on wlP1p1s0)
+	freq: 5280
+	signal: -83.00 dBm
+	SSID: fanTM
+BSS f0:7f:06:21:b9:9d(on wlP1p1s0)
+	freq: 5540
+	signal: -87.00 dBm
+	SSID: eduroam
+BSS f0:7f:06:21:b9:9e(on wlP1p1s0)
+	freq: 5540
+	signal: -87.00 dBm
+	SSID: GTother
+BSS f0:7f:06:21:b9:9c(on wlP1p1s0)
+	freq: 5540
+	signal: -88.00 dBm
+	SSID: GTvisitor
+BSS f0:7f:06:21:b9:9f(on wlP1p1s0)
+	freq: 5540
+	signal: -87.00 dBm
+	SSID: fanTM
+BSS f0:7f:06:21:b9:9b(on wlP1p1s0)
+	freq: 5540
+	signal: -86.00 dBm
+	SSID: GTRI-Device
+BSS d8:b1:90:15:b0:ac(on wlP1p1s0)
+	freq: 5560
+	signal: -90.00 dBm
+	SSID: GTvisitor
+BSS d8:b1:90:15:b0:af(on wlP1p1s0)
+	freq: 5560
+	signal: -89.00 dBm
+	SSID: fanTM
+BSS d8:b1:90:15:b0:ab(on wlP1p1s0)
+	freq: 5560
+	signal: -90.00 dBm
+	SSID: GTRI-Device
+BSS d8:b1:90:15:b0:ad(on wlP1p1s0)
+	freq: 5560
+	signal: -89.00 dBm
+	SSID: eduroam
+BSS d8:b1:90:15:b0:ae(on wlP1p1s0)
+	freq: 5560
+	signal: -88.00 dBm
+	SSID: GTother
+BSS 38:90:a5:a6:d9:af(on wlP1p1s0)
+	freq: 5580
+	signal: -72.00 dBm
+	SSID: fanTM
+BSS 38:90:a5:a6:d9:ae(on wlP1p1s0)
+	freq: 5580
+	signal: -70.00 dBm
+	SSID: GTother
+BSS 38:90:a5:a6:d9:ad(on wlP1p1s0)
+	freq: 5580
+	signal: -73.00 dBm
+	SSID: eduroam
+BSS 38:90:a5:a6:d9:ac(on wlP1p1s0)
+	freq: 5580
+	signal: -71.00 dBm
+	SSID: GTvisitor
+BSS 38:90:a5:a6:d9:ab(on wlP1p1s0)
+	freq: 5580
+	signal: -71.00 dBm
+	SSID: GTRI-Device
+BSS f4:db:e6:26:75:2f(on wlP1p1s0)
+	freq: 5680
+	signal: -78.00 dBm
+	SSID: fanTM
+BSS f4:db:e6:26:75:2e(on wlP1p1s0)
+	freq: 5680
+	signal: -80.00 dBm
+	SSID: GTother
+BSS f4:db:e6:26:75:2d(on wlP1p1s0)
+	freq: 5680
+	signal: -78.00 dBm
+	SSID: eduroam
+BSS f4:db:e6:26:75:2c(on wlP1p1s0)
+	freq: 5680
+	signal: -77.00 dBm
+	SSID: GTvisitor
+BSS f4:db:e6:26:75:2b(on wlP1p1s0)
+	freq: 5680
+	signal: -80.00 dBm
+	SSID: GTRI-Device
+BSS 7c:0e:ce:a7:c9:6f(on wlP1p1s0)
+	freq: 5700
+	signal: -75.00 dBm
+	SSID: fanTM
+BSS 7c:0e:ce:a7:c9:6b(on wlP1p1s0)
+	freq: 5700
+	signal: -75.00 dBm
+	SSID: GTRI-Device
+BSS 7c:0e:ce:a7:c9:6d(on wlP1p1s0)
+	freq: 5700
+	signal: -74.00 dBm
+	SSID: eduroam
+BSS 7c:0e:ce:a7:c9:6e(on wlP1p1s0)
+	freq: 5700
+	signal: -75.00 dBm
+	SSID: GTother
+BSS 7c:0e:ce:a7:c9:6c(on wlP1p1s0)
+	freq: 5700
+	signal: -75.00 dBm
+	SSID: GTvisitor
+BSS 38:90:a5:a6:d2:ad(on wlP1p1s0)
+	freq: 5720
+	signal: -82.00 dBm
+	SSID: eduroam
+BSS 38:90:a5:a6:d2:ac(on wlP1p1s0)
+	freq: 5720
+	signal: -82.00 dBm
+	SSID: GTvisitor
+BSS 38:90:a5:a6:d2:ab(on wlP1p1s0)
+	freq: 5720
+	signal: -82.00 dBm
+	SSID: GTRI-Device
+BSS 38:90:a5:a6:d2:af(on wlP1p1s0)
+	freq: 5720
+	signal: -81.00 dBm
+	SSID: fanTM
+BSS 38:90:a5:a6:d2:ae(on wlP1p1s0)
+	freq: 5720
+	signal: -83.00 dBm
+	SSID: GTother
+BSS 00:0e:8e:d1:bd:a7(on wlP1p1s0)
+	freq: 5765
+	signal: -81.00 dBm
+	SSID: DIRECT-xD-esm-g08-3
+BSS e4:fa:c4:57:07:39(on wlP1p1s0) -- associated
+	freq: 5765
+	signal: -37.00 dBm
+	SSID: TP-Link_073A
+BSS e6:fa:c4:47:07:3a(on wlP1p1s0)
+	freq: 5765
+	signal: -39.00 dBm
+	SSID: TP-Link_Guest_073A_5G
+BSS e6:fa:c4:57:07:3a(on wlP1p1s0)
+	freq: 5765
+	signal: -37.00 dBm
+	SSID: 
+BSS 00:0e:8e:d1:bc:e7(on wlP1p1s0)
+	freq: 5785
+	signal: -83.00 dBm
+	SSID: DIRECT-8l-esm-g08-1
+BSS 00:0e:8e:d1:bd:b1(on wlP1p1s0)
+	freq: 5805
+	signal: -76.00 dBm
+	SSID: DIRECT-cX-esm-g08
+BSS 00:0e:8e:d1:bf:37(on wlP1p1s0)
+	freq: 5825
+	signal: -80.00 dBm
+	SSID: DIRECT-Ks-esm-g08-2
+BSS e6:fa:c4:27:07:3a(on wlP1p1s0)
+	freq: 2442
+	signal: -37.00 dBm
+	SSID: 

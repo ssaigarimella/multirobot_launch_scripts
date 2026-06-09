@@ -1,0 +1,12 @@
+Connected to e4:fa:c4:57:07:39 (on wlP1p1s0)
+	SSID: TP-Link_073A
+	freq: 5765
+	RX: 47239 bytes (210 packets)
+	TX: 17821 bytes (129 packets)
+	signal: -36 dBm
+	rx bitrate: 173.4 MBit/s VHT-MCS 9 VHT-NSS 2
+	tx bitrate: 866.7 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 2
+
+	bss flags:	short-slot-time
+	dtim period:	1
+	beacon int:	100

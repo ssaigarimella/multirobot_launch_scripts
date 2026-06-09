@@ -1,0 +1,8 @@
+ROS_VERSION=2
+ROS_PYTHON_VERSION=3
+ROS_DOMAIN_ID=3
+ISAAC_ROS_WS=/workspaces/isaac_ros-dev
+ROS_LOCALHOST_ONLY=0
+ROS_ROOT=/opt/ros/humble
+ROS_DISTRO=humble
+RMW_IMPLEMENTATION=rmw_fastrtps_cpp

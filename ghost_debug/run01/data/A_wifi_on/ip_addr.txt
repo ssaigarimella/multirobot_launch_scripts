@@ -1,0 +1,8 @@
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+wlP1p1s0         UP             192.168.0.50/24 fe80::7fae:bd51:ee2b:a7c8/64 
+can0             DOWN           
+enP8p1s0         DOWN           
+l4tbr0           DOWN           
+usb0             DOWN           
+usb1             DOWN           
+docker0          DOWN           172.17.0.1/16 
