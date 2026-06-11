@@ -25,7 +25,13 @@ JETSON_HOST="ghost@192.168.0.50"
 # JETSON_HOST="ghost@172.20.10.11"
 
 
-JETSON_PASS="abc123"
+# Drone SSH password — kept out of git. Copy credentials.env.example to
+# credentials.env (same dir as this script) and fill in the real value.
+source "$(dirname "$(readlink -f "$0")")/credentials.env" 2>/dev/null
+JETSON_PASS="${JETSON_PASS:?credentials.env missing — copy credentials.env.example and fill it in}"
+# Local X display on the Jetson (GDM session on the drone's monitor). Used only
+# by --rviz; headless runs never touch it.
+JETSON_DISPLAY=":1"
 CONTAINER="isaac_ros_realsense"
 IMAGE="isaac_ros:dev-realsense"
 SCRIPT="$(readlink -f "$0")"
@@ -65,14 +71,30 @@ do_ssh() {
 ssh_docker_tab() {
     local label="$1"
     local cmd="$2"
+    local gui="${3:-}"   # "gui" => container gets access to the drone's local X display
     local sess="${label//[^a-zA-Z0-9]/_}"   # tmux-safe session name (no spaces/colons)
     echo "=== $label ==="
     echo "(tmux session '$sess' on Jetson — survives SSH drops; re-run this tab to re-attach)"
     echo "Press Enter to launch..."
     read
+    # GUI tabs (tab 1 with --rviz only): allow local X clients on the drone's
+    # monitor (idempotent, once per boot) and point docker exec at it.
+    # ~/.Xauthority in the container is a useless root-owned dir stub, so auth
+    # goes via xhost +local: using GDM's cookie. Headless runs: both empty.
+    local exec_env=""
+    local xhost_cmd=""
+    if [ "$gui" = "gui" ]; then
+        exec_env="-e DISPLAY=$JETSON_DISPLAY"
+        xhost_cmd="echo $JETSON_PASS | sudo -S env XAUTHORITY=/run/user/1000/gdm/Xauthority DISPLAY=$JETSON_DISPLAY xhost +local: >/dev/null 2>&1; "
+    fi
     # Append '; exec bash' so the tmux pane STAYS OPEN if the command crashes —
     # otherwise tmux destroys the window on exit and you never see the error.
-    do_ssh "tmux new-session -A -s $sess \"docker exec -it -u admin $CONTAINER bash -c '$DOCKER_SOURCE && $cmd; ec=\$?; echo; echo ===== process exited code \$ec - pane kept open, Ctrl-b d to detach =====; exec bash'\""
+    # Create detached + pipe-pane so ALL pane output (incl. raw stderr, e.g. nvblox
+    # "CUDA error ... exit(99)" and glog lines that never reach .ros/log) is saved
+    # permanently on the Jetson; scrollback alone dies with reboot/power-off.
+    # pipe-pane -o is a no-op if a pipe is already open, so re-attaching is safe.
+    local logdir="/mnt/nova_ssd/workspaces/isaac_ros-dev/experiment_logs"
+    do_ssh "${xhost_cmd}mkdir -p $logdir; tmux has-session -t $sess 2>/dev/null || tmux new-session -d -x 220 -y 50 -s $sess \"docker exec -it $exec_env -u admin $CONTAINER bash -c '$DOCKER_SOURCE && $cmd; ec=\$?; echo; echo ===== process exited code \$ec - pane kept open, Ctrl-b d to detach =====; exec bash'\"; tmux pipe-pane -o -t $sess \"cat >> $logdir/pane_${sess}_\$(date +%s).log\"; tmux attach-session -t $sess"
     echo ""
     echo "[$label detached or exited. Press Enter to close tab.]"
     read
@@ -80,8 +102,10 @@ ssh_docker_tab() {
 
 case "$1" in
     --tab1)
+        GUI_ARG=""
+        [ "${RVIZ_FLAG}" = "True" ] && GUI_ARG="gui"
         ssh_docker_tab "Tab 1: cuVSLAM + RealSense + nvblox" \
-            "ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=${RVIZ_FLAG}"
+            "ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=${RVIZ_FLAG}" "$GUI_ARG"
         ;;
     --tab2)
         ssh_docker_tab "Tab 2: VIO Bridge + DDS Agent" \
@@ -99,8 +123,11 @@ case "$1" in
         # Check if --debug was passed as a subsequent arg
         DEBUG_VAL="false"
         for a in "$@"; do [ "$a" = "--debug" ] && DEBUG_VAL="true"; done
+        # Geofence ±24m = 1m inside the nvblox workspace bounds (±25m, see
+        # nvblox_base.yaml) so ESDF stays valid at the fence edge. Sized for the
+        # 50x50m FIELD — shrink these for indoor flights (old indoor value: ±10).
         ssh_docker_tab "Tab 5: Simple Exploration Planner" \
-            "ros2 launch active_exploration simple_planner_launch.py flight_height:=1.0 debug_skip_arm_check:=${DEBUG_VAL}"
+            "ros2 launch active_exploration simple_planner_launch.py flight_height:=1.0 debug_skip_arm_check:=${DEBUG_VAL} bbox_min_x:=-24.0 bbox_min_y:=-24.0 bbox_max_x:=24.0 bbox_max_y:=24.0"
         ;;
     --tab6)
         ssh_docker_tab "Tab 6: Loop Closure (SuperPoint + LightGlue)" \
@@ -135,7 +162,7 @@ case "$1" in
         read -rp "Peer drone IDs (space-separated, e.g. '3' or '2 3 4'): " PEER_IDS
         echo ""
         echo "Running mesh+zenoh on Jetson via SSH (tmux session 'gh_mesh_zenoh')..."
-        do_ssh "tmux new-session -A -s gh_mesh_zenoh \"sudo bash /mnt/nova_ssd/workspaces/isaac_ros-dev/launch_mesh_zenoh.sh $NODE_ID $PEER_IDS\""
+        do_ssh "mkdir -p /mnt/nova_ssd/workspaces/isaac_ros-dev/experiment_logs; tmux has-session -t gh_mesh_zenoh 2>/dev/null || tmux new-session -d -x 220 -y 50 -s gh_mesh_zenoh \"sudo bash /mnt/nova_ssd/workspaces/isaac_ros-dev/launch_mesh_zenoh.sh $NODE_ID $PEER_IDS\"; tmux pipe-pane -o -t gh_mesh_zenoh \"cat >> /mnt/nova_ssd/workspaces/isaac_ros-dev/experiment_logs/pane_gh_mesh_zenoh_\$(date +%s).log\"; tmux attach-session -t gh_mesh_zenoh"
         echo ""
         echo "[Tab 8 detached or exited. Press Enter to close tab.]"
         read
