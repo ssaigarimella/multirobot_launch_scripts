@@ -40,5 +40,8 @@ colcon build --packages-select px4_msgs
 step 7 "px4_offboard"
 colcon build --packages-select px4_offboard
 
+step 8 "radiohive"
+colcon build --packages-select radiohive --symlink-install
+
 echo ""
-echo "================ ALL 7 STEPS SUCCEEDED ================"
+echo "================ ALL 8 STEPS SUCCEEDED ================"

@@ -53,13 +53,13 @@ while true; do
     alldone=true
     for d in "${started[@]}"; do
         status=$(do_ssh "$d@${IPS[$d]}" "
-            if grep -q 'ALL 7 STEPS SUCCEEDED' $WS/build_seq.log 2>/dev/null; then echo OK;
+            if grep -q 'ALL 8 STEPS SUCCEEDED' $WS/build_seq.log 2>/dev/null; then echo OK;
             elif grep -qE 'Aborted|failed' $WS/build_seq.log 2>/dev/null; then echo FAILED;
             else grep -c '^================ STEP' $WS/build_seq.log 2>/dev/null || echo 0; fi" 2>/dev/null)
         case "$status" in
             OK)     line+="$d:DONE  " ;;
             FAILED) line+="$d:FAILED  " ;;
-            *)      line+="$d:step${status:-?}/7  "; alldone=false ;;
+            *)      line+="$d:step${status:-?}/8  "; alldone=false ;;
         esac
     done
     echo "$(date '+%H:%M:%S')  $line"
