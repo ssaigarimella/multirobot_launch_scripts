@@ -42,9 +42,11 @@ SCRIPT="$(readlink -f "$0")"
 DOCKER_SOURCE="export ROS_DOMAIN_ID=3 ROS_LOCALHOST_ONLY=0 && source /opt/ros/humble/setup.bash && cd /workspaces/isaac_ros-dev && source install/setup.bash"
 
 
-# CLI flags: --rviz (enable RViz2), --debug (skip arm check)
+# CLI flags: --rviz (enable RViz2), --debug (skip arm check),
+#            --ekf2 (feed nvblox the PX4 EKF2-fused pose instead of raw cuVSLAM)
 RVIZ_FLAG="False"
 DEBUG_ARM="false"
+POSE_SOURCE="cuvslam"
 export DEBUG_ARM
 for arg in "$@"; do
     if [ "$arg" = "--rviz" ]; then
@@ -52,6 +54,8 @@ for arg in "$@"; do
     elif [ "$arg" = "--debug" ]; then
         DEBUG_ARM="true"
         export DEBUG_ARM
+    elif [ "$arg" = "--ekf2" ]; then
+        POSE_SOURCE="ekf2"
     fi
 done
 
@@ -104,8 +108,9 @@ case "$1" in
     --tab1)
         GUI_ARG=""
         [ "${RVIZ_FLAG}" = "True" ] && GUI_ARG="gui"
+        # pose_source: cuvslam (default) or ekf2 (PX4-fused, needs tab2 up to get /fmu/out)
         ssh_docker_tab "Tab 1: cuVSLAM + RealSense + nvblox" \
-            "ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=${RVIZ_FLAG}" "$GUI_ARG"
+            "ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=${RVIZ_FLAG} pose_source:=${POSE_SOURCE}" "$GUI_ARG"
         ;;
     --tab2)
         ssh_docker_tab "Tab 2: VIO Bridge + DDS Agent" \
@@ -273,7 +278,10 @@ SETUP_EOF
             echo "Press Enter in each tab to launch that component."
             echo "============================================================"
 
-            gnome-terminal --tab --title="1: cuVSLAM"    -- bash "$SCRIPT" --tab1
+            RVIZ_ARG=""; EKF2_ARG=""
+            [ "$RVIZ_FLAG" = "True" ] && RVIZ_ARG="--rviz"
+            [ "$POSE_SOURCE" = "ekf2" ] && EKF2_ARG="--ekf2"
+            gnome-terminal --tab --title="1: cuVSLAM"    -- bash "$SCRIPT" --tab1 $RVIZ_ARG $EKF2_ARG
             sleep 0.3
             gnome-terminal --tab --title="2: VIO + DDS"  -- bash "$SCRIPT" --tab2
         else
@@ -293,9 +301,11 @@ SETUP_EOF
 
             RVIZ_ARG=""
             DEBUG_ARG=""
+            EKF2_ARG=""
             [ "$RVIZ_FLAG" = "True" ] && RVIZ_ARG="--rviz"
             [ "$DEBUG_ARM" = "true" ] && DEBUG_ARG="--debug"
-            gnome-terminal --tab --title="1: cuVSLAM"      -- bash "$SCRIPT" --tab1 $RVIZ_ARG
+            [ "$POSE_SOURCE" = "ekf2" ] && EKF2_ARG="--ekf2"
+            gnome-terminal --tab --title="1: cuVSLAM"      -- bash "$SCRIPT" --tab1 $RVIZ_ARG $EKF2_ARG
             sleep 0.3
             gnome-terminal --tab --title="2: VIO + DDS"    -- bash "$SCRIPT" --tab2
             sleep 0.3
