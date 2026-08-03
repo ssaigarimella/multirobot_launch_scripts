@@ -6,7 +6,7 @@
     ./fleet_ctl start ghost delta         launch fleet_bringup (tmux) on each
     ./fleet_ctl start all --ekf2          flight pose source
     ./fleet_ctl start ghost --trust-prior integrate peer maps on yaml prior
-    ./fleet_ctl start ghost --lan-dds     debug: DDS visible on the LAN
+    ./fleet_ctl start ghost --localhost-dds  EXPERIMENTAL loopback DDS
     ./fleet_ctl stop all                  tmux kill + process sweep
     ./fleet_ctl collect ghost             rsync experiment_logs to ./collected/
 
@@ -58,16 +58,21 @@ def ssh(name, cmd, timeout=60):
         capture_output=True, text=True, timeout=timeout)
 
 
-def in_container(name, inner, timeout=60, lan=False):
-    # ROS_LOCALHOST_ONLY=1 is the fleet default (bench == field): raw DDS
-    # never leaves the vehicle; only whitelisted zenoh topics cross. Pass
-    # --lan-dds to fall back to LAN-visible DDS for debugging sessions.
+def in_container(name, inner, timeout=60, localhost=False):
+    # ROS_LOCALHOST_ONLY=0 is the fleet default: the proven single-drone
+    # env. =1 is EXPERIMENTAL and currently breaks the VIO->PX4 path (the
+    # MicroXRCEAgent is raw FastDDS and ignores ROS_LOCALHOST_ONLY, so a
+    # loopback-confined stack cannot see it; PX4 then has no local
+    # position and refuses Position mode -- live-confirmed 2026-08-03).
+    # Loopback confinement must instead come from a FastDDS XML profile
+    # applied to the whole container (agent included); until that is
+    # bench-validated, keep =0.
     vid, _ = FLEET[name]
     docker = ('docker exec -u admin isaac_ros_realsense bash -c '
               '"source /opt/ros/humble/setup.bash && '
               'source /workspaces/isaac_ros-dev/install/setup.bash && '
               'export ROS_DOMAIN_ID=%d ROS_LOCALHOST_ONLY=%d && %s"'
-              % (vid, 0 if lan else 1, inner))
+              % (vid, 1 if localhost else 0, inner))
     return ssh(name, docker, timeout)
 
 
@@ -103,7 +108,8 @@ def cmd_preflight(args):
             name,
             'ros2 run multi_drone_nvblox preflight_check.py --ros-args '
             '-r __ns:=/d%d -p vehicle_id:=%d -p alignment_yaml:=%s'
-            % (vid, vid, YAML), timeout=90, lan='--lan-dds' in args)
+            % (vid, vid, YAML), timeout=90,
+            localhost='--localhost-dds' in args)
         out = (r.stdout.strip() + '\n' + r.stderr.strip()).strip()
         print('\n'.join(l for l in out.splitlines()
                          if 'PASS' in l or 'FAIL' in l or 'PREFLIGHT' in l))
@@ -114,7 +120,7 @@ def cmd_preflight(args):
 def cmd_start(args):
     pose = 'ekf2' if '--ekf2' in args else 'cuvslam'
     trust = 'true' if '--trust-prior' in args else 'false'
-    localhost = 0 if '--lan-dds' in args else 1
+    localhost = 1 if '--localhost-dds' in args else 0
     for name in vehicles(args):
         vid, _ = FLEET[name]
         launch = ('ros2 launch multi_drone_nvblox fleet_bringup.launch.py '
