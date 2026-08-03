@@ -6,6 +6,7 @@
     ./fleet_ctl start ghost delta         launch fleet_bringup (tmux) on each
     ./fleet_ctl start all --ekf2          flight pose source
     ./fleet_ctl start ghost --trust-prior integrate peer maps on yaml prior
+    ./fleet_ctl start ghost --lan-dds     debug: DDS visible on the LAN
     ./fleet_ctl stop all                  tmux kill + process sweep
     ./fleet_ctl collect ghost             rsync experiment_logs to ./collected/
 
@@ -57,13 +58,16 @@ def ssh(name, cmd, timeout=60):
         capture_output=True, text=True, timeout=timeout)
 
 
-def in_container(name, inner, timeout=60):
+def in_container(name, inner, timeout=60, lan=False):
+    # ROS_LOCALHOST_ONLY=1 is the fleet default (bench == field): raw DDS
+    # never leaves the vehicle; only whitelisted zenoh topics cross. Pass
+    # --lan-dds to fall back to LAN-visible DDS for debugging sessions.
     vid, _ = FLEET[name]
     docker = ('docker exec -u admin isaac_ros_realsense bash -c '
               '"source /opt/ros/humble/setup.bash && '
               'source /workspaces/isaac_ros-dev/install/setup.bash && '
-              'export ROS_DOMAIN_ID=%d ROS_LOCALHOST_ONLY=0 && %s"'
-              % (vid, inner))
+              'export ROS_DOMAIN_ID=%d ROS_LOCALHOST_ONLY=%d && %s"'
+              % (vid, 0 if lan else 1, inner))
     return ssh(name, docker, timeout)
 
 
@@ -99,7 +103,7 @@ def cmd_preflight(args):
             name,
             'ros2 run multi_drone_nvblox preflight_check.py --ros-args '
             '-r __ns:=/d%d -p vehicle_id:=%d -p alignment_yaml:=%s'
-            % (vid, vid, YAML), timeout=90)
+            % (vid, vid, YAML), timeout=90, lan='--lan-dds' in args)
         out = (r.stdout.strip() + '\n' + r.stderr.strip()).strip()
         print('\n'.join(l for l in out.splitlines()
                          if 'PASS' in l or 'FAIL' in l or 'PREFLIGHT' in l))
@@ -110,6 +114,7 @@ def cmd_preflight(args):
 def cmd_start(args):
     pose = 'ekf2' if '--ekf2' in args else 'cuvslam'
     trust = 'true' if '--trust-prior' in args else 'false'
+    localhost = 0 if '--lan-dds' in args else 1
     for name in vehicles(args):
         vid, _ = FLEET[name]
         launch = ('ros2 launch multi_drone_nvblox fleet_bringup.launch.py '
@@ -121,10 +126,10 @@ def cmd_start(args):
                 "-d -x 220 -y 50 -s fleet 'docker exec -it -u admin "
                 "isaac_ros_realsense bash -c \"source /opt/ros/humble/"
                 "setup.bash && source /workspaces/isaac_ros-dev/install/"
-                "setup.bash && export ROS_DOMAIN_ID=%d ROS_LOCALHOST_ONLY=0 "
+                "setup.bash && export ROS_DOMAIN_ID=%d ROS_LOCALHOST_ONLY=%d "
                 "&& %s\"'; tmux pipe-pane -o -t fleet 'cat >> "
                 "%s/experiment_logs/pane_fleet_$(date +%%s).log'"
-                % (WS, vid, launch, WS))
+                % (WS, vid, localhost, launch, WS))
         r = ssh(name, tmux, timeout=40)
         ok = r.returncode == 0
         print('%-14s %s (pose_source=%s)'
