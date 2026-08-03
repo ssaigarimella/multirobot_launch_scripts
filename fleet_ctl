@@ -5,6 +5,7 @@
     ./fleet_ctl preflight ghost           run preflight checks on one vehicle
     ./fleet_ctl start ghost delta         launch fleet_bringup (tmux) on each
     ./fleet_ctl start all --ekf2          flight pose source
+    ./fleet_ctl start ghost --trust-prior integrate peer maps on yaml prior
     ./fleet_ctl stop all                  tmux kill + process sweep
     ./fleet_ctl collect ghost             rsync experiment_logs to ./collected/
 
@@ -108,11 +109,13 @@ def cmd_preflight(args):
 
 def cmd_start(args):
     pose = 'ekf2' if '--ekf2' in args else 'cuvslam'
+    trust = 'true' if '--trust-prior' in args else 'false'
     for name in vehicles(args):
         vid, _ = FLEET[name]
         launch = ('ros2 launch multi_drone_nvblox fleet_bringup.launch.py '
-                  'drone_id:=%d alignment_yaml:=%s pose_source:=%s'
-                  % (vid, YAML, pose))
+                  'drone_id:=%d alignment_yaml:=%s pose_source:=%s '
+                  'trust_prior_alignment:=%s'
+                  % (vid, YAML, pose, trust))
         tmux = ("mkdir -p %s/experiment_logs; "
                 "tmux has-session -t fleet 2>/dev/null || tmux new-session "
                 "-d -x 220 -y 50 -s fleet 'docker exec -it -u admin "
