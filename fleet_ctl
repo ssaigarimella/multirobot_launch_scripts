@@ -33,6 +33,7 @@ FLEET = {
     'thunderstrike': (4, '192.168.0.70'),
 }
 WS = '/mnt/nova_ssd/workspaces/isaac_ros-dev'
+MDN_SCRIPTS = WS + '/src/multi_drone_nvblox/scripts'
 YAML = ('/workspaces/isaac_ros-dev'
         '/src/multi_drone_nvblox/config/swarm_alignment.yaml')  # container path
 
@@ -121,12 +122,13 @@ def cmd_start(args):
     pose = 'ekf2' if '--ekf2' in args else 'cuvslam'
     trust = 'true' if '--trust-prior' in args else 'false'
     localhost = 1 if '--localhost-dds' in args else 0
+    debug = 'true' if '--debug' in args else 'false'
     for name in vehicles(args):
         vid, _ = FLEET[name]
         launch = ('ros2 launch multi_drone_nvblox fleet_bringup.launch.py '
                   'drone_id:=%d alignment_yaml:=%s pose_source:=%s '
-                  'trust_prior_alignment:=%s'
-                  % (vid, YAML, pose, trust))
+                  'trust_prior_alignment:=%s debug_skip_arm_check:=%s'
+                  % (vid, YAML, pose, trust, debug))
         tmux = ("mkdir -p %s/experiment_logs; "
                 "tmux has-session -t fleet 2>/dev/null || tmux new-session "
                 "-d -x 220 -y 50 -s fleet 'docker exec -it -u admin "
@@ -141,11 +143,34 @@ def cmd_start(args):
         print('%-14s %s (pose_source=%s)'
               % (name, 'fleet_bringup launched' if ok else
                  'FAILED: ' + (r.stderr.strip()[:120] or '?'), pose))
+    # multi-vehicle: bench zenoh bridge on each (LAN transport, no network
+    # changes). Single vehicle needs no bridge.
+    names = vehicles(args)
+    if len(names) > 1:
+        pw = password()
+        for name in names:
+            vid, ip = FLEET[name]
+            peers = ' '.join('%d:%s' % (FLEET[p][0], FLEET[p][1])
+                             for p in names if p != name)
+            z = ("tmux kill-session -t zenoh 2>/dev/null; "
+                 "echo %s | sudo -S -p '' pkill -f '[z]enoh-bridge-ros2dds'; "
+                 "sleep 1; tmux new-session -d -s zenoh \"echo %s | "
+                 "sudo -S -p '' env ROS_DOMAIN_ID=%d bash "
+                 "%s/launch_bench_zenoh.sh %d %s %s >> /tmp/zenoh_tmux.log "
+                 "2>&1\"" % (pw, pw, vid, MDN_SCRIPTS, vid, ip, peers))
+            r = ssh(name, z, timeout=30)
+            print('%-14s zenoh bridge %s' % (name,
+                  'up' if r.returncode == 0 else 'FAILED'))
 
 
 def cmd_stop(args):
     for name in vehicles(args):
+        pw = password()
         ssh(name, 'tmux kill-session -t fleet 2>/dev/null; '
+                  'tmux kill-session -t zenoh 2>/dev/null; '
+                  'tmux kill-session -t rviz 2>/dev/null; '
+                  "echo %s | sudo -S -p '' pkill -f "
+                  "'[z]enoh-bridge-ros2dds'; " % pw +
                   'docker exec -u admin isaac_ros_realsense bash -c '
                   '"pkill -9 -f ros2; pkill -9 -f component_container; '
                   'pkill -9 -f _node; pkill -9 -f lora_bridge; '
