@@ -1,2 +1,3 @@
 px4_logs/
 credentials.env
+__pycache__/

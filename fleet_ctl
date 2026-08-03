@@ -1,0 +1,176 @@
+#!/usr/bin/env python3
+"""fleet_ctl: operator convenience CLI for the multi-drone field stack.
+
+    ./fleet_ctl status                    all vehicles
+    ./fleet_ctl preflight ghost           run preflight checks on one vehicle
+    ./fleet_ctl start ghost delta         launch fleet_bringup (tmux) on each
+    ./fleet_ctl start all --ekf2          flight pose source
+    ./fleet_ctl stop all                  tmux kill + process sweep
+    ./fleet_ctl collect ghost             rsync experiment_logs to ./collected/
+
+Operator convenience ONLY (spec 9): autonomy and coordination never depend on
+this tool; it is not on the flight-critical path (no-central-coordinator
+invariant). Uses the bench/field LAN (WiFi static IPs) -- Tailscale was
+removed from the vehicles. arm/rtl/land are deliberately NOT implemented:
+those are pilot/RC/QGC responsibilities, not a script's.
+
+Reads credentials from credentials.env next to this script.
+"""
+
+import os
+import subprocess
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+FLEET = {
+    # name: (vehicle_id, lan_ip)
+    'delta': (1, '192.168.0.40'),
+    'buckshee': (2, '192.168.0.60'),
+    'ghost': (3, '192.168.0.50'),
+    'thunderstrike': (4, '192.168.0.70'),
+}
+WS = '/mnt/nova_ssd/workspaces/isaac_ros-dev'
+YAML = ('/workspaces/isaac_ros-dev'
+        '/src/multi_drone_nvblox/config/swarm_alignment.yaml')  # container path
+
+
+def password():
+    path = os.path.join(HERE, 'credentials.env')
+    try:
+        for line in open(path):
+            if line.startswith('JETSON_PASS='):
+                return line.split('=', 1)[1].strip().strip('"')
+    except OSError:
+        pass
+    sys.exit('credentials.env missing next to fleet_ctl '
+             '(copy credentials.env.example)')
+
+
+def ssh(name, cmd, timeout=60):
+    vid, ip = FLEET[name]
+    return subprocess.run(
+        ['sshpass', '-p', password(), 'ssh',
+         '-o', 'StrictHostKeyChecking=no', '-o', 'ConnectTimeout=6',
+         '%s@%s' % (name, ip), cmd],
+        capture_output=True, text=True, timeout=timeout)
+
+
+def in_container(name, inner, timeout=60):
+    vid, _ = FLEET[name]
+    docker = ('docker exec -u admin isaac_ros_realsense bash -c '
+              '"source /opt/ros/humble/setup.bash && '
+              'source /workspaces/isaac_ros-dev/install/setup.bash && '
+              'export ROS_DOMAIN_ID=%d ROS_LOCALHOST_ONLY=0 && %s"'
+              % (vid, inner))
+    return ssh(name, docker, timeout)
+
+
+def vehicles(args):
+    names = [a for a in args if a in FLEET or a == 'all']
+    if 'all' in names or not names:
+        return list(FLEET)
+    return names
+
+
+def cmd_status(args):
+    for name in vehicles(args):
+        vid, ip = FLEET[name]
+        r = ssh(name, 'tmux ls 2>/dev/null | wc -l; '
+                      'docker ps --format "{{.Names}}" | grep -c isaac; '
+                      'docker exec isaac_ros_realsense pgrep -cf '
+                      '"component_container|coordination_node" 2>/dev/null '
+                      '|| echo 0', timeout=20)
+        if r.returncode != 0 and not r.stdout.strip():
+            print('%-14s UNREACHABLE (%s)' % (name, ip))
+            continue
+        lines = [x.strip() for x in r.stdout.strip().splitlines()] + ['?'] * 3
+        print('%-14s d%d @ %-14s tmux=%s container=%s ros_procs=%s'
+              % (name, vid, ip, lines[0], lines[1], lines[2]))
+
+
+def cmd_preflight(args):
+    fails = 0
+    for name in vehicles(args):
+        vid, _ = FLEET[name]
+        print('=== preflight %s (d%d) ===' % (name, vid))
+        r = in_container(
+            name,
+            'ros2 run multi_drone_nvblox preflight_check.py --ros-args '
+            '-r __ns:=/d%d -p vehicle_id:=%d -p alignment_yaml:=%s'
+            % (vid, vid, YAML), timeout=90)
+        out = (r.stdout.strip() + '\n' + r.stderr.strip()).strip()
+        print('\n'.join(l for l in out.splitlines()
+                         if 'PASS' in l or 'FAIL' in l or 'PREFLIGHT' in l))
+        fails += 1 if r.returncode != 0 else 0
+    sys.exit(min(fails, 125))
+
+
+def cmd_start(args):
+    pose = 'ekf2' if '--ekf2' in args else 'cuvslam'
+    for name in vehicles(args):
+        vid, _ = FLEET[name]
+        launch = ('ros2 launch multi_drone_nvblox fleet_bringup.launch.py '
+                  'drone_id:=%d alignment_yaml:=%s pose_source:=%s'
+                  % (vid, YAML, pose))
+        tmux = ("mkdir -p %s/experiment_logs; "
+                "tmux has-session -t fleet 2>/dev/null || tmux new-session "
+                "-d -x 220 -y 50 -s fleet 'docker exec -it -u admin "
+                "isaac_ros_realsense bash -c \"source /opt/ros/humble/"
+                "setup.bash && source /workspaces/isaac_ros-dev/install/"
+                "setup.bash && export ROS_DOMAIN_ID=%d ROS_LOCALHOST_ONLY=0 "
+                "&& %s\"'; tmux pipe-pane -o -t fleet 'cat >> "
+                "%s/experiment_logs/pane_fleet_$(date +%%s).log'"
+                % (WS, vid, launch, WS))
+        r = ssh(name, tmux, timeout=40)
+        ok = r.returncode == 0
+        print('%-14s %s (pose_source=%s)'
+              % (name, 'fleet_bringup launched' if ok else
+                 'FAILED: ' + (r.stderr.strip()[:120] or '?'), pose))
+
+
+def cmd_stop(args):
+    for name in vehicles(args):
+        ssh(name, 'tmux kill-server 2>/dev/null; '
+                  'docker exec -u admin isaac_ros_realsense bash -c '
+                  '"pkill -9 -f ros2; pkill -9 -f component_container; '
+                  'pkill -9 -f _node; pkill -9 -f lora_bridge" 2>/dev/null; '
+                  'true', timeout=30)
+        print('%-14s stopped' % name)
+
+
+def cmd_collect(args):
+    dest = os.path.join(HERE, 'collected')
+    os.makedirs(dest, exist_ok=True)
+    for name in vehicles(args):
+        vid, ip = FLEET[name]
+        out = os.path.join(dest, name)
+        os.makedirs(out, exist_ok=True)
+        r = subprocess.run(
+            ['sshpass', '-p', password(), 'rsync', '-az',
+             '-e', 'ssh -o StrictHostKeyChecking=no',
+             '%s@%s:%s/experiment_logs/' % (name, ip, WS), out + '/'],
+            capture_output=True, text=True, timeout=300)
+        print('%-14s %s -> %s' % (name,
+              'collected' if r.returncode == 0 else 'FAILED', out))
+
+
+def main():
+    if len(sys.argv) < 2:
+        print(__doc__)
+        sys.exit(1)
+    cmd, args = sys.argv[1], sys.argv[2:]
+    table = {'status': cmd_status, 'preflight': cmd_preflight,
+             'start': cmd_start, 'stop': cmd_stop, 'collect': cmd_collect}
+    if cmd in ('arm', 'rtl', 'land', 'pause', 'align'):
+        sys.exit('%s: not implemented by design - use RC/QGC for flight '
+                 'commands; alignment runs automatically in fleet_bringup'
+                 % cmd)
+    if cmd not in table:
+        print(__doc__)
+        sys.exit(1)
+    table[cmd](args)
+
+
+if __name__ == '__main__':
+    main()
