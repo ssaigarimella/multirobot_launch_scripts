@@ -148,7 +148,8 @@ def cmd_stop(args):
         ssh(name, 'tmux kill-session -t fleet 2>/dev/null; '
                   'docker exec -u admin isaac_ros_realsense bash -c '
                   '"pkill -9 -f ros2; pkill -9 -f component_container; '
-                  'pkill -9 -f _node; pkill -9 -f lora_bridge" 2>/dev/null; '
+                  'pkill -9 -f _node; pkill -9 -f lora_bridge; '
+                  'pkill -9 -f MicroXRCEAgent" 2>/dev/null; '
                   'true', timeout=30)
         print('%-14s stopped' % name)
 
