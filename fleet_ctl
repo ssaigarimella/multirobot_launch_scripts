@@ -181,9 +181,14 @@ def cmd_stop(args):
                   "echo %s | sudo -S -p '' pkill -f "
                   "'[z]enoh-bridge-ros2dds'; " % pw +
                   'docker exec -u admin isaac_ros_realsense bash -c '
-                  '"pkill -9 -f ros2; pkill -9 -f component_container; '
-                  'pkill -9 -f _node; pkill -9 -f lora_bridge; '
-                  'pkill -9 -f MicroXRCEAgent" 2>/dev/null; '
+                  # bracket patterns so the sweeping shell does not match
+                  # its own command line and kill itself mid-sweep
+                  '"pkill -9 -f \'[r]os2 launch\'; '
+                  'pkill -9 -f \'[c]omponent_container\'; '
+                  'pkill -9 -f \'[_]node.py\'; '
+                  'pkill -9 -f \'[l]ora_bridge\'; '
+                  'pkill -9 -f \'[v]io_bridge\'; '
+                  'pkill -9 -f \'[M]icroXRCEAgent\'" 2>/dev/null; '
                   'true', timeout=30)
         print('%-14s stopped' % name)
 
