@@ -34,6 +34,14 @@ FLEET = {
 }
 WS = '/mnt/nova_ssd/workspaces/isaac_ros-dev'
 MDN_SCRIPTS = WS + '/src/multi_drone_nvblox/scripts'
+CONTAINER = 'isaac_ros_realsense'
+# The single-drone tmux scripts start the container themselves; fleet_ctl
+# must too, or every docker exec fails after a reboot (containers come up
+# Exited). Never recreates -- the image is hand-mutated, so a lost
+# container is an operator decision, not a script's.
+DOCKER_UP = ('docker ps --format "{{.Names}}" | grep -qx %s || '
+             'docker start %s >/dev/null 2>&1; sleep 2; ' % (CONTAINER,
+                                                             CONTAINER))
 YAML = ('/workspaces/isaac_ros-dev'
         '/src/multi_drone_nvblox/config/swarm_alignment.yaml')  # container path
 
@@ -69,7 +77,8 @@ def in_container(name, inner, timeout=60, localhost=False):
     # applied to the whole container (agent included); until that is
     # bench-validated, keep =0.
     vid, _ = FLEET[name]
-    docker = ('docker exec -u admin isaac_ros_realsense bash -c '
+    docker = (DOCKER_UP +
+              'docker exec -u admin isaac_ros_realsense bash -c '
               '"source /opt/ros/humble/setup.bash && '
               'source /workspaces/isaac_ros-dev/install/setup.bash && '
               'export ROS_DOMAIN_ID=%d ROS_LOCALHOST_ONLY=%d && %s"'
@@ -129,7 +138,7 @@ def cmd_start(args):
                   'drone_id:=%d alignment_yaml:=%s pose_source:=%s '
                   'trust_prior_alignment:=%s debug_skip_arm_check:=%s'
                   % (vid, YAML, pose, trust, debug))
-        tmux = ("mkdir -p %s/experiment_logs; "
+        tmux = (DOCKER_UP + "mkdir -p %s/experiment_logs; "
                 "tmux has-session -t fleet 2>/dev/null || tmux new-session "
                 "-d -x 220 -y 50 -s fleet 'docker exec -it -u admin "
                 "isaac_ros_realsense bash -c \"source /opt/ros/humble/"
