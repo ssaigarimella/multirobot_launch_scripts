@@ -20,6 +20,7 @@ Reads credentials from credentials.env next to this script.
 """
 
 import os
+import shlex
 import subprocess
 import sys
 
@@ -127,17 +128,62 @@ def cmd_preflight(args):
     sys.exit(min(fails, 125))
 
 
-def cmd_start(args):
+def launch_line(name, args):
+    """Single source of truth for the per-vehicle bringup command.
+
+    Shared by `start` (detached tmux) and `cmdline` (consumed by
+    launch_fleet_tmux.sh, which attaches a local window per drone), so the
+    two entry points can never drift apart.
+    """
     pose = 'ekf2' if '--ekf2' in args else 'cuvslam'
     trust = 'true' if '--trust-prior' in args else 'false'
-    localhost = 1 if '--localhost-dds' in args else 0
     debug = 'true' if '--debug' in args else 'false'
+    vid, _ = FLEET[name]
+    return vid, ('ros2 launch multi_drone_nvblox fleet_bringup.launch.py '
+                 'drone_id:=%d alignment_yaml:=%s pose_source:=%s '
+                 'trust_prior_alignment:=%s debug_skip_arm_check:=%s'
+                 % (vid, YAML, pose, trust, debug))
+
+
+def zenoh_line(name, names):
+    """Bench zenoh bridge command for `name` given the flying set."""
+    vid, ip = FLEET[name]
+    peers = ' '.join('%d:%s' % (FLEET[p][0], FLEET[p][1])
+                     for p in names if p != name)
+    if not peers:
+        return None
+    return ("tmux kill-session -t zenoh 2>/dev/null; "
+            "echo %s | sudo -S -p '' pkill -f '[z]enoh-bridge-ros2dds'; "
+            "sleep 1; tmux new-session -d -s zenoh \"echo %s | "
+            "sudo -S -p '' env ROS_DOMAIN_ID=%d bash "
+            "%s/launch_bench_zenoh.sh %d %s %s >> /tmp/zenoh_tmux.log 2>&1\""
+            % (password(), password(), vid, MDN_SCRIPTS, vid, ip, peers))
+
+
+def cmd_cmdline(args):
+    """Print shell-assignable launch details for one vehicle."""
+    names = [a for a in args if a in FLEET]
+    if len(names) != 1:
+        sys.exit('cmdline needs exactly one vehicle name')
+    flying = [a for a in args if a in FLEET or a == 'all']
+    extra = [a for a in args if a.startswith('--drones=')]
+    if extra:
+        flying = extra[0].split('=', 1)[1].split(',')
+    vid, launch = launch_line(names[0], args)
+    z = zenoh_line(names[0], flying)
+    print('DOMAIN=%d' % vid)
+    print("CMD=%s" % shlex.quote(launch))
+    print("ZENOH=%s" % shlex.quote(z or ''))
+    print("WS=%s" % shlex.quote(WS))
+    print("DOCKER_UP=%s" % shlex.quote(DOCKER_UP))
+    print("LOCALHOST_ONLY=%d" % (1 if '--localhost-dds' in args else 0))
+
+
+def cmd_start(args):
+    pose = 'ekf2' if '--ekf2' in args else 'cuvslam'
+    localhost = 1 if '--localhost-dds' in args else 0
     for name in vehicles(args):
-        vid, _ = FLEET[name]
-        launch = ('ros2 launch multi_drone_nvblox fleet_bringup.launch.py '
-                  'drone_id:=%d alignment_yaml:=%s pose_source:=%s '
-                  'trust_prior_alignment:=%s debug_skip_arm_check:=%s'
-                  % (vid, YAML, pose, trust, debug))
+        vid, launch = launch_line(name, args)
         tmux = (DOCKER_UP + "mkdir -p %s/experiment_logs; "
                 "tmux has-session -t fleet 2>/dev/null || tmux new-session "
                 "-d -x 220 -y 50 -s fleet 'docker exec -it -u admin "
@@ -215,7 +261,8 @@ def main():
         sys.exit(1)
     cmd, args = sys.argv[1], sys.argv[2:]
     table = {'status': cmd_status, 'preflight': cmd_preflight,
-             'start': cmd_start, 'stop': cmd_stop, 'collect': cmd_collect}
+             'start': cmd_start, 'stop': cmd_stop, 'collect': cmd_collect,
+             'cmdline': cmd_cmdline}
     if cmd in ('arm', 'rtl', 'land', 'pause', 'align'):
         sys.exit('%s: not implemented by design - use RC/QGC for flight '
                  'commands; alignment runs automatically in fleet_bringup'
