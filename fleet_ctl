@@ -36,6 +36,7 @@ FLEET = {
 WS = '/mnt/nova_ssd/workspaces/isaac_ros-dev'
 MDN_SCRIPTS = WS + '/src/multi_drone_nvblox/scripts'
 CONTAINER = 'isaac_ros_realsense'
+CONTAINER_WS = '/workspaces/isaac_ros-dev'
 # The single-drone tmux scripts start the container themselves; fleet_ctl
 # must too, or every docker exec fails after a reboot (containers come up
 # Exited). Never recreates -- the image is hand-mutated, so a lost
@@ -175,6 +176,10 @@ def cmd_cmdline(args):
     print("CMD=%s" % shlex.quote(launch))
     print("ZENOH=%s" % shlex.quote(z or ''))
     print("WS=%s" % shlex.quote(WS))
+    # container-side workspace: the host path is bind-mounted here, and the
+    # two are NOT interchangeable (sourcing the host path inside the
+    # container fails with "No such file or directory")
+    print("CWS=%s" % shlex.quote(CONTAINER_WS))
     print("DOCKER_UP=%s" % shlex.quote(DOCKER_UP))
     print("LOCALHOST_ONLY=%d" % (1 if '--localhost-dds' in args else 0))
 

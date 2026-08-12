@@ -53,7 +53,7 @@ if [ "${1:-}" = "--window" ]; then
     [ -n "$ZENOH" ] && REMOTE+="$ZENOH; "
     REMOTE+="tmux has-session -t fleet 2>/dev/null || tmux new-session -d \
 -x 220 -y 50 -s fleet \"docker exec -it -u admin isaac_ros_realsense bash -c \
-'source /opt/ros/humble/setup.bash && source $WS/install/setup.bash && \
+'source /opt/ros/humble/setup.bash && source $CWS/install/setup.bash && \
 export ROS_DOMAIN_ID=$DOMAIN ROS_LOCALHOST_ONLY=$LOCALHOST_ONLY && $CMD; \
 ec=\\\$?; echo; echo ===== exited code \\\$ec - pane kept open, Ctrl-b d to \
 detach =====; exec bash'\"; \
