@@ -226,9 +226,11 @@ def cmd_start(args):
 def cmd_stop(args):
     for name in vehicles(args):
         pw = password()
-        ssh(name, 'tmux kill-session -t fleet 2>/dev/null; '
-                  'tmux kill-session -t zenoh 2>/dev/null; '
-                  'tmux kill-session -t rviz 2>/dev/null; '
+        # kill every stack session incl. the per-tab ones (fleet_tab1..8);
+        # a stale session would make the next tab attach to a dead shell
+        ssh(name, "tmux ls -F '#{session_name}' 2>/dev/null | "
+                  "grep -E '^(fleet|zenoh|rviz|loratest)' | "
+                  'xargs -rn1 tmux kill-session -t 2>/dev/null; '
                   "echo %s | sudo -S -p '' pkill -f "
                   "'[z]enoh-bridge-ros2dds'; " % pw +
                   'docker exec -u admin isaac_ros_realsense bash -c '
