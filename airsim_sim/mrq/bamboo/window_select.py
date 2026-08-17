@@ -236,6 +236,7 @@ def main():
     # scan between the FIRST drone's motion and shortly after the LAST one's,
     # so the window can hold the full four-way fan-out.
     need = int(1.0 / dt)
+    relaxed_used = []
     firsts = {}
     for v in DRONES:
         for k in range(n - need):
@@ -243,14 +244,23 @@ def main():
                 firsts[v] = k
                 break
     if len(firsts) < 4:
-        print("REFUSE: not all drones ever move")
-        sys.exit(3)
+        if not args.relaxed:
+            print("REFUSE: not all drones ever move")
+            sys.exit(3)
+        # relaxed: a drone that never clears V_MOVING still has to be framed —
+        # treat it as "moving from t0" so the window search can proceed and let
+        # shot_qc decide whether the resulting beat is watchable.
+        dead = [v for v in DRONES if v not in firsts]
+        print(f"RELAXED: {','.join(dead)} never exceed {V_MOVING} m/s — "
+              f"anchored at t0")
+        for v in dead:
+            firsts[v] = 0
+        relaxed_used.append("no_motion:" + "+".join(dead))
     first = min(firsts.values())
     first_all = max(firsts.values())
     print(f"first motion per drone (t+s): "
           f"{ {v: round(k*dt,1) for v, k in firsts.items()} }")
 
-    relaxed_used = []
     if args.open_anchor_s is not None:
         a_lo = max(0, int((args.open_anchor_s - 5.0) / dt))
         a_hi_extra = int((args.open_anchor_s + 10.0) / dt)
