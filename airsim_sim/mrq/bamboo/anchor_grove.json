@@ -1,0 +1,330 @@
+{
+ "footprint_r": 3061.926590077724,
+ "n_keys": 34440,
+ "ground_z": 0.0,
+ "occupancy": 0.4561022722552237,
+ "cands": [
+  {
+   "anchor": [
+    5400,
+    -2100,
+    0
+   ],
+   "yaw": 350.0,
+   "scale": 0.55,
+   "zlift": 43,
+   "hits": 2764,
+   "hit_frac": 0.0803,
+   "agl": [
+    100,
+    251
+   ],
+   "footprint": [
+    2998,
+    1583
+   ],
+   "culms": 238,
+   "culm_density": 0.2671,
+   "dist_hero": 5423
+  },
+  {
+   "anchor": [
+    5400,
+    -2400,
+    0
+   ],
+   "yaw": 0.0,
+   "scale": 0.62,
+   "zlift": 36,
+   "hits": 2848,
+   "hit_frac": 0.0827,
+   "agl": [
+    100,
+    270
+   ],
+   "footprint": [
+    3379,
+    1785
+   ],
+   "culms": 285,
+   "culm_density": 0.2517,
+   "dist_hero": 5546
+  },
+  {
+   "anchor": [
+    -5100,
+    -900,
+    0
+   ],
+   "yaw": 240.0,
+   "scale": 0.62,
+   "zlift": 36,
+   "hits": 3082,
+   "hit_frac": 0.0895,
+   "agl": [
+    100,
+    270
+   ],
+   "footprint": [
+    3379,
+    1785
+   ],
+   "culms": 248,
+   "culm_density": 0.219,
+   "dist_hero": 5573
+  },
+  {
+   "anchor": [
+    5400,
+    -2700,
+    0
+   ],
+   "yaw": 20.0,
+   "scale": 0.55,
+   "zlift": 43,
+   "hits": 3186,
+   "hit_frac": 0.0925,
+   "agl": [
+    100,
+    251
+   ],
+   "footprint": [
+    2998,
+    1583
+   ],
+   "culms": 219,
+   "culm_density": 0.2458,
+   "dist_hero": 5682
+  },
+  {
+   "anchor": [
+    5400,
+    -3000,
+    0
+   ],
+   "yaw": 350.0,
+   "scale": 0.72,
+   "zlift": 25,
+   "hits": 3907,
+   "hit_frac": 0.1134,
+   "agl": [
+    100,
+    297
+   ],
+   "footprint": [
+    3924,
+    2072
+   ],
+   "culms": 332,
+   "culm_density": 0.2174,
+   "dist_hero": 5831
+  },
+  {
+   "anchor": [
+    5400,
+    -1500,
+    0
+   ],
+   "yaw": 40.0,
+   "scale": 0.62,
+   "zlift": 36,
+   "hits": 3942,
+   "hit_frac": 0.1145,
+   "agl": [
+    100,
+    270
+   ],
+   "footprint": [
+    3379,
+    1785
+   ],
+   "culms": 290,
+   "culm_density": 0.2561,
+   "dist_hero": 5220
+  },
+  {
+   "anchor": [
+    5400,
+    -2100,
+    0
+   ],
+   "yaw": 20.0,
+   "scale": 0.62,
+   "zlift": 36,
+   "hits": 3971,
+   "hit_frac": 0.1153,
+   "agl": [
+    100,
+    270
+   ],
+   "footprint": [
+    3379,
+    1785
+   ],
+   "culms": 238,
+   "culm_density": 0.2102,
+   "dist_hero": 5423
+  },
+  {
+   "anchor": [
+    -5400,
+    1200,
+    0
+   ],
+   "yaw": 200.0,
+   "scale": 0.55,
+   "zlift": 43,
+   "hits": 4019,
+   "hit_frac": 0.1167,
+   "agl": [
+    100,
+    251
+   ],
+   "footprint": [
+    2998,
+    1583
+   ],
+   "culms": 257,
+   "culm_density": 0.2884,
+   "dist_hero": 5923
+  },
+  {
+   "anchor": [
+    5100,
+    -1800,
+    0
+   ],
+   "yaw": 340.0,
+   "scale": 0.55,
+   "zlift": 43,
+   "hits": 4037,
+   "hit_frac": 0.1172,
+   "agl": [
+    100,
+    251
+   ],
+   "footprint": [
+    2998,
+    1583
+   ],
+   "culms": 234,
+   "culm_density": 0.2626,
+   "dist_hero": 5033
+  },
+  {
+   "anchor": [
+    5400,
+    -2400,
+    0
+   ],
+   "yaw": 310.0,
+   "scale": 0.72,
+   "zlift": 25,
+   "hits": 4078,
+   "hit_frac": 0.1184,
+   "agl": [
+    100,
+    297
+   ],
+   "footprint": [
+    3924,
+    2072
+   ],
+   "culms": 285,
+   "culm_density": 0.1867,
+   "dist_hero": 5546
+  },
+  {
+   "anchor": [
+    -5400,
+    -3000,
+    0
+   ],
+   "yaw": 190.0,
+   "scale": 0.55,
+   "zlift": 43,
+   "hits": 4104,
+   "hit_frac": 0.1192,
+   "agl": [
+    100,
+    251
+   ],
+   "footprint": [
+    2998,
+    1583
+   ],
+   "culms": 229,
+   "culm_density": 0.257,
+   "dist_hero": 6530
+  },
+  {
+   "anchor": [
+    5400,
+    3000,
+    0
+   ],
+   "yaw": 10.0,
+   "scale": 0.55,
+   "zlift": 43,
+   "hits": 4165,
+   "hit_frac": 0.1209,
+   "agl": [
+    100,
+    251
+   ],
+   "footprint": [
+    2998,
+    1583
+   ],
+   "culms": 256,
+   "culm_density": 0.2873,
+   "dist_hero": 5831
+  },
+  {
+   "anchor": [
+    5100,
+    -3000,
+    0
+   ],
+   "yaw": 30.0,
+   "scale": 0.72,
+   "zlift": 25,
+   "hits": 4226,
+   "hit_frac": 0.1227,
+   "agl": [
+    100,
+    297
+   ],
+   "footprint": [
+    3924,
+    2072
+   ],
+   "culms": 512,
+   "culm_density": 0.3353,
+   "dist_hero": 5576
+  },
+  {
+   "anchor": [
+    5400,
+    2400,
+    0
+   ],
+   "yaw": 230.0,
+   "scale": 0.72,
+   "zlift": 25,
+   "hits": 4321,
+   "hit_frac": 0.1255,
+   "agl": [
+    100,
+    297
+   ],
+   "footprint": [
+    3924,
+    2072
+   ],
+   "culms": 308,
+   "culm_density": 0.2017,
+   "dist_hero": 5546
+  }
+ ]
+}
