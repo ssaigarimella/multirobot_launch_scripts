@@ -2,6 +2,9 @@
 
 Launch scripts for the 4-drone Jetson exploration swarm (Isaac ROS + PX4 + frontier exploration).
 
+For the matched planner/coordination integration branches, scope, validation and
+new fleet-launch options, read [PLANNING-HANDOFF.md](PLANNING-HANDOFF.md).
+
 ## Canonical launch scripts (use these)
 
 One tmux-hardened script per drone — run from the **laptop**, SSHes into the drone's Jetson

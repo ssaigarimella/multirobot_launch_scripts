@@ -6,6 +6,8 @@
     ./fleet_ctl start ghost delta         launch fleet_bringup (tmux) on each
     ./fleet_ctl start all --ekf2          flight pose source
     ./fleet_ctl start ghost --trust-prior integrate peer maps on yaml prior
+    ./fleet_ctl start ghost --shared-frontiers  select the shared frontier ESDF
+    ./fleet_ctl start ghost --planner-odom=/visual_slam/tracking/odometry
     ./fleet_ctl start ghost --localhost-dds  EXPERIMENTAL loopback DDS
     ./fleet_ctl stop all                  tmux kill + process sweep
     ./fleet_ctl collect ghost             rsync experiment_logs to ./collected/
@@ -20,6 +22,7 @@ Reads credentials from credentials.env next to this script.
 """
 
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -129,21 +132,80 @@ def cmd_preflight(args):
     sys.exit(min(fails, 125))
 
 
-def launch_line(name, args):
-    """Single source of truth for the per-vehicle bringup command.
+def planning_options(args):
+    """Explicit planning overrides shared by fleet bringup and GUI tabs.
 
-    Shared by `start` (detached tmux) and `cmdline` (consumed by
-    launch_fleet_tmux.sh, which attaches a local window per drone), so the
-    two entry points can never drift apart.
+    Values become part of a remote shell command. Accept only ROS topic
+    names here; never interpolate arbitrary shell text from an option.
+    The existing odometry and self-ESDF defaults remain in the ROS launch.
     """
+    options = {}
+    for arg in args:
+        if arg == '--shared-frontiers':
+            options['esdf_service_name'] = '/nvblox_shared_node/get_esdf_and_gradient'
+        elif arg.startswith('--planner-odom='):
+            topic = arg.split('=', 1)[1]
+            if not re.fullmatch(r'/?[A-Za-z_][A-Za-z0-9_]*(/[A-Za-z_][A-Za-z0-9_]*)*', topic):
+                raise ValueError('--planner-odom requires a ROS topic name')
+            options['odom_topic'] = topic
+        elif arg.startswith(('--planner-odom', '--shared-frontiers')):
+            raise ValueError('Use --planner-odom=TOPIC or --shared-frontiers')
+    return options
+
+
+def planning_tab_command(name, tab, args):
+    """Render tab 3/5 commands without credentials, SSH or ROS execution."""
+    vid, _ = FLEET[name]
+    options = planning_options(args)
+    if tab == '3':
+        launch = 'fis_stage.launch.py'
+        selected = ['esdf_service_name']
+        extras = []
+    elif tab == '5':
+        launch = 'planner_stage.launch.py'
+        selected = ['odom_topic']
+        extras = ['debug_skip_arm_check:=%s' %
+                  ('true' if '--debug' in args else 'false')]
+    else:
+        raise ValueError('planning-tab-command supports tabs 3 and 5')
+    tokens = ['ros2', 'launch', 'multi_drone_nvblox', launch,
+              'drone_id:=%d' % vid, 'alignment_yaml:=%s' % YAML]
+    tokens.extend(extras)
+    tokens.extend('%s:=%s' % (key, options[key]) for key in selected if key in options)
+    return ' '.join(shlex.quote(token) for token in tokens)
+
+
+def launch_line(name, args):
+    """Render fleet bringup, using the same planning options as GUI tabs."""
     pose = 'ekf2' if '--ekf2' in args else 'cuvslam'
     trust = 'true' if '--trust-prior' in args else 'false'
     debug = 'true' if '--debug' in args else 'false'
     vid, _ = FLEET[name]
-    return vid, ('ros2 launch multi_drone_nvblox fleet_bringup.launch.py '
+    command = ('ros2 launch multi_drone_nvblox fleet_bringup.launch.py '
                  'drone_id:=%d alignment_yaml:=%s pose_source:=%s '
                  'trust_prior_alignment:=%s debug_skip_arm_check:=%s'
                  % (vid, YAML, pose, trust, debug))
+    options = planning_options(args)
+    for key, value in options.items():
+        command += ' ' + shlex.quote('%s:=%s' % (key, value))
+    return vid, command
+
+
+def cmd_planning_tab_command(args):
+    if len(args) < 2 or args[0] not in FLEET:
+        sys.exit('planning-tab-command needs a vehicle name and tab 3 or 5')
+    try:
+        print(planning_tab_command(args[0], args[1], args[2:]))
+    except ValueError as error:
+        sys.exit(str(error))
+
+
+def cmd_validate_planning_options(args):
+    """Validate new options before the GUI opens any hardware tabs."""
+    try:
+        planning_options(args)
+    except ValueError as error:
+        sys.exit(str(error))
 
 
 def zenoh_line(name, names):
@@ -269,7 +331,9 @@ def main():
     cmd, args = sys.argv[1], sys.argv[2:]
     table = {'status': cmd_status, 'preflight': cmd_preflight,
              'start': cmd_start, 'stop': cmd_stop, 'collect': cmd_collect,
-             'cmdline': cmd_cmdline}
+             'cmdline': cmd_cmdline,
+             'planning-tab-command': cmd_planning_tab_command,
+             'validate-planning-options': cmd_validate_planning_options}
     if cmd in ('arm', 'rtl', 'land', 'pause', 'align'):
         sys.exit('%s: not implemented by design - use RC/QGC for flight '
                  'commands; alignment runs automatically in fleet_bringup'

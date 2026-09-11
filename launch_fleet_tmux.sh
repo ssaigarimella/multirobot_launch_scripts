@@ -6,6 +6,8 @@
 #     ./launch_fleet_tmux.sh ghost delta --debug   skip arm check (hand-carry)
 #     ./launch_fleet_tmux.sh all
 #     ./launch_fleet_tmux.sh --headless ghost delta   no tabs, all detached
+#     ./launch_fleet_tmux.sh ghost delta --shared-frontiers
+#     ./launch_fleet_tmux.sh ghost --planner-odom=/visual_slam/tracking/odometry
 #     ./launch_fleet_tmux.sh attach ghost          re-attach drone's tab session
 #     ./launch_fleet_tmux.sh stop [all]            tear everything down
 #
@@ -58,12 +60,12 @@ if [ "${1:-}" = "--tab" ]; then
          CMD="ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=False pose_source:=$POSE" ;;
       2) LABEL="VIO Bridge + DDS Agent"
          CMD="ros2 launch px4_offboard vio_bridge.launch.py" ;;
-      3) LABEL="FIS (frontier detection)"
-         CMD="ros2 launch active_exploration fis.launch.py flight_height:=1.0" ;;
+      3) LABEL="FIS (team geofence)"
+         CMD="$("$HERE/fleet_ctl" planning-tab-command "$DRONE" 3 "$@")" || exit $? ;;
       4) LABEL="Reactive Depth Guard"
          CMD="ros2 launch active_exploration reactive_guard.launch.py" ;;
       5) LABEL="Exploration Planner (team geofence)"
-         CMD="ros2 launch multi_drone_nvblox planner_stage.launch.py drone_id:=$ID alignment_yaml:=$YAML debug_skip_arm_check:=$DEBUG" ;;
+         CMD="$("$HERE/fleet_ctl" planning-tab-command "$DRONE" 5 "$@")" || exit $? ;;
       6) LABEL="Shared mapper (2nd nvblox)"
          CMD="ros2 launch multi_drone_nvblox shared_mapper.launch.py own_depth_topic:=/camera0/depth/image_rect_raw own_camera_info_topic:=/camera0/depth/camera_info global_frame:=odom" ;;
       7) LABEL="Coordination (alignment + LoRa + keyframes)"
@@ -130,6 +132,7 @@ for a in "$@"; do
     esac
 done
 [ ${#DRONES[@]} -eq 0 ] && DRONES=(ghost delta)
+"$HERE/fleet_ctl" validate-planning-options ${FLAGS[@]+"${FLAGS[@]}"} || exit $?
 CSV=$(IFS=,; echo "${DRONES[*]}")
 
 if [ "$HEADLESS" = "1" ]; then
