@@ -242,7 +242,17 @@ def cmd_stop(args):
                   'pkill -9 -f \'[l]ora_bridge\'; '
                   'pkill -9 -f \'[v]io_bridge\'; '
                   'pkill -9 -f \'[M]icroXRCEAgent\'" 2>/dev/null; '
-                  'true', timeout=30)
+                  # Clear stale DDS shared memory once nothing is running.
+                  # A SIGKILLed participant leaves /dev/shm/fastrtps_port*
+                  # behind, and the container runs --ipc host so they
+                  # survive container restarts. A later participant that
+                  # hashes onto a dead segment publishes into NOTHING:
+                  # topics advertise, subscriber counts look correct, no
+                  # data flows, nothing is logged. Root cause of the
+                  # coordination stall chased across 2026-09-18 and 09-25.
+                  'docker exec isaac_ros_realsense bash -c '
+                  '"rm -f /dev/shm/fastrtps* /dev/shm/fastdds*" '
+                  '2>/dev/null; true', timeout=30)
         print('%-14s stopped' % name)
 
 
