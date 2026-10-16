@@ -4,6 +4,7 @@
 #
 #     ./launch_fleet_tmux.sh                       ghost + delta (default)
 #     ./launch_fleet_tmux.sh ghost delta --debug   skip arm check (hand-carry)
+#     ./launch_fleet_tmux.sh ghost --planner=hercules   Lucas planner (A/B; default simple)
 #     ./launch_fleet_tmux.sh ghost delta --mesh    transport over 802.11s mesh
 #     ./launch_fleet_tmux.sh ghost delta --bench   transport over bench LAN (default)
 #     ./launch_fleet_tmux.sh all
@@ -65,10 +66,11 @@ if [ "${1:-}" = "--tab" ]; then
     DRONE="$2"; N="$3"; shift 3
     source "$HERE/credentials.env"
     ID="${IDS[$DRONE]}"; IP="${IPS[$DRONE]}"
-    DEBUG=false; POSE=cuvslam; CSV="$DRONE"; TRANSPORT=bench; FORCE=0
+    DEBUG=false; POSE=cuvslam; CSV="$DRONE"; TRANSPORT=bench; FORCE=0; PLANNER=simple
     for a in "$@"; do case "$a" in
         --debug) DEBUG=true ;;
         --ekf2)  POSE=ekf2 ;;
+        --planner=*) PLANNER="${a#--planner=}" ;;
         --mesh)  TRANSPORT=mesh ;;
         --bench) TRANSPORT=bench ;;
         --force) FORCE=1 ;;
@@ -80,12 +82,16 @@ if [ "${1:-}" = "--tab" ]; then
          CMD="ros2 launch nvblox_examples_bringup realsense_example.launch.py run_rviz:=False pose_source:=$POSE" ;;
       2) LABEL="VIO Bridge + DDS Agent"
          CMD="ros2 launch px4_offboard vio_bridge.launch.py" ;;
-      3) LABEL="FIS (frontier detection)"
-         CMD="ros2 launch active_exploration fis.launch.py flight_height:=1.0" ;;
+      3) LABEL="FIS (frontier detection, team geofence)"
+         # fis_stage computes the SAME team box as tab 5's planner from the same
+         # alignment yaml. The old fis.launch.py call used FIS's default +-10 m
+         # box, so FIS only produced frontiers within 10 m of takeoff while the
+         # planner allowed 35 m (and kept frontiers behind the launch line).
+         CMD="ros2 launch multi_drone_nvblox fis_stage.launch.py drone_id:=$ID alignment_yaml:=$YAML" ;;
       4) LABEL="Reactive Depth Guard"
          CMD="ros2 launch active_exploration reactive_guard.launch.py" ;;
-      5) LABEL="Exploration Planner (team geofence)"
-         CMD="ros2 launch multi_drone_nvblox planner_stage.launch.py drone_id:=$ID alignment_yaml:=$YAML debug_skip_arm_check:=$DEBUG" ;;
+      5) LABEL="Exploration Planner [$PLANNER] (team geofence)"
+         CMD="ros2 launch multi_drone_nvblox planner_stage.launch.py drone_id:=$ID alignment_yaml:=$YAML debug_skip_arm_check:=$DEBUG planner:=$PLANNER" ;;
       6) LABEL="Shared mapper (2nd nvblox)"
          CMD="ros2 launch multi_drone_nvblox shared_mapper.launch.py own_depth_topic:=/camera0/depth/image_rect_raw own_camera_info_topic:=/camera0/depth/camera_info global_frame:=odom" ;;
       7) LABEL="Coordination (alignment + LoRa + keyframes)"

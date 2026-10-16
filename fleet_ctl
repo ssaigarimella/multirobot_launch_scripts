@@ -139,11 +139,14 @@ def launch_line(name, args):
     pose = 'ekf2' if '--ekf2' in args else 'cuvslam'
     trust = 'true' if '--trust-prior' in args else 'false'
     debug = 'true' if '--debug' in args else 'false'
+    planner = next((a.split('=', 1)[1] for a in args
+                    if a.startswith('--planner=')), 'simple')
     vid, _ = FLEET[name]
     return vid, ('ros2 launch multi_drone_nvblox fleet_bringup.launch.py '
                  'drone_id:=%d alignment_yaml:=%s pose_source:=%s '
-                 'trust_prior_alignment:=%s debug_skip_arm_check:=%s'
-                 % (vid, YAML, pose, trust, debug))
+                 'trust_prior_alignment:=%s debug_skip_arm_check:=%s '
+                 'planner:=%s'
+                 % (vid, YAML, pose, trust, debug, planner))
 
 
 def zenoh_line(name, names):
