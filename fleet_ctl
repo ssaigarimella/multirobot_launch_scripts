@@ -9,6 +9,7 @@
     ./fleet_ctl start ghost --localhost-dds  EXPERIMENTAL loopback DDS
     ./fleet_ctl stop all                  tmux kill + process sweep
     ./fleet_ctl collect ghost             rsync experiment_logs to ./collected/
+    ./fleet_ctl versions all              prove all drones run identical software
 
 Operator convenience ONLY (spec 9): autonomy and coordination never depend on
 this tool; it is not on the flight-critical path (no-central-coordinator
@@ -259,6 +260,34 @@ def cmd_stop(args):
         print('%-14s stopped' % name)
 
 
+
+def cmd_versions(args):
+    """Prove every drone runs identical software. Prints one row per drone
+    and a verdict; exits non-zero on any mismatch so it can gate a session."""
+    repos = ['multi_drone_nvblox', 'active_exploration', 'px4_offboard',
+             'radiohive', 'isaac_ros_nvblox']
+    rows = {}
+    for name in vehicles(args):
+        r = ssh(name, 'S=%s/src; for r in %s; do '
+                      'printf "%%s " "$(git -C $S/$r rev-parse --short HEAD '
+                      '2>/dev/null || echo MISSING)"; done'
+                      % (WS, ' '.join(repos)), timeout=20)
+        got = r.stdout.split()
+        if r.returncode != 0 or len(got) != len(repos):
+            print('%-14s UNREACHABLE' % name)
+            continue
+        rows[name] = got
+        print('%-14s %s' % (name, '  '.join('%s=%s' % (k[:6], v)
+                                            for k, v in zip(repos, got))))
+    if not rows:
+        sys.exit(1)
+    ref = next(iter(rows.values()))
+    bad = [n for n, v in rows.items() if v != ref]
+    if bad:
+        print('MISMATCH on: %s -- do not fly until synced' % ' '.join(bad))
+        sys.exit(1)
+    print('OK: all %d reachable drones run identical software' % len(rows))
+
 def cmd_collect(args):
     dest = os.path.join(HERE, 'collected')
     os.makedirs(dest, exist_ok=True)
@@ -282,7 +311,7 @@ def main():
     cmd, args = sys.argv[1], sys.argv[2:]
     table = {'status': cmd_status, 'preflight': cmd_preflight,
              'start': cmd_start, 'stop': cmd_stop, 'collect': cmd_collect,
-             'cmdline': cmd_cmdline}
+             'cmdline': cmd_cmdline, 'versions': cmd_versions}
     if cmd in ('arm', 'rtl', 'land', 'pause', 'align'):
         sys.exit('%s: not implemented by design - use RC/QGC for flight '
                  'commands; alignment runs automatically in fleet_bringup'
