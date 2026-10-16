@@ -54,8 +54,16 @@ SSH drop detaches instead of killing the stack:
 and the same launch command is generated from one definition, so the two paths
 cannot drift. `multirobot_launch_scripts` is NOT the hardware entry point.
 
-Important for your item 5: the fleet planner launch **does** pass `vehicle_id`
-(from `drone_id`), so the ID-0 alignment rejection does not apply to this path.
+~~Important for your item 5: the fleet planner launch **does** pass `vehicle_id`
+(from `drone_id`), so the ID-0 alignment rejection does not apply to this path.~~
+
+**CORRECTION 2026-10-16 — your item 5 was right.** `planner_stage.launch.py` passed
+`vehicle_id`, but the included `simple_planner_launch.py` never declared or forwarded it,
+so every fleet flight ran the planner as vehicle 0 — silently disabling the claim
+tie-break and lane assignment (both gated on `vehicle_id > 0`). Fixed in
+`active_exploration` `6f2c629`, adopting your launch-file fix with one change:
+`plan_cycle_budget_s` defaults to 3.0, not 10.0, because it must stay below the guard's
+5 s planner-stale timeout. Verified live: `vehicle_id = 3` on ghost.
 
 ## 4. Platform versions (identical on all four)
 
