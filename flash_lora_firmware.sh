@@ -7,6 +7,9 @@
 #   ./flash_lora_firmware.sh --check all          # report versions, flash nothing
 #
 # WHY THIS IS SAFE TO RUN ON A SUBSET (the thunderstrike case):
+#   v7.4 (deaf/unheard phase re-roll + relayed sync, 2026-10-26) changes
+#   neither the over-the-air packet nor the serial protocol either, so v7.3
+#   and v7.4 radios interoperate; the recovery needs v7.4 on every radio.
 #   v7.3 changes NO over-the-air packet format. It only adds two serial
 #   message types (0x04 SET_POWER, 0x86 POWER_RESP). A v7.2 radio ignores
 #   0x04 and never emits 0x86; an old bridge ignores 0x86. So a mixed
@@ -24,8 +27,16 @@ HERE="$(dirname "$(readlink -f "$0")")"
 source "$HERE/credentials.env" 2>/dev/null
 PASS="${JETSON_PASS:?credentials.env missing}"
 INO="$HOME/jfr_dev/radiohive/firmware/lora_mesh_v7_2_ros2.ino"
-FQBN="esp32:esp32:heltec_wifi_lora_32_V3"
+# Board = what the radios were actually built for (verified 2026-10-19: ghost's
+# radio app partition is byte-identical to the June build for this FQBN).
+FQBN="esp32:esp32:heltec_wireless_stick_lite_V3"
+# The source hardcodes NODE_ID 0; each radio is built with its own id.
+declare -A NODE=( [delta]=0 [buckshee]=1 [ghost]=2 [thunderstrike]=3 )
 BUILD="/tmp/lora_fw_build"
+# pure-python esptool 4.7.0 + pyserial + intelhex, run inside the drone's
+# container (the containers have none of them).
+# Fetched once from ghost's ~/.local (the one drone that had it) if absent.
+EPT="$HERE/tools/esptool_py"
 declare -A IPS=( [delta]=192.168.0.40 [buckshee]=192.168.0.60 \
                  [ghost]=192.168.0.50 [thunderstrike]=192.168.0.70 )
 
@@ -60,30 +71,60 @@ for d in "${DRONES[@]}"; do
 done
 [ "$CHECK_ONLY" = "1" ] && exit 0
 
-echo ""
-echo "=== building $FQBN ==="
-rm -rf "$BUILD"; mkdir -p "$BUILD/sketch"
-cp "$INO" "$BUILD/sketch/" || { echo "firmware source not found: $INO"; exit 1; }
-arduino-cli compile --fqbn "$FQBN" --output-dir "$BUILD/out" "$BUILD/sketch" || exit 1
-APP=$(ls "$BUILD/out"/*.ino.bin 2>/dev/null | head -1)
-BOOT=$(ls "$BUILD/out"/*.bootloader.bin 2>/dev/null | head -1)
-PART=$(ls "$BUILD/out"/*.partitions.bin 2>/dev/null | head -1)
-[ -f "$APP" ] || { echo "no application binary produced"; exit 1; }
-echo "  app=$(basename "$APP")  bootloader=$(basename "${BOOT:-none}")  partitions=$(basename "${PART:-none}")"
+# Build one image per drone with that drone's NODE_ID; sets APP BOOT PART BOOTAPP.
+build_for() {
+    local d="$1" b="$BUILD/$1" n="lora_$1_node${NODE[$1]}"
+    rm -rf "$b"; mkdir -p "$b/$n"
+    sed -E "s/^#define NODE_ID[[:space:]]+[0-9]+/#define NODE_ID           ${NODE[$d]}/" \
+        "$INO" > "$b/$n/$n.ino" || { echo "firmware source not found: $INO"; return 1; }
+    grep -qE "^#define NODE_ID[[:space:]]+${NODE[$d]}\$" "$b/$n/$n.ino" \
+        || { echo "could not set NODE_ID for $d"; return 1; }
+    # NUM_NODES sizes the over-the-air packet: a mismatch with the radios
+    # already flown (4) silently breaks the mesh.
+    grep -qE "^#define NUM_NODES[[:space:]]+${#NODE[@]}([^0-9]|\$)" "$b/$n/$n.ino" \
+        || { echo "REFUSING: source NUM_NODES != ${#NODE[@]} (fleet size)"; return 1; }
+    echo "=== building $n ($FQBN, NODE_ID ${NODE[$d]}) ==="
+    arduino-cli compile --fqbn "$FQBN" --output-dir "$b/out" "$b/$n" >/dev/null || return 1
+    APP=$(ls "$b/out"/*.ino.bin 2>/dev/null | head -1)
+    BOOT=$(ls "$b/out"/*.bootloader.bin 2>/dev/null | head -1)
+    PART=$(ls "$b/out"/*.partitions.bin 2>/dev/null | head -1)
+    BOOTAPP=$(ls "$b/out"/boot_app0.bin 2>/dev/null | head -1)
+    [ -f "$APP" ] && [ -f "$BOOT" ] && [ -f "$PART" ] || { echo "incomplete build for $d"; return 1; }
+}
+
+if [ ! -f "$EPT/esptool/__init__.py" ] || [ ! -f "$EPT/serial/__init__.py" ] \
+        || [ ! -f "$EPT/intelhex/__init__.py" ]; then
+    echo "=== fetching the esptool bundle from ghost ==="
+    mkdir -p "$EPT"
+    for p in esptool serial intelhex; do
+        sshpass -p "$PASS" scp -r -o StrictHostKeyChecking=no \
+            "ghost@${IPS[ghost]}:/home/ghost/.local/lib/python3.10/site-packages/$p" "$EPT/" >/dev/null \
+            || { echo "could not fetch $p from ghost"; exit 1; }
+    done
+fi
 
 for d in "${DRONES[@]}"; do
     port=$(find_radio "$d"); [ -z "$port" ] && { echo "SKIP $d (no radio)"; continue; }
     echo ""
+    build_for "$d" || { echo "SKIP $d (build failed)"; continue; }
     echo "=== flashing $d on $port ==="
     # the bridge holds the port open; it must be stopped or esptool cannot reset
     ssh_d "$d" "docker exec isaac_ros_realsense bash -c 'pkill -9 -f \"[l]ora_bridge\"' 2>/dev/null; true"
-    for f in "$BOOT" "$PART" "$APP"; do
-        [ -f "$f" ] && sshpass -p "$PASS" scp -o StrictHostKeyChecking=no "$f" "$d@${IPS[$d]}:/tmp/$(basename "$f")" >/dev/null
+    # esptool runs INSIDE the container (root): on 2026-10-26 only ghost's
+    # host user was in dialout or had esptool, so a host-side flash failed on
+    # the other three. The pure-python esptool+pyserial bundle travels along.
+    sshpass -p "$PASS" ssh -o StrictHostKeyChecking=no "$d@${IPS[$d]}" "rm -rf /tmp/lora_flash; mkdir -p /tmp/lora_flash"
+    sshpass -p "$PASS" scp -r -o StrictHostKeyChecking=no "$EPT" "$d@${IPS[$d]}:/tmp/lora_flash/ept" >/dev/null
+    for f in "$BOOT" "$PART" "$BOOTAPP" "$APP"; do
+        [ -f "$f" ] && sshpass -p "$PASS" scp -o StrictHostKeyChecking=no "$f" "$d@${IPS[$d]}:/tmp/lora_flash/$(basename "$f")" >/dev/null
     done
-    ssh_d "$d" "esptool.py --chip esp32s3 --port $port --baud 460800 write_flash \
-        0x0 /tmp/$(basename "${BOOT:-/dev/null}") \
-        0x8000 /tmp/$(basename "${PART:-/dev/null}") \
-        0x10000 /tmp/$(basename "$APP") 2>&1 | tail -6"
+    ssh_d "$d" "docker exec isaac_ros_realsense rm -rf /tmp/lora_flash; docker cp /tmp/lora_flash isaac_ros_realsense:/tmp/ && \
+        docker exec isaac_ros_realsense bash -c 'cd /tmp/lora_flash && PYTHONNOUSERSITE=1 PYTHONPATH=/tmp/lora_flash/ept \
+        python3 -m esptool --chip esp32s3 --port $port --baud 460800 write_flash \
+        0x0 $(basename "$BOOT") \
+        0x8000 $(basename "$PART") \
+        ${BOOTAPP:+0xe000 $(basename "$BOOTAPP")} \
+        0x10000 $(basename "$APP")' 2>&1 | tail -6"
 done
 
 echo ""

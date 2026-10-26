@@ -16,8 +16,10 @@ PASS="${JETSON_PASS:?credentials.env missing — copy credentials.env.example an
 WS=/mnt/nova_ssd/workspaces/isaac_ros-dev
 SEQ="$(dirname "$(readlink -f "$0")")/drone_build_sequence.sh"
 
-# wired IPs first; thunderstrike via WiFi until it gets a LAN port
-declare -A IPS=( [ghost]=192.168.0.206 [delta]=192.168.0.236 [buckshee]=192.168.0.124 [thunderstrike]=192.168.0.70 )
+# same table as launch_fleet_tmux.sh / record_fleet.sh / collect_bags.sh /
+# flash_lora_firmware.sh (the .206/.236/.124 addresses here were stale on
+# 2026-10-26; every drone answered on these)
+declare -A IPS=( [delta]=192.168.0.40 [buckshee]=192.168.0.60 [ghost]=192.168.0.50 [thunderstrike]=192.168.0.70 )
 
 DRONES=("$@")
 [ ${#DRONES[@]} -eq 0 ] && DRONES=(ghost delta buckshee thunderstrike)
@@ -54,7 +56,7 @@ while true; do
     for d in "${started[@]}"; do
         status=$(do_ssh "$d@${IPS[$d]}" "
             if grep -q 'ALL 8 STEPS SUCCEEDED' $WS/build_seq.log 2>/dev/null; then echo OK;
-            elif grep -qE 'Aborted|failed' $WS/build_seq.log 2>/dev/null; then echo FAILED;
+            elif grep -qE '^(Failed|Aborted) +<<<|packages? failed:' $WS/build_seq.log 2>/dev/null; then echo FAILED;
             else grep -c '^================ STEP' $WS/build_seq.log 2>/dev/null || echo 0; fi" 2>/dev/null)
         case "$status" in
             OK)     line+="$d:DONE  " ;;
