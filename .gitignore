@@ -2,3 +2,19 @@ px4_logs/
 credentials.env
 __pycache__/
 collected/
+
+# Recorded bags: payload is large (a 10 min 2-drone `figures` run is ~2.9 GB).
+# The manifests and collection records ARE tracked - they pin git SHAs, the
+# profile, the topic list and the UTC window, so an archived bag stays described.
+bags/**/*.db3
+bags/**/metadata.yaml
+# derived by viz/bag2timeline.py from the bags above; rebuild, don't track
+bags/**/timeline/
+
+# third-party esptool+pyserial bundle fetched by flash_lora_firmware.sh
+tools/esptool_py/
+# regenerable replay outputs (viz/fleet_3d.py, viz/fleet_player.py --mp4): tens of MB
+# each; rebuild from the bags with the commands in reports/visualization/REPLAY.md
+reports/visualization/**/*_3d.html
+reports/visualization/**/*.mp4
+bags/**/*_3d.html
