@@ -1,0 +1,2 @@
+log_path,segment_index,t_start_s,t_end_s,duration_s,n_samples,sample_rate_hz,frames_total,frames_lost,loss_ratio_ppm,wraps_detected,sbus_frame_rate_hz,rc_lost_any,rc_failsafe_any,arming_states_seen,detection_floor_ppm
+/home/ssg/lunar_lab/multi-drone-project/code/PX4logs/log_7_2026-8-18-15-55-56.ulg,0,103.798,120.811,17.013,33,1.881,1131,0,0.0,0,66.477,0,0,armed|disarmed,884.173

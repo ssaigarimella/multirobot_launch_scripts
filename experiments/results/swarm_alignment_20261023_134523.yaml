@@ -1,0 +1,25 @@
+# written by experiments/set_alignment.py 2026-10-23 13:45
+# reference = delta; bearings clockwise from its nose
+reference_drone_id: 1
+
+drones:
+  1:  # delta
+    range_m: 0.000
+    bearing_deg: 0.0
+    yaw_deg: 0.0
+    height_offset_m: 0.000
+  2:  # buckshee
+    range_m: 2.000
+    bearing_deg: 90.0
+    yaw_deg: 0.0
+    height_offset_m: 0.000
+  3:  # ghost
+    range_m: 4.000
+    bearing_deg: 90.0
+    yaw_deg: 0.0
+    height_offset_m: 0.000
+  4:  # thunderstrike
+    range_m: 6.000
+    bearing_deg: 90.0
+    yaw_deg: 0.0
+    height_offset_m: 0.000
