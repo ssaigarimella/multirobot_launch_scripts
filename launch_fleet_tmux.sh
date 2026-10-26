@@ -104,7 +104,8 @@ if [ "${1:-}" = "--tab" ]; then
     SESS="fleet_tab$N"
     echo "=== $DRONE (d$ID) - Tab $N: $LABEL ==="
     echo "(tmux '$SESS' on the drone - survives SSH drops; re-run to re-attach)"
-    read -rp "Press Enter to launch... "
+    # TAB_DETACHED=1 (used by `up`): same tab, no prompt, no attach.
+    [ "${TAB_DETACHED:-0}" = 1 ] || read -rp "Press Enter to launch... "
     LOGDIR=$WS/experiment_logs
 
     if [ "$N" = "8" ]; then
@@ -159,6 +160,11 @@ if [ "${1:-}" = "--tab" ]; then
         REMOTE="docker ps --format '{{.Names}}' | grep -qx $CONTAINER || docker start $CONTAINER >/dev/null 2>&1; sleep 1; mkdir -p $LOGDIR; tmux has-session -t $SESS 2>/dev/null || tmux new-session -d -x 220 -y 50 -s $SESS \"docker exec -it -u admin $CONTAINER bash -c 'source /opt/ros/humble/setup.bash && source $CWS/install/setup.bash && export ROS_DOMAIN_ID=$ID ROS_LOCALHOST_ONLY=0 && $CMD; ec=\\\$?; echo; echo ===== exited code \\\$ec - pane kept open, Ctrl-b d to detach =====; exec bash'\"; tmux pipe-pane -o -t $SESS \"cat >> $LOGDIR/pane_${SESS}_\$(date +%s).log\"; tmux attach-session -t $SESS"
     fi
 
+    if [ "${TAB_DETACHED:-0}" = 1 ]; then
+        sshpass -p "$JETSON_PASS" ssh -T -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
+            "$DRONE@$IP" "${REMOTE%; tmux attach-session -t $SESS}" </dev/null
+        exit $?
+    fi
     sshpass -p "$JETSON_PASS" ssh -t \
         -o StrictHostKeyChecking=no \
         -o ServerAliveInterval=15 -o ServerAliveCountMax=4 \
