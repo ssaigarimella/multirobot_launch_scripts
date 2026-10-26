@@ -296,7 +296,10 @@ def cmd_collect(args):
         out = os.path.join(dest, name)
         os.makedirs(out, exist_ok=True)
         r = subprocess.run(
-            ['sshpass', '-p', password(), 'rsync', '-az',
+            # bags/ are multi-GB: collect_bags.sh fetches them resumably and
+            # verifies them; here they would blow the timeout and starve the
+            # small logs that follow them alphabetically.
+            ['sshpass', '-p', password(), 'rsync', '-az', '--exclude=/bags/',
              '-e', 'ssh -o StrictHostKeyChecking=no',
              '%s@%s:%s/experiment_logs/' % (name, ip, WS), out + '/'],
             capture_output=True, text=True, timeout=300)

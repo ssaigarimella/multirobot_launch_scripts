@@ -1,0 +1,30 @@
+{
+  "run": "e4b",
+  "drone": "delta",
+  "drone_id": 1,
+  "ros_domain_id": 1,
+  "profile": "figures",
+  "transport": "bench",
+  "note": "",
+  "start_utc": "2026-10-23T18:49:20Z",
+  "end_utc": "2026-10-23T19:08:21Z",
+  "hostname": "delta",
+  "bag_dir": "/mnt/nova_ssd/workspaces/isaac_ros-dev/experiment_logs/bags/e4b/delta",
+  "max_bag_size_mb": 2048,
+  "storage_id": "sqlite3",
+  "free_gb_at_start": 806,
+  "git_shas": {
+    "active_exploration": "6f2c629",
+    "isaac_ros_common": "d5d7a49",
+    "isaac_ros_nvblox": "7774f42",
+    "isaac_ros_visual_slam": "4c7b976",
+    "multi_drone_nvblox": "994a349",
+    "px4_msgs": "a1045ec",
+    "px4_offboard": "87c25c5",
+    "radiohive": "7e18929",
+    "realsense-ros": "100dccc3",
+    "_": ""
+  },
+  "topics_recorded": ["/tf","/tf_static","/nvblox_node/color_layer_marker","/nvblox_node/static_esdf_pointcloud","/nvblox_node/static_occupancy_grid","/nvblox_node/esdf_slice_bounds","/nvblox_node/workspace_bounds","/nvblox_shared_node/color_layer_marker","/nvblox_shared_node/static_esdf_pointcloud","/nvblox_shared_node/static_occupancy_grid","/visual_slam/tracking/odometry","/fis/frontier_markers","/fis/frontier_centroids","/fis/frontier_viewpoints","/fis/frontier_gains","/exploration/markers","/exploration/state","/reactive_guard/status","/reactive_guard/blocked","/loop_closure_alignment","/swarm/peers","/coordination/claim_intent","/coordination/mode_state","/d1/alignment/T_world_self","/d1/alignment/status","/d1/swarm/link_stats"],
+  "topics_absent_at_start": [""]
+}

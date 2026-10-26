@@ -101,6 +101,8 @@ bridge needed" — that's correct). Wait **3 minutes** (PX4 shows "no valid loca
 during this — normal, it's the uXRCE handshake + EKF2 converging). Then:
 ```bash
 ./fleet_ctl preflight ghost         # expect PREFLIGHT PASS: 9/9 (FMU must be powered)
+./record_fleet.sh start  e1 ghost   # bag for replay/figures (see "Recording" below)
+./record_fleet.sh status e1 ghost   # must say GROWING before you take off
 ```
 Fly: Position → arm → take off → **Offboard**. Aim for 8–10 minutes.
 
@@ -117,10 +119,12 @@ Fly: Position → arm → take off → **Offboard**. Aim for 8–10 minutes.
 - the drone reaches **more than 10 m** from takeoff (proves the FIS box fix)
 - no unexpected drop out of Position/Offboard
 
-**After landing:**
+**After landing (this order — recording first):**
 ```bash
+./record_fleet.sh stop e1 ghost     # BEFORE the stack stop, or the bag is unreadable
 ./launch_fleet_tmux.sh stop ghost
-./fleet_ctl collect ghost           # -> collected/ghost/
+./fleet_ctl collect ghost           # -> collected/ghost/   (logs/CSVs)
+./collect_bags.sh e1 ghost          # -> bags/e1/ghost/     (the bag)
 ```
 
 ---
@@ -134,7 +138,8 @@ identical geofence, topics, vehicle ID and safety parameters, so the comparison 
 ./launch_fleet_tmux.sh ghost --planner=hercules
 ```
 Tab 5's first line reads `Exploration Planner [hercules]`. Same 3-minute wait, same preflight, same flight profile
-(start from the same spot facing the same way as E1).
+(start from the same spot facing the same way as E1). Record exactly as in E1 with run
+name `e2`: `./record_fleet.sh start e2 ghost` → `status` → fly → `stop e2 ghost`.
 
 Safety defaults are forced off for this planner: no cruise/velocity feed-forward, no 3D
 planning, no simulation-only map-share channel. You are testing its frontier scoring,
@@ -145,8 +150,10 @@ and E2 (explored area over time). If hercules is clearly better and equally stab
 `--planner=hercules` in E3/E4; otherwise stay on the default. Skipping E2 is fine.
 
 ```bash
+./record_fleet.sh stop e2 ghost
 ./launch_fleet_tmux.sh stop ghost
 ./fleet_ctl collect ghost
+./collect_bags.sh e2 ghost
 ```
 
 ---
@@ -174,6 +181,8 @@ Two windows. In each, Enter tabs **1 → 8** in order. Tab 8 brings up the map-s
 over the router — both drones must be on the TP-Link WiFi. Wait 3 minutes, then:
 ```bash
 ./fleet_ctl preflight ghost delta           # 9/9 on both
+./record_fleet.sh start  e3 ghost delta
+./record_fleet.sh status e3 ghost delta     # GROWING on both
 ```
 Fly ghost into Offboard first; once it is exploring, take delta up and switch it to Offboard.
 
@@ -186,8 +195,10 @@ Fly ghost into Offboard first; once it is exploring, take delta up and switch it
 flight; both land clean; no `LoRa link ... reconnecting` storm in tab 7.
 
 ```bash
+./record_fleet.sh stop e3 ghost delta
 ./launch_fleet_tmux.sh stop ghost delta
 ./fleet_ctl collect ghost delta
+./collect_bags.sh e3 ghost delta
 ```
 
 ---
@@ -210,14 +221,18 @@ Same procedure as E3, with two extra one-time checks per new drone:
 ```bash
 ./launch_fleet_tmux.sh ghost delta buckshee           # or: all
 ./fleet_ctl preflight ghost delta buckshee
+./record_fleet.sh start  e4 ghost delta buckshee      # add thunderstrike if flying 4
+./record_fleet.sh status e4 ghost delta buckshee
 ```
 Take off one at a time, each into Offboard once the previous is exploring.
 
 **GO gate:** as E3, for every drone, with goals spread across the area.
 
 ```bash
+./record_fleet.sh stop e4 ghost delta buckshee        # same drone list as start
 ./launch_fleet_tmux.sh stop all
 ./fleet_ctl collect ghost delta buckshee thunderstrike
+./collect_bags.sh e4 ghost delta buckshee
 ```
 
 ---
@@ -246,6 +261,38 @@ python3 experiments/analyze_sweep.py experiments/results/sweep_<stamp>
 The sweep restores every radio to 10 dBm when it finishes, even on Ctrl-C. Send me (and
 Lucas) `experiments/results/sweep_<stamp>/channel_curve_measured.csv` — it is already in
 the `rssi_dbm,delivery_ratio` format his simulator takes.
+
+---
+
+## Recording and replay (E1–E4)
+
+Every flight is recorded with the `figures` profile (~3.6 MB/s per drone, ≈2 GB per drone
+for 10 min): poses, TF, each drone's own map, the shared map, frontiers, goals, claims,
+alignment. Raw camera is **not** recorded in flight. Recording adds subscribers only; it
+does not change the flight stack.
+
+- **One run name per flight.** A second flight of E1 is `e1b`, `e1c`, … — `start` refuses a
+  name that already holds a bag (so an old flight can never be overwritten).
+- **Always `record_fleet.sh stop` before `launch_fleet_tmux.sh stop`.** The recorder
+  deliberately survives stack teardown; only its own `stop` writes `metadata.yaml`, without
+  which the bag can't be opened. If you forget, the recording is still running — run
+  `stop` afterwards; it is still fine.
+- It refuses to start with < 20 GB free on a drone (prints REFUSING).
+- `collect_bags.sh` resumes if WiFi drops; `./collect_bags.sh --verify e3` checks a
+  collected run opens cleanly.
+
+Replay on the laptop (all drones in one RViz, one TF tree rooted at `world` using the
+alignment yaml from the flight):
+```bash
+./replay_fleet.sh e3 ghost delta --rviz        # --rate 2 to speed up, --loop, --paused
+```
+What the replay shows: every drone's pose and trajectory moving together, each drone's
+map growing, frontiers, goals and claims. **How consistent the merged map is:** drones are
+placed using the tape-measured start positions, and each one's map then drifts with its
+own VIO. No loop closure runs in flight, so overlapping areas from different drones will
+show offsets of roughly your tape-measure error plus drift (expect tens of cm after
+10 min). That is fine for showing coordination; a tightly registered global map figure
+needs an offline registration pass on the recorded maps afterwards.
 
 ---
 
