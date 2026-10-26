@@ -1,0 +1,309 @@
+Panels:
+- Class: rviz_common/Displays
+  Name: Displays
+  Help Height: 0
+  Tree Height: 700
+  Property Tree Widget:
+    Expanded: []
+    Splitter Ratio: 0.5
+- Class: rviz_common/Views
+  Name: Views
+  Expanded: []
+  Splitter Ratio: 0.5
+Visualization Manager:
+  Class: ''
+  Displays:
+  - Class: rviz_default_plugins/Grid
+    Name: Grid (1 m cells, 40 m)
+    Enabled: true
+    Alpha: 0.25
+    Color: 160; 160; 160
+    Cell Size: 1.0
+    Plane: XY
+    Plane Cell Count: 40
+    Line Style:
+      Line Width: 0.03
+      Value: Lines
+    Offset:
+      X: 0
+      Y: 0
+      Z: 0
+    Reference Frame: <Fixed Frame>
+  - Class: rviz_default_plugins/TF
+    Name: TF (world root, both drones)
+    Enabled: true
+    Show Names: true
+    Show Axes: true
+    Show Arrows: false
+    Marker Scale: 0.6
+    Update Interval: 0
+    Frame Timeout: 30
+    Filter (blacklist): ''
+    Filter (whitelist): ''
+    Tree: {}
+    Frames:
+      All Enabled: true
+  - Class: rviz_common/Group
+    Name: ghost (d3) mapping
+    Enabled: true
+    Displays:
+    - Class: rviz_default_plugins/Marker
+      Name: ghost map (nvblox colour layer)
+      Enabled: true
+      Topic:
+        Value: /d3/nvblox_node/color_layer_marker
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Namespaces: {}
+      Queue Size: 100
+    - Class: rviz_default_plugins/PointCloud2
+      Name: ghost ESDF cloud
+      Enabled: true
+      Topic:
+        Value: /d3/nvblox_node/static_esdf_pointcloud
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Style: Boxes
+      Size (m): 0.04
+      Alpha: 1.0
+      Color Transformer: FlatColor
+      Color: 0; 190; 255
+      Decay Time: 0.0
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Use rainbow: false
+    - Class: rviz_default_plugins/Map
+      Name: ghost occupancy grid (2-D)
+      Enabled: false
+      Topic:
+        Value: /d3/nvblox_node/static_occupancy_grid
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Alpha: 0.7
+      Color Scheme: map
+      Draw Behind: true
+      Update Topic:
+        Value: ''
+      Use Timestamp: false
+      Binary representation: false
+    - Class: rviz_default_plugins/Marker
+      Name: ghost ESDF slice bounds
+      Enabled: true
+      Topic:
+        Value: /d3/nvblox_node/esdf_slice_bounds
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Namespaces: {}
+      Queue Size: 100
+    - Class: rviz_default_plugins/Marker
+      Name: ghost workspace bounds
+      Enabled: true
+      Topic:
+        Value: /d3/nvblox_node/workspace_bounds
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Namespaces: {}
+      Queue Size: 100
+  - Class: rviz_common/Group
+    Name: ghost planning
+    Enabled: true
+    Displays:
+    - Class: rviz_default_plugins/Odometry
+      Name: ghost trajectory
+      Enabled: true
+      Topic:
+        Value: /d3/visual_slam/tracking/odometry
+        Depth: 100
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Keep: 100000
+      Position Tolerance: 0.02
+      Angle Tolerance: 0.05
+      Shape:
+        Value: Arrow
+        Color: 0; 190; 255
+        Alpha: 1.0
+        Shaft Length: 0.12
+        Shaft Radius: 0.02
+        Head Length: 0.06
+        Head Radius: 0.04
+      Covariance:
+        Value: false
+        Position:
+          Alpha: 0.2
+          Color: 204; 51; 204
+          Scale: 1
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Frame: Local
+          Offset: 1
+          Scale: 1
+        Orientation Frame: Local
+    - Class: rviz_default_plugins/MarkerArray
+      Name: ghost frontiers
+      Enabled: true
+      Topic:
+        Value: /d3/fis/frontier_markers
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Namespaces: {}
+      Queue Size: 100
+    - Class: rviz_default_plugins/PoseArray
+      Name: ghost frontier centroids
+      Enabled: true
+      Topic:
+        Value: /d3/fis/frontier_centroids
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Shape: Arrow (Flat)
+      Color: 0; 190; 255
+      Alpha: 1.0
+      Arrow Length: 0.4
+      Head Length: 0.1
+      Head Radius: 0.05
+      Shaft Length: 0.3
+      Shaft Radius: 0.02
+      Axes Length: 0.3
+      Axes Radius: 0.03
+    - Class: rviz_default_plugins/PoseArray
+      Name: ghost frontier viewpoints
+      Enabled: true
+      Topic:
+        Value: /d3/fis/frontier_viewpoints
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Shape: Arrow (Flat)
+      Color: 0; 190; 255
+      Alpha: 1.0
+      Arrow Length: 0.4
+      Head Length: 0.1
+      Head Radius: 0.05
+      Shaft Length: 0.3
+      Shaft Radius: 0.02
+      Axes Length: 0.3
+      Axes Radius: 0.03
+    - Class: rviz_default_plugins/MarkerArray
+      Name: ghost exploration / claim markers
+      Enabled: true
+      Topic:
+        Value: /d3/exploration/markers
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Namespaces: {}
+      Queue Size: 100
+  - Class: rviz_common/Group
+    Name: ghost peer / shared map
+    Enabled: true
+    Displays:
+    - Class: rviz_default_plugins/PointCloud2
+      Name: ghost peer map (shared nvblox)
+      Enabled: true
+      Topic:
+        Value: /d3/nvblox_shared_node/static_esdf_pointcloud
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Style: Boxes
+      Size (m): 0.04
+      Alpha: 1.0
+      Color Transformer: FlatColor
+      Color: 20; 110; 150
+      Decay Time: 0.0
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Use rainbow: false
+    - Class: rviz_default_plugins/Marker
+      Name: ghost peer map colour layer
+      Enabled: true
+      Topic:
+        Value: /d3/nvblox_shared_node/color_layer_marker
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Filter size: 10
+      Namespaces: {}
+      Queue Size: 100
+  Enabled: true
+  Global Options:
+    Background Color: 255; 255; 255
+    Fixed Frame: world
+    Frame Rate: 30
+    Default Light: true
+  Name: root
+  Tools:
+  - Class: rviz_default_plugins/MoveCamera
+  - Class: rviz_default_plugins/FocusCamera
+  - Class: rviz_default_plugins/Measure
+    Line color: 128; 128; 0
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Name: Current View
+      Distance: 7.0
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.06
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: 1.0
+        Y: -3.5
+        Z: 0.0
+      Focal Shape Fixed Size: false
+      Focal Shape Size: 0.05
+      Invert Z Axis: false
+      Near Clip Distance: 0.01
+      Pitch: 0.95
+      Yaw: 1.57
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+    Saved: null
+Window Geometry:
+  Height: 1080
+  Width: 1920
+  Displays:
+    collapsed: false
+  Views:
+    collapsed: false
+  Hide Left Dock: false
+  Hide Right Dock: true
+  QMainWindow State: ''
