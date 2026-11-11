@@ -290,7 +290,16 @@ def start_tab(drone, n, flying, opts):
             '--planner=' + opts.get('planner', 'simple')]
     if opts.get('debug'):
         args.append('--debug')
-    return local(args, timeout=90, env={'TAB_DETACHED': '1'})
+    res = local(args, timeout=90, env={'TAB_DETACHED': '1'})
+    if n == 1:
+        # The camera driver can reset the camera a few seconds after launch
+        # (initial_reset: true on thunderstrike). The camera then comes back
+        # under a new /dev/bus/usb node that the container cannot see, and
+        # librealsense retries 'failed to set power state' forever. Mirroring
+        # device nodes while it retries lets the retry succeed; restarting the
+        # tab instead resets the camera again (bench-verified 2026-10-27).
+        threading.Thread(target=devsync, args=(drone, 45), daemon=True).start()
+    return res
 
 
 def stop_tab(drone, n):
