@@ -1,0 +1,2 @@
+[37;1m2026-10-28 18:13:29.286 [31;1m[[37;1mRTPS_TRANSPORT_SHM[31;1m Error] [37mFailed init_port fastrtps_port7685: open_and_lock_file failed[34;1m -> Function [36mopen_port_internal[m
+[INFO] [1793211210.596990372] [colour_check]: marker parser self-check OK (6251 points, type 6, frame odom)
