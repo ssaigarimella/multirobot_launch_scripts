@@ -1,0 +1,6 @@
+date,run,vehicle,environment,offboard_start,offboard_end,offboard_min,path_m_map_frame,max_dist_m_px4_frame,goals_reached,outcome,cause,status,source
+2026-10-23,e4,ghost,"open field, 35 m box",14:20:25,14:26:31+ (log cut),6.1+,41 (PX4 frame; map-frame value not computed),15.2,8,aborted,autopilot-to-computer serial link froze at 14:22:25 (clone USB-serial adapter stall),SHAKEDOWN,"FLIGHT-ANALYSIS section 1, 4.1"
+2026-10-23,e4,thunderstrike,"open field, 35 m box",14:29:38,14:36:03,6.4,139,29.3,35,completed,about 30 s lost to the geofence-edge replanning loop,SHAKEDOWN,"section 1, 4.2"
+2026-10-23,e4c,buckshee,"open field, 35 m box",15:29:22,15:31:24,2.0,54,16.0,10,"completed, short",visual-odometry jump of 2.7 m at landing,SHAKEDOWN,section 1
+2026-10-23,e4c,delta,"open field, 35 m box",15:29:16,15:30:53,1.6,39,15.0,7,"completed, short",last 23 s in the geofence-edge loop,SHAKEDOWN,section 1
+TOTAL,,4 flights,,,,16.1+,,,60,"3 completed, 1 aborted",,SHAKEDOWN (excluded from campaign tables),

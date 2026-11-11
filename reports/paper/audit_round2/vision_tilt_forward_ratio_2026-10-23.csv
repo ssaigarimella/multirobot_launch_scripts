@@ -1,0 +1,5 @@
+vehicle,forward_scale_px4_over_map,sideways_scale,fit_rms_m,forward_extent_m,sideways_extent_m,expected_if_40deg,source
+thunderstrike,0.794,0.998,0.19,36.8,26.5,0.766,FLIGHT-ANALYSIS section 4.6
+buckshee,0.798,0.992,0.33,18.9,14.1,0.766,
+delta,0.743,0.997,0.08,12.6,14.2,0.766,
+ghost (before the feed froze),0.689,1.001,0.13,6.4,15.3,0.766,

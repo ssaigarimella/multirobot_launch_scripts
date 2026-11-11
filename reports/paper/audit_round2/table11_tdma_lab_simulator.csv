@@ -1,0 +1,22 @@
+scenario,topology,radios,firmware,runs,not_converged_pct,median_s,p95_s,max_s,note
+reference radio reboots,full,4,v7.3,500,60.2,,,,
+reference radio reboots,full,4,v7.4 (on radios),500,60.2,,,,
+reference radio reboots,full,4,v7.5 (not flashed),500,0.0,3.6,6.3,8.5,
+reference radio reboots,full,2,v7.3,500,19.4,,,,
+reference radio reboots,full,2,v7.4 (on radios),500,0.0,0.2,1.8,5.0,
+reference radio reboots,full,2,v7.5 (not flashed),500,0.0,0.2,1.7,50.0,
+reference radio reboots,chain,4,v7.3,500,40.4,,,,
+reference radio reboots,chain,4,v7.4 (on radios),500,9.6,,,,
+reference radio reboots,chain,4,v7.5 (not flashed),500,0.0,0.3,7.5,51.5,
+cold start,full,4,v7.3,500,47.6,,,,
+cold start,full,4,v7.4 (on radios),500,39.2,,,,
+cold start,full,4,v7.5 (not flashed),500,0.0,0.4,3.3,7.8,
+cold start,chain,4,v7.3,500,48.6,,,,
+cold start,chain,4,v7.4 (on radios),500,12.6,,,,
+cold start,chain,4,v7.5 (not flashed),500,0.0,0.4,5.7,47.7,
+"split chain, middle slots overlap",chain,4,v7.3,500,100.0,,,,
+"split chain, middle slots overlap",chain,4,v7.4 (on radios),500,96.4,,,,
+"split chain, middle slots overlap",chain,4,v7.5 (not flashed),500,0.0,2.4,7.5,56.0,
+reference radio departs for good,full,4,v7.3 / v7.4 / v7.5,500,0.0,,,,survivors stay on a common frame; all keep reference id 0 (no re-election) in 500/500
+reference radio departs for good,chain,4,v7.3 / v7.4 / v7.5,500,0.0,,,,same
+measured inter-arrival jitter,bench 2026-08-25,2,v7.2,7068,,,,,"median 190.00 ms, SD within cycle band 1.22 ms; RF_RESULTS.md T4"

@@ -1,0 +1,509 @@
+diff --git a/main.tex b/main.tex
+index 5b6dfca..34479a4 100644
+--- a/main.tex
++++ b/main.tex
+@@ -93,7 +93,8 @@ of the onboard computer under sustained GPU-accelerated visual odometry and
+ dense mapping through a full battery. The
+ perception pipeline fuses visual odometry with autopilot inertial and
+ rangefinder measurements in the PX4 EKF2 estimator and drives dense mapping from
+-the post-fusion pose. Vehicle-to-vehicle communication uses two links built
++the visual odometry leveled for the camera tilt, with mapping from the
++post-fusion pose evaluated in simulation. Vehicle-to-vehicle communication uses two links built
+ without a dedicated mesh radio: a low-cost LoRa module carries coordination
+ messages under a time-division schedule with decentralized clock
+ synchronization, and the vehicle's own WiFi adapter, placed in mesh mode through
+@@ -186,14 +187,16 @@ for bulk map exchange that lets each vehicle fuse the dense maps of all
+ reachable neighbors rather than one partner at a time. We prove that the clock
+ synchronization converges to a common schedule, measure link margin and
+ three-radio coexistence on the airframe, and report both links in flight.
++\todo{The mesh link has not been flown; flights to date used an access point.}
+ \item \textbf{A GNSS-independent state-estimation and mapping pipeline that
+ fuses through the vehicle's PX4 flight controller and runs on an embedded GPU.}
+ A pipeline that fuses cuVSLAM visual odometry, autopilot inertial
+ measurements, and a downward rangefinder in the PX4 EKF2 estimator, drives dense
+-mapping and planning from the post-fusion pose, and isolates the visual front
+-end from the dense mapper across process boundaries. Each choice is stated with
+-its rationale; the mapping-frame choice is validated by fault injection in
+-simulation, and the process-isolation choice by direct measurement on the
++mapping and planning from the cuVSLAM odometry leveled for the camera tilt, and
++isolates the visual front end from the dense mapper across process boundaries.
++Each choice is stated with its rationale; mapping from the post-fusion pose, the
++configuration planned for the flight campaign, is evaluated by fault injection
++in simulation, and the process-isolation choice by direct measurement on the
+ vehicle.
+ \item \textbf{A reproducible fleet, not just a single vehicle.} The configuration,
+ containerization, and deployment tooling that make four vehicles behave
+@@ -627,8 +630,11 @@ Total takeoff mass & & 1867\\
+ \caption{Electrical budget and thrust margin. Hover current is measured in
+ ground-effect-free hover at the takeoff mass of Table~\ref{tab:massbudget}; the
+ computer branch is measured at the buck converter input. Hover thrust is taken
+-from the autopilot's hover thrust estimate in flight. All values to be filled
+-from measurement.}
++from the autopilot's hover thrust estimate in flight. The hover thrust, the
++thrust-to-weight ratio, and the total power are medians over the in-flight
++samples of one flight log in which the logger dropped about half the samples;
++the thrust-to-weight ratio is the reciprocal of the hover thrust. Remaining
++values to be filled from measurement.}
+ \label{tab:powerbudget}
+ \small
+ \setlength{\tabcolsep}{6pt}
+@@ -642,13 +648,13 @@ Onboard computer, idle & \PH & \PH\\
+ Onboard computer, both perception pipelines active & \PH & \PH\\
+ Autopilot, radios, and sensors & \PH & \PH\\
+ \midrule
+-Total at hover with perception active & \PH & \PH\\
++Total at hover with perception active & \PH & 141\\
+ \midrule
+ Battery capacity (4S, 5200\,mAh) & & 77\,Wh\\
+ Endurance, hover with perception active & & \PH\,min\\
+ Endurance, measured exploration mission & & \PH\,min\\
+-Hover thrust, normalized & \PH & \\
+-Thrust-to-weight at takeoff mass & \PH & \\
++Hover thrust, normalized & 0.40 & \\
++Thrust-to-weight at takeoff mass & 2.5 & \\
+ \bottomrule
+ \end{tabular}
+ \end{table}
+@@ -695,11 +701,10 @@ the color stream at 640 by 480 at 15\,Hz. cuVSLAM runs as a two-camera
+ stereo-inertial front end on the rectified infrared pair, with inertial fusion
+ enabled on the camera's gyroscope and accelerometer, each sampled at 200\,Hz and
+ combined into a single inertial stream. The camera's infrared emitter
+-alternates between frames, and a splitter routes frames by emitter state: frames
+-with the emitter on feed the depth stream, where the projected pattern densifies
+-structured-light depth, and frames with the emitter off feed cuVSLAM, so the
+-pattern does not corrupt stereo feature matching. Both pipelines therefore draw
+-on the same physical sensor through deliberately different frame sets. The camera is mounted with a fixed
++alternates between frames, and a splitter routes frames by emitter state:
++cuVSLAM receives the infrared frames captured with the emitter on, and the depth
++stream is taken from the alternate frames. Both pipelines therefore draw on the
++same physical sensor through different frame sets. The camera is mounted with a fixed
+ $20^{\circ}$ downward tilt, which keeps the ground in view during forward
+ flight so that the visual front end retains a usable population of trackable
+ features and the depth stream covers the ground the vehicle flies over. A
+@@ -838,10 +843,12 @@ part of it.
+ \includegraphics[width=\textwidth]{figures/Figure_3.pdf}
+ \caption{Per-vehicle software architecture and data flow. The RealSense D435i
+ feeds the camera driver in \texttt{vslam\_container}, which routes frames by
+-emitter state. cuVSLAM produces stereo-inertial visual odometry that crosses the
++emitter state and passes the emitter-on infrared frames to cuVSLAM. cuVSLAM
++produces stereo-inertial visual odometry that crosses the
+ uXRCE-DDS serial bridge to EKF2 on the autopilot, where it is fused with the
+ autopilot inertial measurements and the downward rangefinder;
+-\texttt{odom\_correction} republishes the fused pose as the frame mapping uses.
++\texttt{odom\_correction} levels the cuVSLAM odometry for the camera tilt and
++republishes it as the frame mapping uses.
+ nvblox, in the separate \texttt{nvblox\_container}, integrates depth into the
+ fused dense map, and frontier selection and the path planner read its
+ signed-distance field and return setpoints across the bridge to the PX4
+@@ -948,16 +955,16 @@ rules that are standard in principle and easy to apply incorrectly, since each
+ failure mode is silent on a stationary vehicle and appears only in flight. The
+ smooth odometry stream is fused, not the loop-closure-corrected pose, because a
+ discrete pose correction enters a filter as a large apparent velocity over one
+-time step. The visual estimate is fused as horizontal position, vertical position, and
+-heading, with no vision-derived velocity, because velocity from the visual front
+-end carries latency-correlated error that grows during fast motion. The
+-rangefinder serves as the height reference, and vision height is fused alongside
+-it.
++time step. The visual estimate is fused as horizontal position and heading,
++with no vision-derived velocity, because velocity from the visual front end
++carries latency-correlated error that grows during fast motion. Height comes
++from the rangefinder, which is the estimator's height reference, and vision
++height is not fused (\texttt{EKF2\_EV\_CTRL} of 9 and \texttt{EKF2\_HGT\_REF}
++of 2).
+ 
+ Velocity is never taken from vision, so it comes from inertial propagation
+ alone (Figure~\ref{fig:axes}). Horizontal position and heading come from vision,
+-and height is fused from the rangefinder and vision together with the
+-rangefinder as reference. When vision drops out, the rangefinder continues to
++and height comes from the rangefinder. When vision drops out, the rangefinder continues to
+ constrain height and inertial propagation continues to carry velocity, so the
+ vehicle holds altitude and comes to a controlled stop instead of acting on a
+ corrupted full-state estimate, and it resumes exploring when the visual front
+@@ -976,26 +983,27 @@ campaign rather than derived from a direct measurement of pipeline delay.
+ 
+ \begin{figure}[t]
+ \figplaceholder{4.2cm}{Estimator sensor-to-axis assignment. Horizontal position
+-and heading come from cuVSLAM, height is fused from the downward rangefinder and
+-cuVSLAM with the rangefinder as reference, and velocity comes from inertial
+-propagation. The EKF2 post-fusion pose, which combines
+-all three with the autopilot inertial measurements, is the pose used for dense
+-mapping and planning.}
+-\caption{Estimator sensor-to-axis assignment and the post-fusion pose used for
+-mapping.}
++and heading come from cuVSLAM, height comes from the downward rangefinder, and
++velocity comes from inertial propagation. The EKF2 post-fusion pose combines
++all three with the autopilot inertial measurements. Dense mapping and planning
++use the cuVSLAM odometry leveled for the camera tilt.}
++\caption{Estimator sensor-to-axis assignment. Mapping uses the leveled cuVSLAM
++odometry.}
+ \label{fig:axes}
+ \end{figure}
+ 
+-\subsection{Mapping and planning in the post-fusion frame}\label{sec:mapframe}
++\subsection{Mapping and planning frame}\label{sec:mapframe}
+ 
+ The pose that drives dense mapping and planning determines how estimation error
+-propagates through the rest of the system. The raw cuVSLAM pose is available
+-directly, but the platform instead uses the EKF2 post-fusion pose, which
++propagates through the rest of the system. Two poses are available on the
++vehicle: the cuVSLAM visual odometry and the EKF2 post-fusion pose, which
+ combines the visual odometry, the autopilot inertial measurements, and the
+-rangefinder. Rather than let cuVSLAM publish the mapping transform, the
++rangefinder. The fleet maps from the cuVSLAM odometry, leveled for the camera
++tilt. Rather than let cuVSLAM publish the mapping transform, the
+ \texttt{odom\_correction} node in the \texttt{active\_exploration} package
+-consumes the fused state and republishes the transform that mapping uses, which
+-is where the pose driving the map is selected.
++rotates the odometry by the fixed $20^{\circ}$ camera tilt and republishes the
++transform that mapping uses, which is where the pose driving the map is
++selected.
+ 
+ The post-fusion estimate is more accurate than the raw visual odometry, and the
+ difference is largest in the vertical axis: the rangefinder measures height
+@@ -1004,16 +1012,19 @@ depth triangulated over a short stereo baseline, whose error grows with range.
+ Building the dense map in the post-fusion frame keeps the map consistent with
+ the vehicle's best available state estimate, so that the frontiers and clearance
+ the planner reads are expressed in the same frame the controller flies in.
+-Driving the map from the raw visual odometry instead would let its drift, worst
+-in the vertical axis, accumulate into the map and from there into planning. The
+-gain in mapping accuracy is measured in simulation, where exact pose and
+-geometry references are available (Section~\ref{sec:sim_ablation}).
++Driving the map from the visual odometry lets its drift, worst in the vertical
++axis, accumulate into the map and from there into planning. The gain in mapping
++accuracy is measured in simulation, where exact pose and geometry references are
++available (Section~\ref{sec:sim_ablation}). The post-fusion frame is the
++configuration evaluated there and the one planned for the flight campaign, once
++the leveling rotation applied to the autopilot's vision input is validated on
++the vehicle (Section~\ref{sec:lessons}).
+ 
+ \subsection{Dense mapping and opportunistic multi-robot fusion}\label{sec:mapping}
+ 
+ Each vehicle runs the platform's modified deployment of nvblox
+ \cite{millane2024nvblox}, which consumes the depth stream, delivered at 640 by
+-480 at 30\,Hz, and the post-fusion pose to maintain a truncated signed-distance
++480 at 30\,Hz, and the leveled cuVSLAM odometry to maintain a truncated signed-distance
+ field and the Euclidean signed-distance field the planner queries. The
+ reconstruction is updated incrementally as new depth frames arrive rather than
+ rebuilt, which keeps mapping within the compute budget of the onboard
+@@ -1047,15 +1058,13 @@ matches yield a relative transform that aligns submaps before signed-distance
+ fusion, and pairwise-consistency screening rejects transforms inconsistent with
+ the accumulated set of inter-robot constraints, in the manner of decentralized
+ metric-semantic SLAM \cite{tian2022kimera}. The place-recognition stage runs on
+-the color stream at a rate well below the mapping rate, which keeps it clear of
++the infrared pair at a rate well below the mapping rate, which keeps it clear of
+ the perception loop. Retrieval returns the top five candidates, matches are
+ accepted at a LightGlue threshold of 0.1, and geometric verification requires
+ at least 15 RANSAC inliers at a 3.0 pixel threshold, with up to 500 keypoints
+-per keyframe.
+-\todo{The vocabulary size of the file actually loaded was not confirmed, and no
+-pairwise-consistency threshold was found in the code, so the claim in this
+-section that pairwise-consistency screening rejects inconsistent transforms is
+-currently unsupported and must be verified or removed.}
++per keyframe. The vocabulary holds 4089 visual words, and pairwise-consistency
++screening is enabled with thresholds of 1.0\,m in translation and
++$15^{\circ}$ in rotation.
+ 
+ % ============================================================
+ %  7. Communication architecture
+@@ -1101,8 +1110,8 @@ schedule with a latency bound.
+ 
+ The coordination link uses LoRa under a time-division schedule. The frame is
+ divided into one slot per vehicle, and each vehicle transmits only in its slot,
+-so coordination messages never collide and the latency of any message is bounded
+-by one frame. For $n$ vehicles, a slot duration $\tau$, and a per-cycle guard
++so once the team shares a common frame coordination messages do not collide and
++the latency of any message is bounded by one frame. For $n$ vehicles, a slot duration $\tau$, and a per-cycle guard
+ interval $g$, the interval between successive transmissions from a given vehicle
+ is
+ \begin{equation}
+@@ -1124,24 +1133,44 @@ intervals, matching the schedule, for a per-vehicle update rate of 5.263\,Hz.
+ Section~\ref{sec:bench_rf} reports the link margin this configuration
+ achieves.
+ 
+-The schedule is maintained by decentralized clock synchronization, so the team's
+-time reference itself has no single point of failure. Each vehicle holds a
+-reference identifier, the smallest vehicle identifier whose schedule it is
+-currently following, initialized to its own. Each vehicle periodically
+-broadcasts its reference identifier and slot timing, and on hearing a neighbor
+-that follows a smaller reference identifier it adopts that reference and aligns
+-its frame to the neighbor's, compensating for the message airtime.
++The schedule is maintained by decentralized clock synchronization with no
++coordinator vehicle, so the schedule does not depend on any one vehicle. Each
++vehicle holds a reference identifier, the smallest vehicle identifier whose
++schedule it is currently following, initialized to its own. Each packet carries
++its sender's reference identifier, its slot timing, and the set of vehicles the
++sender currently hears, and on hearing a neighbor that follows a smaller
++reference identifier a vehicle adopts that reference and aligns its frame to the
++neighbor's, compensating for the message airtime.
++
++The radios are half-duplex, so two vehicles whose slots overlap in time transmit
++together and cannot hear each other, and the adoption rule alone never separates
++them. In an event simulation of the preceding firmware revision, which had no
++provision for this case, four radios failed to reach a common frame in 39\% of
++cold starts and in 60\% of restarts of the reference vehicle. Three behaviors
++address it. A vehicle listens before it first transmits, so that a vehicle
++joining or rejoining a running team adopts the team's frame instead of
++transmitting over it. A reference identifier that its owner no longer refreshes
++expires from the state the vehicles exchange, so that when the reference vehicle
++departs the remaining vehicles re-elect the next smallest identifier instead of
++holding a stale one. A vehicle more than one hop from the reference is
++re-corrected periodically by the neighbor through which it follows the
++reference, so that frame error does not accumulate along a multi-hop path.
++\todo{This paragraph, the convergence argument below,
++Section~\ref{sec:sim_tdma}, and the corresponding lesson describe the target
++firmware and are contingent on the firmware flashed for the campaign.}
+ 
+ \textbf{Convergence.} Let the vehicles have distinct identifiers and let $m$ be
+ the smallest identifier present. Suppose the communication graph is connected
+-and stable for a span covering at least $D$ synchronization rounds, where $D$ is
+-the graph diameter. Then within $D$ rounds every vehicle adopts reference
+-identifier $m$ and aligns to a single common frame. Vehicle $m$ never adopts a
++and stable, and call a synchronization round an interval in which every vehicle
++hears each of its neighbors at least once. Then within $D$ rounds, where $D$ is
++the graph diameter, every vehicle adopts reference identifier $m$ and aligns to
++a single common frame. Vehicle $m$ never adopts a
+ larger reference, so it advertises $m$ from the start; any neighbor of $m$
+ adopts $m$ within one round, and by induction every vehicle at graph distance
+ $k$ from $m$ adopts $m$ by round $k$, so all vehicles adopt $m$ within $D$
+-rounds. A vehicle changes its reference only to a strictly smaller value, so the
+-reference identifier is non-increasing and the process does not oscillate. Once
++rounds. With no vehicle departing, no identifier expires, a vehicle changes its
++reference only to a strictly smaller value, and the process does not
++oscillate. Once
+ all vehicles share reference $m$ and align to its frame, slots are disjoint by
+ construction and no collisions occur. Behavior under intermittent and
+ partitioned connectivity, where a partition synchronizes internally to its own
+@@ -1178,7 +1207,8 @@ frontier claims over the LoRa link and keep exploring. The team is always
+ coordinating over LoRa, and the loss of the high-bandwidth link removes shared
+ map fusion but not coordination. Exploration continues on independent local maps
+ with reduced efficiency, which Section~\ref{sec:results} quantifies in flight
+-against the fully connected case.
++against the fully connected case. \todo{Not yet flown; the coordination-only
++fallback has no flight data.}
+ 
+ % ============================================================
+ %  8. Exploration behavior
+@@ -1427,10 +1457,9 @@ controlled path loss and the delivery ratio and message latency recorded against
+ received signal strength. Path loss is swept by varying transmit power in
+ firmware across the radio's range, which gives a repeatable indoor measurement
+ without the weather and terrain dependence of a field walk, and without exposing
+-a receiver front end to a transmitter's full output over a cable. Each packet
+-carries a sequence number, transmit power, and timestamp, and the receiver logs
+-signal strength and signal-to-noise ratio, so delivery ratio and latency are
+-computed per link condition. Figure~\ref{fig:linkmargin} reports delivery ratio
++a receiver front end to a transmitter's full output over a cable. The receiver
++logs signal strength and signal-to-noise ratio for each packet, so delivery
++ratio is computed per link condition. Figure~\ref{fig:linkmargin} reports delivery ratio
+ and latency against received signal strength, from which the sensitivity floor
+ and the operating margin follow.
+ 
+@@ -1440,9 +1469,14 @@ arrangement of Section~\ref{sec:antennas}. Recorded quantities are the
+ coordination-link delivery ratio, the mesh link's throughput measured between
+ two vehicles, and the manual-control link's received signal strength and link
+ quality from the autopilot log. Table~\ref{tab:coexistence} reports the matrix.
++\todo{Mesh throughput has not been measured under load.}
+ The manual-control link is the safety-critical one, so any degradation of it in
+ the all-active condition is the result that governs whether the antenna
+-arrangement is acceptable.
++arrangement is acceptable. In a bench run of 54\,min with four vehicles, the
++coordination link delivered 99.7 to 100\% of claim packets on each of the 12
++directed links while the WiFi adapters were associated to an access point at
++5765\,MHz, which is not the mesh configuration of
++Table~\ref{tab:coexistence}.
+ 
+ \textbf{Field range.} The coordination link is walked out in the open outdoor
+ environment of Section~\ref{sec:envs}, ground to ground and with one vehicle at
+@@ -1504,7 +1538,8 @@ mapping-frame choice and one for the coordination schedule.
+ The perception pipeline is run in PX4 software-in-the-loop with injected
+ visual-odometry faults, namely dropouts, drift, and added latency, in two
+ configurations differing in one respect: the dense map is built either from the
+-post-fusion pose, as the platform does, or from the raw cuVSLAM pose. Injecting
++post-fusion pose, the configuration planned for the flight campaign, or from
++the raw cuVSLAM pose. Injecting
+ these faults deliberately is unsafe on a vehicle in flight, and the outdoor
+ sites of Section~\ref{sec:envs} provide no external pose reference, which is why
+ this study is in simulation. The simulator supplies exact references for pose
+@@ -1530,7 +1565,7 @@ values to be filled from logged runs.}
+ Configuration & Horiz.\ error (m) & Vert.\ error (m) & Map error (m)\\
+ \midrule
+ Map from raw cuVSLAM pose & \PH & \PH & \PH\\
+-Map from post-fusion pose (flown) & \PH & \PH & \PH\\
++Map from post-fusion pose (planned for the campaign) & \PH & \PH & \PH\\
+ \bottomrule
+ \end{tabular}
+ \end{table}
+@@ -1553,12 +1588,18 @@ partitioned with later re-merge). The simulation is calibrated by the hardware:
+ its channel model uses the delivery ratio against received signal strength
+ measured in Section~\ref{sec:bench_rf}, rather than an assumed loss model, so
+ that team sizes beyond the four built vehicles are extrapolated from the link
+-the vehicles actually carry. Slots are disjoint by construction, so the study
+-confirms the absence of collisions and measures message latency against the
+-bound of Equation~\eqref{eq:cycle}, the number of rounds to converge to a common
+-frame against the graph diameter, and the recovery after a partition re-merges.
+-\todo{Report latency against the $n\tau + g$ bound, convergence rounds against
+-graph diameter, and re-merge recovery time.}
++the vehicles actually carry. Slots are disjoint once the team shares a frame, so
++the study confirms the absence of collisions after convergence and measures
++message latency against the bound of Equation~\eqref{eq:cycle}, the time to
++reach a common frame from power-up and after a restart of the reference vehicle,
++the time to re-elect a reference after the reference vehicle departs, the frame
++error of vehicles more than one hop from the reference, the number of rounds to
++converge against the graph diameter, and the recovery after a partition
++re-merges.
++\todo{Report latency against the $n\tau + g$ bound, convergence from power-up
++and after a restart of the reference vehicle, re-election time after its
++departure, multi-hop frame error, convergence rounds against graph diameter, and
++re-merge recovery time.}
+ 
+ \begin{table}[t]
+ \centering
+@@ -1647,7 +1688,8 @@ conditions are directly stageable in flight. Three connectivity conditions are
+ flown in the challenge-course environment with four vehicles: full connectivity;
+ the coordination-link-only fallback of Section~\ref{sec:wifi}, staged by
+ disabling the mesh interface in flight; and a partition, staged by separating
+-the team beyond mesh range. These quantify how much coverage rate and map
++the team beyond mesh range. \todo{Not yet flown; no flight has used the mesh
++interface.} These quantify how much coverage rate and map
+ quality drop when shared map fusion is unavailable but coordination continues.
+ 
+ \begin{table}[t]
+@@ -1735,8 +1777,12 @@ Partitioned & \PH & \PH & \PH\\
+ 
+ \begin{table}[t]
+ \centering
+-\caption{In-flight communication performance, four-vehicle configuration. All
+-values to be filled from logged trials.}
++\caption{In-flight communication performance, four-vehicle configuration. The
++coordination-link rate is the pose rate received from each peer in the
++shakedown flights that preceded the campaign. In the two-vehicle shakedown
++flight the vehicles exchanged 89 and 84 keyframes in 2\,min over the WiFi link,
++which was operated through an access point. Remaining values to be filled from
++logged trials.}
+ \label{tab:comms}
+ \small
+ \setlength{\tabcolsep}{6pt}
+@@ -1745,7 +1791,7 @@ values to be filled from logged trials.}
+ \toprule
+ Quantity & Coordination link & Mesh link\\
+ \midrule
+-Achieved rate (Hz) & \PH & \PH\\
++Achieved rate (Hz) & 5.3 & \PH\\
+ Delivery ratio (\%) & \PH & \PH\\
+ Latency (ms) & \PH & \PH\\
+ Throughput (kB/s) & \xmark & \PH\\
+@@ -1753,6 +1799,11 @@ Throughput (kB/s) & \xmark & \PH\\
+ \end{tabular}
+ \end{table}
+ 
++Four shakedown flights on October 23, 2026, with about 16\,min in offboard mode
++and one abort caused by a frozen autopilot serial link, preceded the campaign
++and are excluded from Tables~\ref{tab:exploration}, \ref{tab:degradation}, and
++\ref{tab:campaign}.
++
+ \begin{table}[t]
+ \centering
+ \caption{Flight-test campaign summary. All values to be filled from logged
+@@ -1791,13 +1842,14 @@ efficiency and buys scheduling independence, which on a flying vehicle is the
+ better trade. Any platform running a latency-sensitive estimator alongside a
+ bursty accelerator workload should expect the same coupling.
+ 
+-\dg{Build the map in the estimator frame, not the odometry frame.} A dense map
+-is only as consistent as the pose it is integrated in. Feeding the fused state
+-estimate to mapping, rather than the raw visual odometry, keeps the map aligned
+-with the pose the controller flies and prevents odometry drift, strongest in the
+-vertical axis, from accumulating into planning. Any platform that fuses visual
+-odometry with an independent height source should map in the fused frame for the
+-same reason.
++\dg{Evaluate the mapping frame, not only the estimator.} A dense map is only as
++consistent as the pose it is integrated in. The fleet maps from visual odometry
++leveled for the camera tilt, which keeps the map level but lets odometry drift,
++strongest in the vertical axis, accumulate into planning. Feeding the fused
++state estimate to mapping keeps the map aligned with the pose the controller
++flies, and the simulation study of Section~\ref{sec:sim_ablation} measures the
++gain. Any platform that fuses visual odometry with an independent height source
++should evaluate mapping in the fused frame for the same reason.
+ 
+ \dg{Commodity radios can meet field requirements when the access discipline is
+ designed rather than inherited.} The high-bandwidth link is the vehicle's own
+@@ -1805,6 +1857,8 @@ WiFi adapter operated as a mesh, and the coordination link is a low-cost
+ module under a schedule that bounds its latency. What made the pair sufficient
+ was not the hardware but the division of traffic across the two links and the
+ synchronization that keeps the schedule disjoint without a coordinator.
++\todo{The mesh has not been operated in flight; this lesson rests on bench
++use.}
+ 
+ \dg{For coordination, bound latency before raising bandwidth.} A time-division
+ schedule on a dedicated low-bandwidth link delivers small coordination messages
+@@ -1813,6 +1867,21 @@ guarantee. Separating bulk map traffic onto its own link is what makes the bound
+ hold. The worst-case latency of the coordination link, not its average
+ throughput, is what governs duplicated coverage.
+ 
++\dg{A collision-free schedule still has to be reached, and kept.} Disjoint
++slots hold only after the team shares a frame, and half-duplex radios whose
++slots overlap cannot hear the packets that would align them. In an event
++simulation of the preceding firmware revision, four radios failed to reach a
++common frame in 39\% of cold starts and in 60\% of restarts of the reference
++vehicle. When the reference vehicle departed in the same simulation, the
++remaining vehicles kept a common schedule in 500 of 500 runs but went on
++advertising the departed identifier. The simulator's clocks are ideal; on
++hardware a team with no live reference stays aligned only as long as crystal
++skew allows. Listening before the first transmission, expiry of a departed
++reference, and periodic re-correction of multi-hop followers were specified in
++response. A time-division link without a coordinator should be tested from
++power-up, through a mid-mission restart, and through loss of the reference
++vehicle, not only in steady state.
++
+ \dg{Treat fleet configuration as part of the system.} Per-vehicle branches and
+ hand-applied fixes produce divergence that presents as algorithmic failure.
+ Expressing per-vehicle differences as configuration files under one commit, and
+@@ -1821,6 +1890,23 @@ a class of failure that costs more field time than any single algorithmic bug.
+ Version mismatches in middleware are particularly costly because they can
+ produce one-way discovery failures that appear to work under casual testing.
+ 
++\dg{Treat the recording profile as part of the flight configuration.} Logging
++on the onboard computer competes with the pipelines it observes. On the bench,
++recording the signed-distance point clouds raised processor load from 53\% to
++69\%, averaged over the four vehicles, and opened gaps of up to 0.35\,s in the
++inertial stream reaching the visual front end, which was enough to disturb the
++visual odometry. What is recorded
++should be fixed, tested under load, and versioned with the rest of the flight
++configuration.
++
++\dg{Verify paired rotations against a known motion.} The camera tilt is removed
++on two separate paths, one to the mapper and one to the autopilot, and each
++applies its own leveling rotation. A sign error on the autopilot path left its
++vision input $40^{\circ}$ off level while the map stayed correct, and nothing
++on a stationary vehicle revealed it. Rotations applied on separate paths should
++be verified as a pair, by moving the vehicle a measured distance along one axis
++and comparing both paths against that motion.
++
+ % ============================================================
+ %  13. Limitations and future work
+ % ============================================================
+@@ -1850,9 +1936,9 @@ intended to support, is left to future work.
+ \item The infrastructure-free mesh link is brought up by script rather than
+ persistently, and the flight campaign to date has used an access point;
+ demonstrating the mesh in flight is the next step for that part of the system.
+-\item Transmit power on the coordination link is a compile-time constant with
+-no runtime setter, so the link-margin sweep of Section~\ref{sec:bench_rf}
+-requires a firmware change that exposes transmit power at runtime.
++\item The frame that the coordination radio passes to the onboard computer
++carries no sequence number or timestamp, so coordination-link latency is not
++yet measured in flight.
+ \item The camera isolation stage is presented as a design choice rather than a
+ measured result, since the vehicle carries no high-rate inertial measurement at
+ the camera and flying without the stage risks the airframe; an instrumented
+@@ -1880,9 +1966,10 @@ time-division schedule with decentralized clock synchronization, and the
+ vehicle's own WiFi adapter placed in mesh mode through a kernel modification,
+ which lets each vehicle fuse the dense maps of all reachable neighbors. Beneath
+ both, the perception pipeline fuses visual odometry, inertial measurements, and
+-a rangefinder in the autopilot estimator, drives mapping from the post-fusion
+-pose so that odometry drift does not compound into the map, and isolates the two
+-accelerator consumers across process boundaries. We reported link margin, radio
++a rangefinder in the autopilot estimator, drives mapping from the visual
++odometry leveled for the camera tilt, with mapping from the post-fusion pose
++evaluated in simulation as the way to keep odometry drift out of the map, and
++isolates the two accelerator consumers across process boundaries. We reported link margin, radio
+ coexistence, and exploration performance in three flight experiments without
+ GNSS, with simulation reserved for injected faults and for team sizes beyond
+ the built fleet. All hardware, firmware, and software are released so the
