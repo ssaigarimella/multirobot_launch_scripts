@@ -15,6 +15,11 @@ of each session are missing. Times are laptop local (EDT).
 | buckshee | 15:29:22–15:31:24 | 2.0 min | 16.0 m | 46 m | 10 | clean, short; VIO jump (2.7 m) at landing |
 | delta | 15:29:16–15:30:53 | 1.6 min | 15.0 m | 33 m | 7 | clean, short; last 23 s stuck in the geofence-edge loop |
 
+Distances in this table are PX4 local-position distances (planner CSV `ned_x/ned_y`). PX4
+under-reads forward motion by about 21 % (section 4.6). On the levelled camera track the
+mapper used, the furthest distances from the Offboard start are thunderstrike 36.9 m,
+buckshee 19.6 m and delta 15.8 m, and the paths are 139 m, 54 m and 39 m.
+
 delta and buckshee were in Offboard **at the same time** 15:29:22–15:30:53 (91 s). That is the
 only simultaneous flight of the day. Map sharing over WiFi worked between them; LoRa claims
 did not (section 3).
@@ -150,6 +155,55 @@ guard detect a stale PX4 feed (>1 s), log it loudly and stop publishing setpoint
 own offboard-loss failsafe takes over instead of the planner sending setpoints computed from
 a frozen position. The GUI shows "PX4 feed age".
 
+**Root cause found 2026-10-27 (ghost's kernel log).** The Jetson stopped *reading* the
+serial port; PX4 did not stop sending. `/var/log/kern.log` on ghost:
+
+    Oct 23 14:20:17 ftdi_sio ttyUSB0: usb_serial_generic_read_bulk_callback - urb stopped: -32
+    Oct 23 14:22:19 ftdi_sio ttyUSB0: usb_serial_generic_read_bulk_callback - urb stopped: -32
+
+`-32` is EPIPE, a USB endpoint stall on the FTDI adapter. On this kernel (5.15) the USB-serial
+driver does not resubmit a read request after a stall, and the port has two of them. The
+first died 8 s before Offboard and the second at 14:22:19, after which nothing from PX4 was
+read. Writes kept working, which is why PX4 still flew the setpoints. The agent logs nothing
+in this state. Delta had the same failure all afternoon: its write requests stalled at
+15:10:27, and each of its six PX4-link restarts between 15:10:49 and 15:20:07 stalled both read
+requests about 2 s after the agent opened the port. The agent never got a byte, and only
+delta's power cycle at ~15:22 cleared it. That is the "no PX4 session after a cable replug"
+seen in the field. Buckshee logged one stall at 13:49:02, just before a USB disconnect.
+Thunderstrike has never logged one.
+
+What this changes: (a) candidate (b) is ruled out, and the ulog is no longer needed to explain
+the freeze. (b) An agent restart alone does not recover a stalled adapter; recovery needs a
+USB reset of the FTDI or a power cycle. (c) Hardware to inspect on ghost and delta: the FTDI
+wiring at the flight controller (GND/TX/RX only, not its 5 V pin), seating and strain relief,
+routing next to power leads. All three USB devices share one external hub on every drone.
+Check on any drone with `grep -a 'urb stopped: -32' /var/log/kern.log`.
+
+**Bench findings 2026-10-28.**
+- All four adapters are the same copy of the FTDI chip. Every one reports serial number
+  `A5069RR4`, and every USB attach in the kernel logs (61 to 277 per drone) ends with
+  `Unable to read latency timer: -32`. A genuine FT232R has a unique serial number and answers
+  that request.
+- Ghost's adapter locked up again at 16:00:38 on 2026-10-27, when that day's bring-up opened the
+  port. The very first configuration requests failed (`failed to set baudrate`,
+  `failed to set flow control: -32`) before any data moved, so the chip was already stuck while
+  the port was closed. It stayed stuck overnight: opening the port on 2026-10-28 gave 0 bytes
+  and new stall lines.
+- A software USB port reset (`USBDEVFS_RESET` on the adapter, the same as a replug) recovered it
+  in about 1 s without a power cycle. The port then carried PX4's agent ping (about 23 bytes/s),
+  and the bring-up got PX4 data within 15 s on all four drones.
+
+What this changes: (a) resetting the adapter before every PX4-link start clears a lock-up that
+happened while the port was closed, for about 1 s. (b) An in-flight watchdog (stall line in the
+kernel log, or no PX4 data while the agent runs, then USB reset, then agent restart) works on
+the device side; what the agent does when its device disappears under it still needs a bench
+test. (c) A genuine FTDI adapter, or a CP210x one, would remove the cause with the same wiring.
+The LoRa radios' CP2102 adapters have never stalled.
+
+PX4 side, read in QGC on 2026-10-28: COM_OF_LOSS_T = 1 s and COM_OBL_RC_ACT = Position mode on
+all four drones. With the guard's 2 s stale-feed cut-off (6.5), a frozen feed puts the drone in
+Position mode about 3 s after the freeze.
+
 ### 4.2 Geofence-edge goal loop (all three clean flights)
 A* plans on the raw grid; only the 20 Hz loop applies the 0.3 m geofence margin. A path along
 the fence, or A*'s 1 m goal snap, can end outside the margin; the loop then logs "Waypoint
@@ -171,12 +225,87 @@ free cell). Fix (6.6).
 mapper). 37 GB for thunderstrike's 7 min. Fix (6.7): drop both from the `figures` profile
 (occupancy grid + colour mesh + frontier markers + TF + odometry remain; that is what
 `replay_fleet.sh` renders). Expected ~0.3 GB/min.
+Bench 2026-10-28: this load also costs pose. Recording the Oct-23 set made two of four static
+drones lose their cuVSLAM pose within minutes, while today's `figures` profile (1–3 MB/s) made
+none (11.1). Do not record the ESDF clouds in flight.
 
 ### 4.5 Logs not durable across a power cut
 CSV writers flush to the OS every second but never fsync; bags only finalize on SIGINT.
 Fix (6.8): fsync every 5 s in metrics_recorder and the planner CSV; `record_fleet.sh` gets a
 `--split 60s` style volume split so at most one volume is lost; `collect_bags.sh --repair`
 runs the reindex/quarantine procedure that recovered today's bags.
+
+### 4.6 PX4's position is about 40° out of level with the map (found 2026-10-27)
+Flight data answers the open rotation-sign question. nvblox maps in cuVSLAM's frame
+levelled by `odom_correction`, R_y(+20°). The recorded `/tf odom->camera0_link` equals
+the raw odometry rotated by exactly 20° on all four drones, with residual under 1 mm.
+`vio_bridge` rotates the other way, R_y(−20°), so PX4's input should sit 40° out of level
+with the map. Fitting PX4's NED displacement against the levelled camera displacement
+over each Offboard window gives:
+
+| Drone | Forward scale | Sideways scale | Fit rms | Forward / sideways extent |
+|---|---|---|---|---|
+| thunderstrike | 0.794 | 0.998 | 0.19 m | 36.8 m / 26.5 m |
+| buckshee | 0.798 | 0.992 | 0.33 m | 18.9 m / 14.1 m |
+| delta | 0.743 | 0.997 | 0.08 m | 12.6 m / 14.2 m |
+| ghost, before the feed froze | 0.689 | 1.001 | 0.13 m | 6.4 m / 15.3 m |
+
+Sideways motion matches exactly, and forward motion is compressed close to cos 40° = 0.766.
+That is a pitch tilt between the two frames, not a scale error. The map is flat, so the
++20° levelling is the right one and PX4's input is the tilted one. PX4 still held 1.0 m
+because its height does not come from that input.
+
+Consequences:
+1. PX4 believes the drone has moved forward about 21 % less than it has. Distances in
+   PX4's frame, including section 1's table, are short along the forward axis.
+2. The planner takes its own pose from the raw odometry topic but plans on the levelled
+   ESDF. Its forward position on its own map is short by 6 % of the distance flown, which
+   is about 2 m at the far end of the 35 m box. It affects the A* start cell, goal-reached
+   checks and the geofence test near the far edge. It already happened: on the levelled
+   track thunderstrike reached x = 37.8 m, 2.8 m past the 35 m fence edge, while the raw
+   pose the planner checked read 35.5 m (team map, `reports/visualization/e4/team_map.png`).
+   Until this is fixed, the real far edge of the fence is about 35 / cos 20° = 37.2 m.
+3. The replay tools now level the odometry the same way (`fleet_player.level_odom`), so
+   trails sit on the map. They used to drift up to 2.3 m off it.
+
+Recommended, each as its own controlled change: confirm with the disarmed rotation check
+(`./experiments/rotation_check.sh <drone>`). The expected verdict is "nvblox_side LEVEL,
+px4_side TILTED -> vio_bridge sign is WRONG". Then change `vio_bridge` to R_y(+20°) and
+`ekf2_odom_tf` to R_y(−20°) as a pair, as the check prescribes. Separately, have the planner
+use the levelled pose (TF `odom->camera0_link`) instead of the raw odometry. Nothing has been
+changed on the drones.
+
+### 4.7 cuVSLAM gets the projector-dot frames on all four drones (found 2026-10-28)
+The RealSense flashes its IR projector on alternate frames. `realsense_splitter` is meant to
+send the projector-off frames to cuVSLAM and the projector-on frames to nvblox's depth. Our
+`realsense.launch.py` sets `invert_emitter_logic: True`, which has been there since this
+repository's first commit; the splitter's own default is false. On these cameras the metadata
+flag is not inverted (firmware 5.13.0.55 and librealsense 2.55.1 on all four). Frames flagged
+`frame_emitter_mode = 1` visibly carry the dot pattern: on delta, ghost and buckshee their
+image-sharpness score is 10–16, against 4–6 for the flag-0 frames. So the inversion sends the
+dotted frames to cuVSLAM and the dot-free frames to depth on every drone. Thunderstrike's bench
+view is a whole room, too far for the dots to show, but its routing is the same.
+
+The dots move with the camera, so visual odometry sees them as features that never move. Keeping
+them out of cuVSLAM is the reason the splitter exists. Consistent with this, all eight bad
+cuVSLAM starts on the field day were on delta, buckshee and ghost (section 5).
+
+Bench A/B on buckshee, the drone that kept losing its pose on the bench:
+
+| Splitter setting | Frames cuVSLAM gets | Pose |
+|---|---|---|
+| `invert_emitter_logic: True` (fleet), 13:31 start | dotted | 10 m off 50 s after the start |
+| same, 13:40 restart | dotted | 6.7 m off 4 min later |
+| `False` (test), 14:03 restart, 8 min | dot-free (score 5.5) | within 7 cm the whole time |
+| `True` again after the revert, 14:12 restart, 10 min | dotted | within 1 cm the whole time |
+
+The last row undercuts the third: on the fleet setting buckshee also held its pose for 10 min.
+So the bench does not show that the dotted frames cause the drift. The routing is still the
+opposite of what the splitter is for. The test edit was reverted with `git checkout`, buckshee
+was restarted on the fleet setting, and its routing checked dotted again. Decision
+(2026-10-29): keep `True` and leave the splitter as it is. An earlier change to this setting is
+believed to have broken the camera pipeline at driver level, and the A/B above did not show the
+setting causing drift.
 
 ## 5. Why bringup took the whole afternoon
 
@@ -298,6 +427,62 @@ All Oct-23 bags were slimmed on-drone (`ros2 bag convert`, ESDF clouds dropped,
 
 See `reports/visualization/REPLAY.md` for what each panel shows and the windows
 of the four flights.
+
+### 11.1 Colour mapping stalls in flight while depth mapping continues (found 2026-10-27)
+This is not a replay bug. Buckshee's mapper published `/nvblox_node/color_layer_marker` at its
+normal ~4 Hz the whole time, but every message from 15:29:20, when it started exploring, to
+about 15:31:00 was empty. Just before takeoff the same topic carried ~1,300 points per 5 s.
+Over the same flight its depth map grew normally, from 37,914 to 229,486 known cells in the
+occupancy slice, about as fast as delta's. Delta's colour layer carried up to ~750,000 points
+per 5 s in flight. Both drones ran identical nvblox colour settings (`use_color: 1`,
+`integrate_color_rate_hz: 5`, visualization exclusion radius 7 m), and buckshee's camera log
+shows no colour-stream errors after 15:15. So colour integration produced no updates on
+buckshee once it moved, and the cause is not yet known. Suspects: colour frames stopped reaching
+nvblox, or nvblox could not place them. Bench check: run tab 1 on buckshee, hand-carry it, and
+watch the colour image rate and the point count in `color_layer_marker` side by side with delta.
+Consequence for figures: in the e4c 3D replay almost all colour voxels are delta's. Buckshee's
+explored area appears in its occupancy grid, not in colour.
+
+**It is not buckshee-specific.** The same check on the other drones, in 30 s bins:
+thunderstrike's colour layer was empty from about 14:31:00 to 14:33:30 and then resumed, while
+its occupancy grew from 191k to 368k known cells. Delta's went empty from about 15:30:00, during
+its last ~50 s in Offboard. Ghost's never went fully empty. So colour integration stalls
+intermittently on three of four drones while the depth map keeps growing. The bench check
+above should therefore run on more than one drone, and it should log GPU load and the colour
+image rate together with the marker point count.
+
+**Bench tests 2026-10-28: the colour stall follows cuVSLAM drift.** All four drones ran the full
+stack, disarmed, static on one bench. `experiments/colour_check.sh` logged once per second the
+colour and depth frame rates, the colour and TSDF marker contents, the camera pose and
+`tegrastats`. Results are in `experiments/results/colour_check_bench1028*`.
+
+- Without recording, colour never stalled in 14 min on the three drones whose pose stayed put
+  (0–3 % empty colour messages). Buckshee's colour was empty only while its pose was wrong (4.7).
+- The ~3.4 s delay of `odom->camera0_link` in the flight bags is a recorder artifact. The bench
+  bags show the same delay (1.7–11 msg/s recorded, 95th percentile 2.8–3.4 s old). A live
+  subscriber got the same transform at about 28 msg/s, 23–86 ms old, during those minutes. So
+  nvblox was not short of poses in flight.
+- Recording the Oct-23 topic set (the `diagnostic` profile, both ESDF point clouds included) for
+  6 min raised CPU from about 55 % to 70 % (single cores to 93 %) and opened IMU delivery gaps
+  of up to 0.35 s. Two of four drones lost their pose. Ghost had held still for 35 min; it began
+  drifting as recording started and sank 0.78 m. Buckshee jumped 18 m.
+- That reproduced the flight signature. Once ghost's pose had sunk 0.78 m, its colour stream went
+  100 % empty and stayed empty after recording stopped. Depth integration continued and the
+  occupancy grid kept growing (3,748 to 4,408 known cells).
+- The flights fit the same pattern. Colour went empty while cuVSLAM's height had sunk below PX4's
+  altitude: buckshee 1.5–2.5 m below for its whole flight, thunderstrike 0.6–0.9 m during
+  14:31:20–14:33:20, delta 0.4–0.9 m from 15:30:10. Ghost's stayed within about 0.4 m, and its
+  colour never went fully empty.
+- Today's `figures` profile no longer records the ESDF clouds (dropped on 2026-10-26). It records
+  at 1–3 MB/s per drone, against 10–12 MB/s for the Oct-23 set on the bench. With it running for
+  6 min no drone moved more than 7 cm and colour kept streaming. Ghost showed 14 % empty messages
+  on both streams, with its CPU up to 66 %.
+
+So the colour stall is a symptom of cuVSLAM drift, not a fault in the colour pipeline. On the
+bench, the heavy Oct-23 recording triggered the drift, and that load is already gone from the
+`figures` profile. In flight, motion adds load and other sources of drift, possibly
+including the projector dots at low altitude (4.7; not shown on the bench). Watch for it in the replay: cuVSLAM's height against
+PX4's altitude.
 
 ## 12. Verification of the 2026-10-26 changes
 
