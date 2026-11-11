@@ -56,6 +56,29 @@ from matplotlib.patches import Circle, Polygon, Rectangle
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 IDS = {'delta': 1, 'buckshee': 2, 'ghost': 3, 'thunderstrike': 4}
+
+# cuVSLAM's odometry topic is in the camera's start frame, which is pitched
+# nose-down with the camera. nvblox maps in that frame LEVELLED by the
+# odom_correction node, R_y(+20 deg): the recorded /tf odom->camera0_link equals
+# the odometry rotated by exactly 20 deg on all four drones (Oct-23 bags,
+# residual < 1 mm). Level the track the same way, or trails drift off the map
+# with distance flown (up to 2.3 m on thunderstrike) and climb by
+# sin(20 deg) x distance (13 m on thunderstrike). bag2timeline.py stores the
+# angle it measured in the bag as 'odom_level_deg'; this is the fallback.
+ODOM_LEVEL_PITCH_DEG = 20.0
+
+
+def level_odom(od, deg=ODOM_LEVEL_PITCH_DEG):
+    """Rotate odometry rows (t x y z yaw) about y into the mapper's levelled frame."""
+    if not len(od):
+        return od
+    a = math.radians(deg)
+    c, s = math.cos(a), math.sin(a)
+    out = np.array(od, dtype=np.float64, copy=True)
+    x, z = out[:, 1].copy(), out[:, 3].copy()
+    out[:, 1] = x * c + z * s
+    out[:, 3] = -x * s + z * c
+    return out
 NAMES = {v: k for k, v in IDS.items()}
 ORDER = ['delta', 'buckshee', 'ghost', 'thunderstrike']
 # categorical slots 1-4 of references/palette.md (validated), fixed per drone
@@ -99,7 +122,7 @@ class Drone:
         self.vid = tl['vehicle_id']
         self.color = COLOR[self.name]
         self.letter = self.name[0].upper()
-        self.od = tl['odom']
+        self.od = level_odom(tl['odom'], tl.get('odom_level_deg', ODOM_LEVEL_PITCH_DEG))
         self.od_t = self.od[:, 0] if len(self.od) else np.zeros(0)
         self.tmo = tl['tf_map_odom']
         self.twm = tl['t_world_map']

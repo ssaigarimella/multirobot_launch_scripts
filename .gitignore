@@ -17,4 +17,5 @@ tools/esptool_py/
 # each; rebuild from the bags with the commands in reports/visualization/REPLAY.md
 reports/visualization/**/*_3d.html
 reports/visualization/**/*.mp4
+reports/visualization/**/*_3d_realtime_still.png
 bags/**/*_3d.html

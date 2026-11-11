@@ -128,6 +128,20 @@ def read_csvs(logs_dir, drone, t0, t1, margin=120.0):
     return out
 
 
+def odom_level_deg(lev_od, lev_tf):
+    """Pitch (deg) that maps the raw cuVSLAM odometry onto the odom->camera0_link
+    pose the mapper used, from samples with identical header stamps; a 2D
+    rotation fit in the x-z plane. None when the bag has too few matches (the
+    replay then falls back to fleet_player.ODOM_LEVEL_PITCH_DEG)."""
+    keys = [k for k in lev_od if k in lev_tf]
+    if len(keys) < 50:
+        return None
+    u = np.array([lev_od[k] for k in keys]); v = np.array([lev_tf[k] for k in keys])
+    cross = float(np.sum(u[:, 0] * v[:, 1] - u[:, 1] * v[:, 0]))
+    dot = float(np.sum(u[:, 0] * v[:, 0] + u[:, 1] * v[:, 1]))
+    return round(-math.degrees(math.atan2(cross, dot)), 2)
+
+
 def extract(bag_dir, drone, grid_hz, voxel_hz, logs_dir):
     ts = typestore()
     vid = IDS[drone]
@@ -158,6 +172,7 @@ def extract(bag_dir, drone, grid_hz, voxel_hz, logs_dir):
     align = []                     # (t, own_state, {peer: (state, age)})
     workspace = None
     last_state = last_guard = None
+    lev_tf, lev_od = {}, {}       # header stamp -> (x, z): odom->camera0_link TF and raw odometry
 
     with Reader(bag_dir) as r:
         for conn, tn, raw in r.messages():
@@ -170,8 +185,12 @@ def extract(bag_dir, drone, grid_hz, voxel_hz, logs_dir):
             if tp == '/visual_slam/tracking/odometry':
                 p = m.pose.pose.position
                 odom.append((t, p.x, p.y, p.z, yaw_of(m.pose.pose.orientation)))
+                lev_od[(m.header.stamp.sec, m.header.stamp.nanosec)] = (p.x, p.z)
             elif tp == '/tf':
                 for x in m.transforms:
+                    if x.header.frame_id == 'odom' and x.child_frame_id == 'camera0_link':
+                        lev_tf[(x.header.stamp.sec, x.header.stamp.nanosec)] = (x.transform.translation.x,
+                                                                                x.transform.translation.z)
                     if x.header.frame_id == 'map' and x.child_frame_id == 'odom':
                         tr = x.transform.translation
                         tf_map_odom.append((t, tr.x, tr.y, yaw_of(x.transform.rotation)))
@@ -278,6 +297,7 @@ def extract(bag_dir, drone, grid_hz, voxel_hz, logs_dir):
         'odom': arr(odom, 5), 'tf_map_odom': arr(tf_map_odom, 4), 't_world_map': arr(t_world_map, 6),
         'grid_own': grids['own'].items, 'grid_shared': grids['shared'].items,
         'vox_res': vox_res[0],
+        'odom_level_deg': odom_level_deg(lev_od, lev_tf),
         'vox_xyz': np.array(vox_pts, dtype=np.float32).reshape(-1, 3),
         'vox_rgb': np.array(vox_col, dtype=np.uint8).reshape(-1, 3),
         'vox_t': np.array(vox_t, dtype=np.float64),
