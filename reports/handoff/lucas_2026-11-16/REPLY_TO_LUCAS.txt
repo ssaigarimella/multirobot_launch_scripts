@@ -99,7 +99,7 @@ D. The 30 Hz sensitivity block from question 5.
 
 Study D stays on hold until B is in.
 
-Visuals. I still owe you shot and layout feedback on the storyboard and will send it separately. The re-render itself waits for valid runs, as you said, and B on the new build is where they come from: the fused map is placed correctly there and the vehicles should cover the field. So for every B run keep the full-rate recordings (camera images, every vehicle's pose, each vehicle's 3D map and the fused map, frontier and goal markers), so the plates can be cut from them without flying again.
+Visuals. You are right that I owe you shot and layout feedback on the storyboard and the three plates. I will send it separately, and nothing in A to D waits for it. The re-render itself waits for valid runs, as you said, and B on the new build is where they come from: the fused map is placed correctly there and the vehicles should cover the field. So for every B run keep the full-rate recordings (camera images, every vehicle's pose, each vehicle's 3D map and the fused map, frontier and goal markers), so the plates can be cut from them without flying again.
 
 Attached (for_lucas_2026-11-16.zip): field_parameters_for_sim.md, log_70_params.txt, log_71_params.txt, log_70_ev_fusion.png, log_71_ev_fusion.png, FLIGHT-ANALYSIS-2026-11-13.md, where_the_goals_went.png, planning_map_vs_3d_map.png, own_vs_fused_map.png. The two logs follow by link.
 
