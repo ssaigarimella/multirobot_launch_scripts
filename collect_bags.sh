@@ -37,6 +37,7 @@ BAGROOT="$WS/experiment_logs/bags"
 DEST="$HERE/bags"
 
 declare -A IPS=( [delta]=192.168.0.40 [buckshee]=192.168.0.60 [ghost]=192.168.0.50 [thunderstrike]=192.168.0.70 )
+for d in "${!IPS[@]}"; do v="FLEET_IP_$d"; [ -n "${!v:-}" ] && IPS[$d]="${!v}"; done   # one-run override, e.g. FLEET_IP_buckshee=192.168.0.125
 
 drones_from(){ local out=(); for a in "$@"; do case "$a" in
     all) out=(delta buckshee ghost thunderstrike) ;;

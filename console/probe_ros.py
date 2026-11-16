@@ -79,10 +79,12 @@ def be(depth=5):
 class Probe(Node):
     def __init__(self):
         super().__init__('fleet_console_probe_d%d' % VID)
-        self.f = {k: Feed() for k in ('odom', 'cam', 'px4', 'vstat', 'fis', 'guard',
+        self.f = {k: Feed() for k in ('odom', 'olevel', 'cam', 'px4', 'vstat', 'fis', 'guard',
                                       'planner', 'selfmap', 'shared', 'peers', 'link',
                                       'align')}
         self.pos = None
+        self.level = None        # odom_correction's latched status (source, pitch, roll)
+        self.fis_src = None      # the map service the frontier finder reads right now
         self.px4 = {}
         self.fis_n = None
         self.guard = None
@@ -92,6 +94,13 @@ class Probe(Node):
         self.lora = {}
         self.align = None
         self.sub(Odometry, '/visual_slam/tracking/odometry', self._odom, be())
+        self.sub(Odometry, '/visual_slam/tracking/odometry_level',
+                 lambda m: self.f['olevel'].tick(), be())
+        latched = QoSProfile(reliability=ReliabilityPolicy.RELIABLE,
+                             durability=DurabilityPolicy.TRANSIENT_LOCAL,
+                             history=HistoryPolicy.KEEP_LAST, depth=1)
+        self.sub(String, '/visual_slam/level_status', self._level, latched)
+        self.sub(String, '/fis/esdf_source', self._fis_src, latched)
         self.sub(CameraInfo, '/camera0/depth/camera_info',
                  lambda m: self.f['cam'].tick(), qos_profile_sensor_data)
         if PX4_OK:
@@ -120,6 +129,16 @@ class Probe(Node):
         self.f['odom'].tick()
         p = m.pose.pose.position
         self.pos = (round(p.x, 2), round(p.y, 2), round(p.z, 2))
+
+    def _level(self, m):
+        try:
+            d = json.loads(m.data)
+            self.level = dict(source=d.get('source'), pitch=d.get('pitch_deg'), roll=d.get('roll_deg'))
+        except ValueError:
+            self.level = None
+
+    def _fis_src(self, m):
+        self.fis_src = m.data
 
     def _lpos(self, m):
         self.f['px4'].tick()
@@ -182,12 +201,21 @@ class Probe(Node):
         for p in FLEET_IDS:
             if p != VID and self.count_publishers('/d%d/keyframes/depth' % p) > 0:
                 zenoh_peers.append(p)
+        # A latched status outlives its node. Forget it when the node is gone
+        # (tab stopped or restarted), so that the console waits for the new
+        # node's word and does not read the old one. Not on a mere pause of
+        # the stream: the node says it once and would not say it again.
+        if self.count_publishers('/visual_slam/level_status') == 0:
+            self.level = None
+        if self.count_publishers('/fis/esdf_source') == 0:
+            self.fis_src = None
         rec = dict(
             t=round(time.time(), 1), vid=VID,
             odom=dict(hz=self.f['odom'].hz(), age=self.f['odom'].age(), pos=self.pos),
+            level=dict(hz=self.f['olevel'].hz(), **(self.level or {})),
             cam=dict(hz=self.f['cam'].hz(), age=self.f['cam'].age()),
             px4=dict(hz=self.f['px4'].hz(), age=self.f['px4'].age(), **self.px4),
-            fis=dict(hz=self.f['fis'].hz(), age=self.f['fis'].age(), n=self.fis_n),
+            fis=dict(hz=self.f['fis'].hz(), age=self.f['fis'].age(), n=self.fis_n, src=self.fis_src),
             guard=dict(hz=self.f['guard'].hz(), age=self.f['guard'].age(), state=self.guard),
             planner=dict(hz=self.f['planner'].hz(), age=self.f['planner'].age(),
                          state=self.planner),

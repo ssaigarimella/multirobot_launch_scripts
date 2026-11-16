@@ -5,6 +5,7 @@
 #     ./launch_fleet_tmux.sh                       ghost + delta (default)
 #     ./launch_fleet_tmux.sh ghost delta --debug   skip arm check (hand-carry)
 #     ./launch_fleet_tmux.sh ghost --planner=hercules   Lucas planner (A/B; default simple)
+#     ./launch_fleet_tmux.sh ghost delta --frontiers=own   frontiers from each drone's own map (default: shared = fused map)
 #     ./launch_fleet_tmux.sh ghost delta --mesh    transport over 802.11s mesh
 #     ./launch_fleet_tmux.sh ghost delta --bench   transport over bench LAN (default)
 #     ./launch_fleet_tmux.sh all
@@ -58,6 +59,7 @@ WS=/mnt/nova_ssd/workspaces/isaac_ros-dev
 YAML=$CWS/src/multi_drone_nvblox/config/swarm_alignment.yaml
 declare -A IPS=( [delta]=192.168.0.40 [buckshee]=192.168.0.60 \
                  [ghost]=192.168.0.50 [thunderstrike]=192.168.0.70 )
+for d in "${!IPS[@]}"; do v="FLEET_IP_$d"; [ -n "${!v:-}" ] && IPS[$d]="${!v}"; done   # one-run override, e.g. FLEET_IP_buckshee=192.168.0.125
 declare -A IDS=( [delta]=1 [buckshee]=2 [ghost]=3 [thunderstrike]=4 )
 
 # ------------------------------------------------------------- tab child
@@ -66,11 +68,13 @@ if [ "${1:-}" = "--tab" ]; then
     DRONE="$2"; N="$3"; shift 3
     source "$HERE/credentials.env"
     ID="${IDS[$DRONE]}"; IP="${IPS[$DRONE]}"
-    DEBUG=false; POSE=cuvslam; CSV="$DRONE"; TRANSPORT=bench; FORCE=0; PLANNER=simple
+    DEBUG=false; POSE=cuvslam; CSV="$DRONE"; TRANSPORT=bench; FORCE=0; PLANNER=simple; FRONTIERS=shared; TERRAIN=follow
     for a in "$@"; do case "$a" in
         --debug) DEBUG=true ;;
         --ekf2)  POSE=ekf2 ;;
         --planner=*) PLANNER="${a#--planner=}" ;;
+        --frontiers=*) FRONTIERS="${a#--frontiers=}" ;;
+        --terrain=*) TERRAIN="${a#--terrain=}" ;;
         --mesh)  TRANSPORT=mesh ;;
         --bench) TRANSPORT=bench ;;
         --force) FORCE=1 ;;
@@ -87,7 +91,35 @@ if [ "${1:-}" = "--tab" ]; then
          # alignment yaml. The old fis.launch.py call used FIS's default +-10 m
          # box, so FIS only produced frontiers within 10 m of takeoff while the
          # planner allowed 35 m (and kept frontiers behind the launch line).
-         CMD="ros2 launch multi_drone_nvblox fis_stage.launch.py drone_id:=$ID alignment_yaml:=$YAML" ;;
+         #
+         # Frontiers are found on the vehicle's own map, as flown, with the
+         # shared (fused) map of tab 6 laid under it: a cell the own map does
+         # not know is taken from the fused map, so ground a peer has mapped
+         # is not a frontier for this vehicle. Until 2026-11-16 the fused map
+         # was built but never read. The fused map is asked for every 2 s and
+         # used when it answers; without it the frontiers are the own map's
+         # (the frontier finder says which on /fis/esdf_source and in its
+         # log). --frontiers=own leaves the fused map out altogether.
+         # The planner's collision map is the own map either way.
+         #
+         # follow_terrain: the height slab frontiers are looked for in follows
+         # the ground under the vehicle (levelled camera height minus PX4's
+         # height above ground). It used to stay at the take-off spot's
+         # height while the vehicle holds its height above the ground; on the
+         # field of 2026-11-13 (about 1 deg downhill ahead) the vehicles ran
+         # out of frontiers 17 m and 31 m out. --terrain=fixed turns it off.
+         CMD="ros2 launch multi_drone_nvblox fis_stage.launch.py drone_id:=$ID alignment_yaml:=$YAML"
+         case "$TERRAIN" in
+           follow) CMD+=" follow_terrain:=true" ;;
+           fixed)  ;;
+           *) echo "unknown --terrain=$TERRAIN (follow|fixed)"; exit 1 ;;
+         esac
+         case "$FRONTIERS" in
+           shared) LABEL="FIS (frontiers: own map + fused map, team geofence)"
+                   CMD+=" esdf_overlay_service_name:=/nvblox_shared_node/get_esdf_and_gradient" ;;
+           own)    LABEL="FIS (frontiers: own map only, team geofence)" ;;
+           *) echo "unknown --frontiers=$FRONTIERS (shared|own)"; exit 1 ;;
+         esac ;;
       4) LABEL="Reactive Depth Guard"
          CMD="ros2 launch active_exploration reactive_guard.launch.py" ;;
       5) LABEL="Exploration Planner [$PLANNER] (team geofence)"

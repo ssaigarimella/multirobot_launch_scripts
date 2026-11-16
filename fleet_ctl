@@ -34,6 +34,8 @@ FLEET = {
     'ghost': (3, '192.168.0.50'),
     'thunderstrike': (4, '192.168.0.70'),
 }
+# one-run address override, e.g. FLEET_IP_buckshee=192.168.0.125 (a drone that is only on the wired port)
+FLEET = {_d: (_v[0], os.environ.get('FLEET_IP_' + _d, _v[1])) for _d, _v in FLEET.items()}
 WS = '/mnt/nova_ssd/workspaces/isaac_ros-dev'
 MDN_SCRIPTS = WS + '/src/multi_drone_nvblox/scripts'
 CONTAINER = 'isaac_ros_realsense'

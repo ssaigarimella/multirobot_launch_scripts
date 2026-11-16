@@ -61,6 +61,7 @@ MIN_FREE_GB="${MIN_FREE_GB:-20}"     # refuse to start below this
 MAX_BAG_MB="${MAX_BAG_MB:-2048}"     # split volumes at 2 GiB
 
 declare -A IPS=( [delta]=192.168.0.40 [buckshee]=192.168.0.60 [ghost]=192.168.0.50 [thunderstrike]=192.168.0.70 )
+for d in "${!IPS[@]}"; do v="FLEET_IP_$d"; [ -n "${!v:-}" ] && IPS[$d]="${!v}"; done   # one-run override, e.g. FLEET_IP_buckshee=192.168.0.125
 declare -A IDS=( [delta]=1 [buckshee]=2 [ghost]=3 [thunderstrike]=4 )
 
 ssh_d(){ local d="$1"; shift
@@ -97,7 +98,11 @@ profile_topics(){
   # message at ~2 Hz per mapper = 86 % of a 37 GB / 7 min flight bag
   # (thunderstrike, 2026-10-23). The occupancy grids carry the same slice for
   # replay; the ESDF clouds stay in the diagnostic profile.
-  t+=( /visual_slam/tracking/odometry )                    # 21 KB/s  <- trajectory
+  t+=( /visual_slam/tracking/odometry )                    # 21 KB/s  <- trajectory (tracker's own frame)
+  # the levelled pose the planner and PX4 fly on, and how the level was found
+  # (2026-11-16: gravity at start instead of a fixed 20 deg)
+  t+=( /visual_slam/tracking/odometry_level )              # 21 KB/s
+  t+=( /visual_slam/level_status /fis/esdf_source )        # one line every 2 s / on change
   t+=( /fis/frontier_markers /fis/frontier_centroids )     # 5.2 KB/s / 31 B/s
   t+=( /fis/frontier_viewpoints /fis/frontier_gains )      # 30 B/s / 17 B/s
   t+=( /exploration/markers /exploration/state )           # 0 / 323 B/s

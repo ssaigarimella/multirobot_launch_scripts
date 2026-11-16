@@ -21,6 +21,9 @@ SEQ="$(dirname "$(readlink -f "$0")")/drone_build_sequence.sh"
 # 2026-10-26; every drone answered on these)
 declare -A IPS=( [delta]=192.168.0.40 [buckshee]=192.168.0.60 [ghost]=192.168.0.50 [thunderstrike]=192.168.0.70 )
 
+# FLEET_IP_<drone>=<address> overrides the table for one run (a drone that is only on the wired port)
+for d in "${!IPS[@]}"; do v="FLEET_IP_$d"; [ -n "${!v}" ] && IPS[$d]="${!v}"; done
+
 DRONES=("$@")
 [ ${#DRONES[@]} -eq 0 ] && DRONES=(ghost delta buckshee thunderstrike)
 

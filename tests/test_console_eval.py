@@ -36,10 +36,11 @@ def healthy(drone='ghost', peers=(1, 2, 4)):
     r['procs'] = {str(n): True for n in range(1, 8)}
     r['procs'].update(agent=True, lora_bridge=True)
     r['odom'] = {'hz': 30.0, 'age': 0.0, 'pos': [0.01, -0.02, 0.0]}
+    r['level'] = {'hz': 30.0, 'source': 'gravity', 'pitch': 26.2, 'roll': -1.7}
     r['cam'] = {'hz': 30.0, 'age': 0.0}
     r['px4'] = {'hz': 50.0, 'age': 0.0, 'xy_valid': True, 'z_valid': True, 'z': -0.02,
                 'armed': False, 'nav': 2, 'preflight_ok': True}
-    r['fis'] = {'hz': 1.0, 'age': 0.5, 'n': 120}
+    r['fis'] = {'hz': 1.0, 'age': 0.5, 'n': 120, 'src': '/nvblox_shared_node/get_esdf_and_gradient'}
     r['guard'] = {'hz': 30.0, 'age': 0.0, 'state': 'STOP:OBSTACLE'}
     r['planner'] = {'hz': 20.0, 'age': 0.0, 'state': 'INIT'}
     r['shared'] = {'hz': 10.0, 'age': 0.1}
@@ -51,6 +52,18 @@ def healthy(drone='ghost', peers=(1, 2, 4)):
 
 ALL = ['delta', 'buckshee', 'ghost', 'thunderstrike']
 PF = {'preflight': ('ok', 'PASS')}
+
+
+class TestSettle(unittest.TestCase):
+    def test_last_json_line_wins(self):
+        out = '[INFO] something\n{"odom": true, "kick": 1.42, "resets": 1, "after": 0.0, "ok": true}\n'
+        self.assertEqual(fc.parse_settle(out)['kick'], 1.42)
+        self.assertTrue(fc.parse_settle(out)['ok'])
+
+    def test_no_json_is_none(self):
+        self.assertIsNone(fc.parse_settle('Traceback (most recent call last):\n boom'))
+        self.assertIsNone(fc.parse_settle(''))
+        self.assertIsNone(fc.parse_settle('{broken'))
 
 
 class TestEvaluate(unittest.TestCase):
@@ -137,6 +150,82 @@ class TestEvaluate(unittest.TestCase):
         s['host'].update(recording=True, bag={'run': 'f1026', 'bytes': 1, 'rate': 2.0e6})
         cells, ready = fc.evaluate('ghost', s, ALL, dict(PF, want_record=True))
         self.assertTrue(ready, cells)
+
+
+class TestLevelAndRecording(unittest.TestCase):
+    """2026-11-16: the map frame is levelled from gravity; frontiers come from
+    the fused map; a vehicle must not fly unrecorded."""
+
+    def test_level_shown_when_from_gravity(self):
+        cells, ready = fc.evaluate('ghost', healthy(), ALL, PF)
+        self.assertEqual(cells['1 cuVSLAM'][0], 'ok')
+        self.assertIn('26.2 deg down', cells['1 cuVSLAM'][1])
+        self.assertTrue(ready)
+
+    def test_no_level_status_yet_waits(self):
+        s = healthy()
+        s['ros']['level'] = {'hz': 0.0}
+        cells, ready = fc.evaluate('ghost', s, ALL, PF)
+        self.assertEqual(cells['1 cuVSLAM'][0], 'wait')
+        self.assertFalse(ready)
+
+    def test_old_probe_without_level_key_waits(self):
+        s = healthy()
+        del s['ros']['level']
+        cells, ready = fc.evaluate('ghost', s, ALL, PF)
+        self.assertEqual(cells['1 cuVSLAM'][0], 'wait')
+        self.assertFalse(ready)
+
+    def test_fallback_level_on_the_ground_is_red(self):
+        s = healthy()
+        s['ros']['level'] = {'hz': 30.0, 'source': 'fallback', 'pitch': 20.0, 'roll': 0.0}
+        cells, ready = fc.evaluate('ghost', s, ALL, PF)
+        self.assertEqual(cells['1 cuVSLAM'][0], 'bad')
+        self.assertIn('NOT FROM GRAVITY', cells['1 cuVSLAM'][1])
+        self.assertFalse(ready)
+
+    def test_fallback_level_in_flight_is_reported_not_red(self):
+        s = healthy()
+        s['ros']['level'] = {'hz': 30.0, 'source': 'fallback', 'pitch': 20.0, 'roll': 0.0}
+        s['ros']['px4']['armed'] = True
+        s['host'].update(recording=True, bag={'run': 'f', 'bytes': 1, 'rate': 2.0e6})
+        cells, _ = fc.evaluate('ghost', s, ALL, PF)
+        self.assertEqual(cells['1 cuVSLAM'][0], 'ok')
+        self.assertIn('fallback', cells['1 cuVSLAM'][1])
+
+    def test_levelled_odometry_not_flowing_waits(self):
+        s = healthy()
+        s['ros']['level']['hz'] = 0.0
+        cells, ready = fc.evaluate('ghost', s, ALL, PF)
+        self.assertEqual(cells['1 cuVSLAM'][0], 'wait')
+        self.assertIn('levelled odometry', cells['1 cuVSLAM'][1])
+        self.assertFalse(ready)
+
+    def test_odd_level_is_red(self):
+        for pitch, roll in ((2.0, 0.0), (60.0, 0.0), (25.0, 14.0)):
+            s = healthy()
+            s['ros']['level'].update(pitch=pitch, roll=roll)
+            cells, ready = fc.evaluate('ghost', s, ALL, PF)
+            self.assertEqual(cells['1 cuVSLAM'][0], 'bad', (pitch, roll))
+            self.assertFalse(ready)
+
+    def test_frontier_source_is_named(self):
+        cells, _ = fc.evaluate('ghost', healthy(), ALL, PF)
+        self.assertIn('fused map', cells['3 FIS'][1])
+        s = healthy()
+        s['ros']['fis']['src'] = '/nvblox_node/get_esdf_and_gradient'
+        cells, ready = fc.evaluate('ghost', s, ALL, PF)
+        self.assertIn('own map', cells['3 FIS'][1])
+        self.assertTrue(ready)          # the own map is the stand-in, not a fault
+
+    def test_armed_without_recording_is_red(self):
+        s = healthy()
+        s['ros']['px4']['armed'] = True
+        cells, ready = fc.evaluate('ghost', s, ALL, PF)
+        self.assertEqual(cells['Recording'], ('bad', 'ARMED - NOT RECORDING'))
+        s['host'].update(recording=True, bag={'run': 'f', 'bytes': 1, 'rate': 2.0e6})
+        cells, _ = fc.evaluate('ghost', s, ALL, PF)
+        self.assertEqual(cells['Recording'][0], 'ok')
 
 
 if __name__ == '__main__':

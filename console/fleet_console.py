@@ -15,7 +15,7 @@ BRING UP runs, per selected drone and in parallel, the sequence and checks
 the 2026-10-23 field day needed by hand:
   devices on USB -> mirror device nodes into the container (devsync) ->
   tab 2 PX4 link (restart once; then "power-cycle the FMU") ->
-  tab 1 camera + cuVSLAM (restart up to 3x on no camera / bad init) ->
+  tab 1 camera + cuVSLAM (tracker reset once the stream settles; restart up to 6x on no camera / large start-up kick) ->
   tabs 3-7 -> LoRa hears the other radios -> tab 8 zenoh (multi-drone) ->
   preflight -> optional recording -> READY FOR TAKEOFF.
 Every cell is a live check: green ok, yellow working/degraded, red needs you
@@ -39,6 +39,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 FLEET = {'delta': (1, '192.168.0.40'), 'buckshee': (2, '192.168.0.60'),
          'ghost': (3, '192.168.0.50'), 'thunderstrike': (4, '192.168.0.70')}
+# one-run address override, e.g. FLEET_IP_buckshee=192.168.0.125 (a drone that is only on the wired port)
+FLEET = {_d: (_v[0], os.environ.get('FLEET_IP_' + _d, _v[1])) for _d, _v in FLEET.items()}
 WS = '/mnt/nova_ssd/workspaces/isaac_ros-dev'
 CONTAINER = 'isaac_ros_realsense'
 TAB_NAME = {1: 'cuVSLAM', 2: 'PX4 link', 3: 'FIS', 4: 'Guard', 5: 'Planner',
@@ -158,6 +160,38 @@ def fresh(age, limit):
     return age is not None and age < limit
 
 
+LEVEL_PITCH_OK = (5.0, 45.0)   # deg: a forward camera pitched down; outside = not a resting vehicle
+LEVEL_ROLL_MAX = 10.0
+
+
+def level_cell(level, odom_hz, pos, armed):
+    """Tab 1 once the tracker is running: the map frame must be levelled from
+    gravity (odom_correction's status) and the levelled odometry must flow,
+    because the planner and PX4 read that stream and nothing else."""
+    src, pitch, roll = level.get('source'), level.get('pitch'), level.get('roll')
+    if src is None:
+        return ('wait', '%.0f Hz, waiting for the gravity level' % odom_hz)
+    if (level.get('hz') or 0) < 10:
+        return ('wait', 'levelled odometry %.0f Hz' % (level.get('hz') or 0))
+    if armed:        # in flight: report, never ask for a restart
+        return ('ok', '%.0f Hz (%.2f, %.2f, %.2f) level %s %.1f deg'
+                % ((odom_hz,) + tuple(pos or (0, 0, 0)) + (src, pitch or 0)))
+    if src != 'gravity':
+        return ('bad', 'LEVEL NOT FROM GRAVITY (%s %.0f deg): keep the drone still, restart tab 1'
+                % (src, pitch or 0))
+    if not (LEVEL_PITCH_OK[0] <= (pitch or 0) <= LEVEL_PITCH_OK[1]) or abs(roll or 0) > LEVEL_ROLL_MAX:
+        return ('bad', 'LEVEL ODD: camera %.1f deg down, roll %.1f deg - is the drone resting flat?'
+                % (pitch or 0, roll or 0))
+    return ('ok', '%.0f Hz (%.2f, %.2f, %.2f) camera %.1f deg down, roll %+.1f'
+            % ((odom_hz,) + tuple(pos or (0, 0, 0)) + (pitch, roll or 0)))
+
+
+def fis_text(fis):
+    src = fis.get('src') or ''
+    where = 'fused map' if 'shared' in src else ('own map' if src else 'map ?')
+    return '%s viewpoints, %s' % (fis.get('n', '?') if fis.get('n') is not None else '?', where)
+
+
 def evaluate(drone, st, flying, extra):
     """Cell -> (level, text). `extra` holds bring-up/preflight/recording facts."""
     cells = {c: ('off', '') for c in COLS}
@@ -202,7 +236,7 @@ def evaluate(drone, st, flying, extra):
         elif pos and not armed and (abs(pos[0]) + abs(pos[1]) > INIT_MAX_POS or abs(pos[2]) > INIT_MAX_Z):
             cells['1 cuVSLAM'] = ('bad', 'BAD INIT |p|=%.1f m - restart tab 1' % (abs(pos[0]) + abs(pos[1])))
         else:
-            cells['1 cuVSLAM'] = ('ok', '%.0f Hz (%.2f, %.2f, %.2f)' % ((odom_hz,) + tuple(pos or (0, 0, 0))))
+            cells['1 cuVSLAM'] = level_cell(g(ros, 'level', default={}) or {}, odom_hz, pos, armed)
     else:
         cells['1 cuVSLAM'] = ('off', 'not running')
     # 2 PX4 link
@@ -220,7 +254,7 @@ def evaluate(drone, st, flying, extra):
             cells['2 PX4 link'] = ('ok', '%.0f Hz %s %s' % (px_hz, 'ARMED' if armed else 'disarmed', mode))
     # 3-6
     cells['3 FIS'] = tab(3, fresh(g(ros, 'fis', 'age'), 10),
-                         '%s viewpoints' % g(ros, 'fis', 'n', default='?'), 'no frontiers published yet')
+                         fis_text(g(ros, 'fis', default={}) or {}), 'no frontiers published yet')
     cells['4 Guard'] = tab(4, fresh(g(ros, 'guard', 'age'), 3),
                            g(ros, 'guard', 'state', default='?'), 'no guard status')
     cells['5 Planner'] = tab(5, fresh(g(ros, 'planner', 'age'), 3),
@@ -260,6 +294,9 @@ def evaluate(drone, st, flying, extra):
         rate = (bag.get('rate') or 0) / 1e6
         cells['Recording'] = ('ok', '%s %.1f MB/s' % (bag.get('run', '?'), rate)) if rate > 0.05 else \
             ('wait', '%s not growing' % bag.get('run', '?'))
+    elif armed:
+        # flight 1 of 2026-11-13 flew unrecorded: nothing to analyse afterwards
+        cells['Recording'] = ('bad', 'ARMED - NOT RECORDING')
     elif extra.get('want_record'):
         cells['Recording'] = ('wait', 'not recording')
     # overrides from a running bring-up (what it is doing right now)
@@ -287,7 +324,8 @@ def start_tab(drone, n, flying, opts):
     # launch_fleet_tmux.sh would then attach to it instead of starting anew.
     ssh(drone, 'tmux kill-session -t fleet_tab%d 2>/dev/null; true' % n, timeout=20)
     args = ['./launch_fleet_tmux.sh', '--tab', drone, str(n), '--drones=' + ','.join(flying),
-            '--planner=' + opts.get('planner', 'simple')]
+            '--planner=' + opts.get('planner', 'simple'),
+            '--frontiers=' + opts.get('frontiers', 'shared')]
     if opts.get('debug'):
         args.append('--debug')
     res = local(args, timeout=90, env={'TAB_DETACHED': '1'})
@@ -299,6 +337,47 @@ def start_tab(drone, n, flying, opts):
         # device nodes while it retries lets the retry succeed; restarting the
         # tab instead resets the camera again (bench-verified 2026-10-27).
         threading.Thread(target=devsync, args=(drone, 45), daemon=True).start()
+        SETTLE[drone] = None     # set here, not in the thread: the gate reads it right away
+        threading.Thread(target=settle_cuvslam, args=(drone,), daemon=True).start()
+    return res
+
+
+SETTLE = {}              # drone -> result of the last cuvslam_settle run (None while running)
+
+
+def parse_settle(out):
+    """Last JSON line of cuvslam_settle.py's output, or None."""
+    for line in reversed((out or '').splitlines()):
+        line = line.strip()
+        if line.startswith('{'):
+            try:
+                return json.loads(line)
+            except ValueError:
+                return None
+    return None
+
+
+def settle_cuvslam(drone, wait_s=75):
+    """Reset cuVSLAM about a second after its first odometry message (see
+    cuvslam_settle.py for the measurement behind it). Blocks until the helper
+    reports; the result also lands in SETTLE[drone]."""
+    SETTLE[drone] = None
+    vid, ip = FLEET[drone]
+    ssh(drone, "docker exec %s pkill -f '[c]uvslam_settle' 2>/dev/null; true" % CONTAINER, timeout=15)
+    inner = ('source /opt/ros/humble/setup.bash && source /workspaces/isaac_ros-dev/install/setup.bash && '
+             'export ROS_DOMAIN_ID=%d ROS_LOCALHOST_ONLY=0 && '
+             '{ [ -f /tmp/fleet_probe_udp.xml ] && export FASTRTPS_DEFAULT_PROFILES_FILE=/tmp/fleet_probe_udp.xml; true; } && '
+             'exec python3 -u - cuvslam_settle %d' % (vid, wait_s))
+    remote = 'docker exec -i -u admin %s bash -c %s' % (CONTAINER, shlex.quote(inner))
+    res = dict(odom=False, error='helper did not run')
+    try:
+        script = open(os.path.join(HERE, 'cuvslam_settle.py')).read()
+        r = subprocess.run(['sshpass', '-p', PW, 'ssh'] + SSH_OPTS + ['%s@%s' % (drone, ip), remote],
+                           input=script, capture_output=True, text=True, timeout=wait_s + 45)
+        res = parse_settle(r.stdout) or dict(odom=False, error=(r.stderr or r.stdout)[-160:].strip() or 'no output')
+    except (subprocess.TimeoutExpired, OSError) as e:
+        res = dict(odom=False, error=repr(e)[:160])
+    SETTLE[drone] = res
     return res
 
 
@@ -422,6 +501,31 @@ class BringUp(threading.Thread):
                 self.ev('%s - restart tab 1' % why)
                 stop_tab(d, 1)
                 continue
+            # the settle helper started with the tab resets the tracker about
+            # 1 s after its first odometry message; wait for its report
+            # (only when this bring-up started the tab: a tab that was already
+            # running has no helper)
+            if d in SETTLE:
+                t0 = time.monotonic()
+                while SETTLE.get(d) is None and time.monotonic() - t0 < 25 and not self.cancel:
+                    time.sleep(0.5)
+                r = SETTLE.pop(d, None)
+                if r and r.get('ok') and r.get('kick', 0) > INIT_MAX_POS:
+                    # The reset fixes the pose, but the mapper has already
+                    # integrated about a second of depth at the kicked pose
+                    # (delta 2026-11-13, 7.7 m kick: ground voxels 4-6 m behind
+                    # the vehicle) and it has no clear-map call. Start over.
+                    why = 'cuVSLAM start-up kick %.1f m (map not clean)' % r['kick']
+                    self.ev('%s - restart tab 1 (%d/%d)' % (why, attempt, tries))
+                    self.stage('1 cuVSLAM', 'wait', 'start-up kick - restarting (%d/%d)' % (attempt, tries))
+                    stop_tab(d, 1)
+                    continue
+                if r and r.get('ok'):
+                    self.ev('cuVSLAM start-up kick %.2f m, reset x%d, holds within %.2f m'
+                            % (r.get('kick', 0), r.get('resets', 0), r.get('after', 0)))
+                else:
+                    self.ev('cuVSLAM settle reset did not confirm (%s) - falling back to the position check' % (r,))
+                time.sleep(1.5)       # the probe reports once a second
             # stationary on the ground: must sit near the origin for 8 s
             t0, bad = time.monotonic(), None
             while time.monotonic() - t0 < 8 and not bad:
@@ -433,7 +537,20 @@ class BringUp(threading.Thread):
                 self.stage('1 cuVSLAM', 'wait', 'bad init - restarting (%d/%d)' % (attempt, tries))
                 stop_tab(d, 1)
                 continue
-            self.ev('camera + cuVSLAM good')
+            # the map frame must be levelled from gravity: odom_correction
+            # measures it while the vehicle stands still and falls back to
+            # the fixed 20 deg when it cannot (vehicle being handled, no IMU)
+            if not self.wait(lambda h, r: g(r, 'level', 'source') == 'gravity'
+                             and (g(r, 'level', 'hz', default=0) or 0) >= 10, 20, 'gravity level'):
+                lv = g(self.st(), 'ros', 'level', default={}) or {}
+                why = 'level not from gravity (%s) - is the drone standing still?' % (lv.get('source') or 'no status')
+                self.ev('%s - restart tab 1 (%d/%d)' % (why, attempt, tries))
+                self.stage('1 cuVSLAM', 'wait', 'no gravity level - restarting (%d/%d)' % (attempt, tries))
+                stop_tab(d, 1)
+                continue
+            lv = g(self.st(), 'ros', 'level', default={}) or {}
+            self.ev('camera + cuVSLAM good; level from gravity: camera %.1f deg down, roll %+.1f deg'
+                    % (lv.get('pitch') or 0, lv.get('roll') or 0))
             self.c.clear_stage(d, '1 cuVSLAM')
             return True
         self.stage('1 cuVSLAM', 'bad', '%s (%dx): %s' % (
@@ -447,6 +564,11 @@ class BringUp(threading.Thread):
         if not self.wait(lambda h, r: True, 30, 'probe'):
             self.stage('Link', 'bad', 'drone unreachable')
             return
+        # 1 Hz system log (CPU, memory, disk wait, USB serial events) for the
+        # whole session: delta's 13 s onboard stall and ghost's serial drop on
+        # 2026-11-13 could not be explained without one. Stops with the stack.
+        rc, out = local(['./sys_stats.sh', 'start', d], timeout=60)
+        self.ev('system log: %s' % (out.strip().splitlines()[-1].strip() if out.strip() else 'rc %s' % rc))
         # devices
         self.stage('Devices', 'wait', 'devsync')
         devsync(d)
@@ -467,7 +589,7 @@ class BringUp(threading.Thread):
             self.ev('no PX4 data after 2 tries - check the flight controller is powered; '
                     'if it is, power-cycle it')
         # ---- tab 1: camera + cuVSLAM, with the bad-init check ----
-        self.ensure_tab1(3)
+        self.ensure_tab1(6)
         # ---- tabs 3..7 ----
         for n in (3, 4, 5, 6, 7):
             if self.cancel:
@@ -558,7 +680,12 @@ class Console:
         self.debug = tk.BooleanVar(value=False)
         ttk.Checkbutton(top, text='debug (skip arm check)', variable=self.debug).pack(side='left', padx=6)
         ttk.Separator(top, orient='vertical').pack(side='left', fill='y', padx=8)
-        self.rec = tk.BooleanVar(value=False)
+        ttk.Label(top, text='frontiers').pack(side='left')
+        self.frontiers = ttk.Combobox(top, values=['shared', 'own'], width=7, state='readonly')
+        self.frontiers.set('shared')
+        self.frontiers.pack(side='left', padx=3)
+        ttk.Separator(top, orient='vertical').pack(side='left', fill='y', padx=8)
+        self.rec = tk.BooleanVar(value=True)      # on: a flight without a recording cannot be analysed
         ttk.Checkbutton(top, text='record run', variable=self.rec).pack(side='left')
         self.run_name = ttk.Entry(top, width=14)
         self.run_name.insert(0, time.strftime('f%m%d_%H%M'))
@@ -624,7 +751,8 @@ class Console:
         return [d for d in FLEET if self.sel[d].get()]
 
     def opts(self):
-        o = dict(planner=self.planner.get(), debug=self.debug.get(), profile=self.profile.get())
+        o = dict(planner=self.planner.get(), debug=self.debug.get(), profile=self.profile.get(),
+                 frontiers=self.frontiers.get())
         if self.rec.get():
             o['record_run'] = self.run_name.get().strip()
         return o
@@ -644,10 +772,20 @@ class Console:
                 self.cells[(d, c)].config(text=txt, bg=COLOR[lvl], fg=FG[lvl])
             if d in self.flying:
                 (ready if ok else notready).append((d, cells['READY'][1]))
-        if self.flying and not notready:
+        unrec = [d for d in FLEET if g(self.links[d].status(), 'ros', 'px4', 'armed')
+                 and not g(self.links[d].status(), 'host', 'recording')]
+        if unrec:
+            self.banner.config(text='ARMED WITHOUT RECORDING: %s  -  press Start recording' % ', '.join(unrec),
+                               bg=COLOR['bad'], fg='white')
+            if not getattr(self, '_unrec_logged', False):
+                self.log('ARMED WITHOUT RECORDING: %s' % ', '.join(unrec))
+            self._unrec_logged = True
+        elif self.flying and not notready:
+            self._unrec_logged = False
             self.banner.config(text='READY FOR TAKEOFF:  ' + '   '.join(d for d, _ in ready),
                                bg=COLOR['ok'], fg='white')
         else:
+            self._unrec_logged = False
             busy = [d for d in self.flying if d in self.workers]
             txt = ('BRINGING UP: %s   ' % ', '.join(busy) if busy else '') + \
                   ('READY: %s   ' % ', '.join(d for d, _ in ready) if ready else '') + \
