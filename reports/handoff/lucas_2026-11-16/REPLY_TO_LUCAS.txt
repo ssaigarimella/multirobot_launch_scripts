@@ -2,7 +2,7 @@ Subject: Re: Simulation state and pipeline coverage, detailed write-up
 
 Hi Lucas,
 
-Thanks, this is thorough, and your map-fusion diagnosis matches what the vehicles do. Since your mail, two vehicles flew together (Nov 13) and I changed the code on all four vehicles because of what that flight showed (Nov 16). That changes what is worth simulating, so this mail has five parts: the EV duty answer, what the flight showed, what is on the vehicles now, your seven questions, and what to run next.
+Thanks, this is thorough, and your map-fusion diagnosis matches what the vehicles do. Since your mail, two vehicles flew together (Nov 13) and I changed the code on all four vehicles because of what that flight showed (Nov 16). That changes what is worth simulating, so this mail has six parts: the EV duty answer, what the flight showed, what is on the vehicles now, your seven questions, what to run next, and the shots the paper needs.
 
 
 1. The 36 and 39 percent were wrong. The field fuses vision 97 to 98 percent of Offboard time, like your sim.
@@ -99,7 +99,34 @@ D. The 30 Hz sensitivity block from question 5.
 
 Study D stays on hold until B is in.
 
-Visuals. You are right that I owe you shot and layout feedback on the storyboard and the three plates. I will send it separately, and nothing in A to D waits for it. The re-render itself waits for valid runs, as you said, and B on the new build is where they come from: the fused map is placed correctly there and the vehicles should cover the field. So for every B run keep the full-rate recordings (camera images, every vehicle's pose, each vehicle's 3D map and the fused map, frontier and goal markers), so the plates can be cut from them without flying again.
+6. Visuals: the shots the paper needs
+
+This is the shot and layout feedback I owed you. I am not commenting on the four drafts one by one; this is what each final shot has to show. Where a shot matches your V1, V2 or V4 I use your name. Everything comes from runs you make anyway in A to D, so nothing here needs its own flights.
+
+For every shot:
+- Valid runs only. Nothing the divergence rule stopped, and none of the three v2 problems you listed (DEPLOYED pose, divergence-stopped runs, hub-only fused map placed with the wrong prior). Name the study, cell and seed of every plate.
+- Draw what the vehicles themselves hold: each vehicle at the pose its own estimator reports, each map as that vehicle built it, the fused map as one named vehicle holds it and where that vehicle's own alignment puts it. The simulator's truth appears only as a labelled reference in thin grey.
+- Same look as the field video, so the two cut together: 1920 x 1080, 30 fps, dark background (#0b0d11), one fixed colour per vehicle ID across all shots, a clock and the speed-up factor on screen, a scale bar in every top-down view.
+- Deliver per shot: the plate with no text on it, the plate with overlays, three stills as PNG at 300 dpi (for print also on a white background), the camera path, and the data behind every curve as CSV.
+- Record once, render later. For every B run keep, per vehicle: estimated and true pose, its own 3D map and the fused map at 1 Hz or better, frontier clusters, viewpoints and the chosen goal, the frontier height offset (the "ground under the vehicle" log line), LoRa packets delivered, keyframes sent and integrated, and the onboard colour and depth images of one vehicle at 10 Hz or better.
+
+The shots, most important first. S1 and S3 become figures in the paper; S2, S4 and S5 are for the supplementary video.
+
+S1. As flown against the new build. New, and the main result of this round. From B, N = 2, both arms, same seed.
+   (a) Side view along the forward axis: the ground, both vehicles' paths, and the frontier height slab as a translucent band. On the as-flown arm the band sinks into the ground and the vehicles turn back; on the new build it follows the ground and they reach the far fence.
+   (b) Top-down, the two arms side by side at 60, 180 and 360 s: the team's map coloured by vehicle, paths, fence.
+   (c) Share of the fence covered against time, both arms, the 5 seeds as a band.
+   Still for the paper: (a) above (b) at 360 s, with (c) beside it. Video: 20 s.
+
+S2. Hero (your V1). From B, N = 4, new build. A slow orbit at about 35 deg elevation that keeps the whole fence in frame: the team's 3D map growing, each voxel coloured by the vehicle that mapped it first; paths; current goals; a line between two vehicles each time a LoRa packet is delivered and a pulse on a vehicle when it integrates a peer's keyframe. It ends on a top-down frame of the finished map with the scale bar, and that frame is the still. Video: 25 to 30 s at 8x.
+
+S3. Drift ablation (your V4). This is the paper's figure on injected faults. From Study A, one drift run, the same run mapped twice: from the post-fusion pose and from the raw cuVSLAM pose. Two panels side by side, each map coloured by its distance to the simulator's true geometry on one shared scale (0 to 0.5 m), the true geometry as a grey outline. Under them the position error against time, horizontal and vertical as separate curves, the fault window shaded. The still is the whole panel. Video: 15 s.
+
+S4. What each vehicle knows (your V2 split). From B, N = 2, new build. Three panels in step: vehicle 1's own map, vehicle 3's own map, and the fused map as vehicle 1 holds it with vehicle 1's frontiers drawn on it. Then the same seed from C's arm without the overlay map, where the ground vehicle 3 has mapped stays a frontier for vehicle 1. Still: the fused panel with and without the overlay. Video: 20 s.
+
+S5. Onboard view. New; the field recordings have no camera images, so only the sim can show this. One vehicle of the S2 run: its colour image, its depth image, and its own map seen from behind the vehicle, in step. Video only, 10 s.
+
+There is no shot for the coordination-schedule study; that one is a table.
 
 Attached (for_lucas_2026-11-16.zip): field_parameters_for_sim.md, log_70_params.txt, log_71_params.txt, log_70_ev_fusion.png, log_71_ev_fusion.png, FLIGHT-ANALYSIS-2026-11-13.md, where_the_goals_went.png, planning_map_vs_3d_map.png, own_vs_fused_map.png. The two logs follow by link.
 
