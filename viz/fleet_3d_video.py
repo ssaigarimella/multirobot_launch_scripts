@@ -136,6 +136,46 @@ def altitude_fn(d, tw0, tw1):
     return lambda q: np.interp(q, t, z) - ground
 
 
+def level_to_flight_plane(fleet, margin=8.0):
+    """Rotate each drone's map and track so that its own Offboard flight plane
+    is horizontal. Returns {name: (tilt_deg, residual_rms_m)}.
+
+    Why: the mapper levels cuVSLAM's frame with a fixed 20 deg, but the frame is
+    the camera's attitude at start, so however the vehicle sat on the ground
+    stays in the map. 2026-11-13: the tracks climb 0.076 m/m (delta, 4.3 deg)
+    and 0.152 m/m (ghost, 8.7 deg) along x while PX4 held 0.9-1.0 m above the
+    ground on its rangefinder; across y the slope is under 0.2 deg. The flight
+    plane is therefore the ground plane shifted up by the flight height, and
+    making it horizontal is one rigid rotation per drone. It levels to the
+    terrain under the flight, not to gravity."""
+    out = {}
+    for d in fleet.drones:
+        m = np.zeros(len(d.od_t), bool)
+        for a, b in d.offboard:
+            m |= (d.od_t >= a + margin) & (d.od_t <= b - margin)
+        if m.sum() < 200:
+            continue
+        P = d.od[m, 1:4]
+        A = np.column_stack([P[:, 0], P[:, 1], np.ones(len(P))])
+        (sx, sy, _), *_ = np.linalg.lstsq(A, P[:, 2], rcond=None)
+        nrm = np.array([-sx, -sy, 1.0])
+        nrm /= np.linalg.norm(nrm)
+        v = np.cross(nrm, [0.0, 0.0, 1.0])
+        sn, cs = np.linalg.norm(v), nrm[2]
+        R = np.eye(3)
+        if sn > 1e-9:
+            vx = np.array([[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]])
+            R = np.eye(3) + vx + vx @ vx * ((1 - cs) / sn ** 2)
+        d.od[:, 1:4] = d.od[:, 1:4] @ R.T
+        d.tl['vox_xyz'] = (d.tl['vox_xyz'].astype(np.float64) @ R.T).astype(np.float32)
+        for i in range(len(d.od)):
+            d.world_xy[i] = d.to_world(d.od[i, 0], d.od[i, 1:3])
+        res = d.od[m, 3] - np.mean(d.od[m, 3])
+        out[d.name] = (math.degrees(math.atan(math.hypot(sx, sy))), float(res.std()))
+        d.level_R, d.level_plane = R, (float(sx), float(sy))     # for 2D items in the drone's frame
+    return out
+
+
 def px4_stale(d, ft, min_s=3.0, min_travel=1.0):
     """Frames where the planner's copy of PX4's position was frozen while the
     drone moved: PX4 -> Jetson feed lost (ghost, 2026-10-23 14:22:25). The
@@ -159,6 +199,13 @@ def px4_stale(d, ft, min_s=3.0, min_travel=1.0):
             j += 1
         a, b = t[i - 1], t[j]
         to_end = j == len(t) - 1
+        # A feed loss is the planner logging on with frozen PX4 values. Two equal
+        # rows either side of a hole in the log are the planner process itself
+        # pausing (delta, 2026-11-13 15:03:49: 6.4 s without a row while the
+        # vehicle flew on and vio_bridge kept feeding PX4), not a lost feed.
+        if (j - i + 2) < 2.0 * (b - a):
+            i = j + 1
+            continue
         if b - a >= min_s:
             m = (d.od_t >= a) & (d.od_t <= b)
             travel = np.linalg.norm(np.diff(d.world_xy[m], axis=0), axis=1).sum() if m.sum() > 1 else 0.0
@@ -168,7 +215,7 @@ def px4_stale(d, ft, min_s=3.0, min_travel=1.0):
     return stale
 
 
-def drone_tracks(fleet, tw0, tw1, frame_t, ground_z, ring_step=0.05, radius=0.07, sides=10):
+def drone_tracks(fleet, tw0, tw1, frame_t, ground_z, ring_step=0.05, radius=0.07, sides=10, trail_z='px4'):
     out = []
     for d in fleet.drones:
         if not len(d.od_t):
@@ -178,12 +225,16 @@ def drone_tracks(fleet, tw0, tw1, frame_t, ground_z, ring_step=0.05, radius=0.07
         y = np.interp(ft, d.od_t, d.world_xy[:, 1])
         yaw = np.interp(ft, d.od_t, np.unwrap(d.world_yaw))
         alt = altitude_fn(d, tw0, tw1)
-        if alt is not None:
+        alt_px4 = None
+        if alt is not None and trail_z == 'px4':
             z = ground_z + 0.30 + np.clip(alt(ft), 0.0, None)
             zsrc = 'PX4 altitude'
         else:
-            z = np.interp(ft, d.od_t, d.od[:, 3])
-            zsrc = 'odometry z (no PX4 altitude in the planner CSV)'
+            # the map's own frame: the trail then sits where the mapper had the camera
+            z = smooth(np.interp(ft, d.od_t, d.od[:, 3]), 4)
+            zsrc = 'odometry z' + ('' if alt is not None else ' (no PX4 altitude in the planner CSV)')
+            if alt is not None:
+                alt_px4 = np.clip(alt(ft), 0.0, None)
         # alive: odometry within 3 s of the frame
         j = np.clip(np.searchsorted(d.od_t, ft), 1, len(d.od_t) - 1)
         gap = np.minimum(np.abs(d.od_t[j] - ft), np.abs(d.od_t[j - 1] - ft))
@@ -216,7 +267,8 @@ def drone_tracks(fleet, tw0, tw1, frame_t, ground_z, ring_step=0.05, radius=0.07
             zsrc += '; PX4 feed lost %s-%s (altitude held at the last value)' % (
                 hhmmss(ft[k0]), hhmmss(ft[len(ft) - 1 - int(np.argmax(stale[::-1]))]))
         out.append(dict(d=d, x=x, y=y, z=z, yaw=yaw, alive=alive, status=status, offb=offb, speed=speed,
-                        alt=(z - ground_z - 0.30), verts=verts, norms=norms, idx=idx, icount=icount,
+                        alt=(alt_px4 if alt_px4 is not None else z - ground_z - 0.30),
+                        verts=verts, norms=norms, idx=idx, icount=icount,
                         zsrc=zsrc))
     return out
 
@@ -623,11 +675,19 @@ def main():
     ap.add_argument('--jobs', type=int, default=1,
                     help='render N frame ranges in parallel (N Chrome instances), then join losslessly')
     ap.add_argument('--no-still', action='store_true')
+    ap.add_argument('--level-flight', action='store_true',
+                    help='rotate each map so its own flight plane is horizontal (see level_to_flight_plane)')
+    ap.add_argument('--trail-z', choices=('px4', 'odom'), default='px4',
+                    help="trail height: PX4 altitude above the lowest voxels, or the odometry z the mapper used")
     a = ap.parse_args()
 
     t_start = time.time()
     W, H = (int(v) for v in a.size.lower().split('x'))
     fleet = Fleet(a.run, a.drones, a.bags, rot='0')
+    if a.level_flight:
+        for name, (tilt, rms) in level_to_flight_plane(fleet).items():
+            print('%-13s levelled to its flight plane: tilt removed %.2f deg, flight-height rms %.2f m' % (name, tilt, rms),
+                  flush=True)
     tw0, tw1 = fleet.default_window()
     if a.t_from:
         tw0 = parse_t(a.t_from, fleet.t0)
@@ -644,7 +704,7 @@ def main():
         if m.any():
             vz.append(d.tl['vox_xyz'][m][:, 2])
     ground_z = float(np.percentile(np.concatenate(vz), 2)) if vz else -0.4
-    tracks = drone_tracks(fleet, tw0, tw1, frame_t, ground_z)
+    tracks = drone_tracks(fleet, tw0, tw1, frame_t, ground_z, trail_z=a.trail_z)
     if not tracks:
         sys.exit('no odometry in this window')
     vxy, vtt = [], []

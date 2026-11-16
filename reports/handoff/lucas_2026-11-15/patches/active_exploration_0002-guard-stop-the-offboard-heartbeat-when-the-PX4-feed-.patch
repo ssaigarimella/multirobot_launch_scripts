@@ -1,0 +1,112 @@
+From 37c7d32a28a6a589cd32e93ae97970334cb09997 Mon Sep 17 00:00:00 2001
+From: ssaigarimella <sgarimella34@gatech.edu>
+Date: Mon, 26 Oct 2026 18:32:10 -0400
+Subject: [PATCH 2/2] guard: stop the offboard heartbeat when the PX4 feed goes
+ stale
+
+The guard is the only node that writes to PX4 and published the offboard
+heartbeat unconditionally, holding on PX4's last position. On 2026-10-23 at
+14:22 ghost's /fmu/out feed froze while setpoints still reached PX4, so the
+guard kept the vehicle in Offboard on stale data. Now, once a
+VehicleLocalPosition has been seen and none arrives for px4_timeout_s (2 s),
+the guard publishes no heartbeat and no setpoint (status STOP:PX4_STALE) and
+PX4's own offboard-loss failsafe hands the vehicle to the pilot; it resumes
+the moment the feed returns. Verified on an Orin: heartbeat stops 2.0 s after
+the feed, resumes immediately.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ .../reactive_depth_guard.hpp                  |  2 ++
+ src/reactive_depth_guard_node.cpp             | 35 ++++++++++++++++++-
+ 2 files changed, 36 insertions(+), 1 deletion(-)
+
+diff --git a/include/active_exploration/reactive_depth_guard.hpp b/include/active_exploration/reactive_depth_guard.hpp
+index 588847b..dac3347 100644
+--- a/include/active_exploration/reactive_depth_guard.hpp
++++ b/include/active_exploration/reactive_depth_guard.hpp
+@@ -115,6 +115,7 @@ class ReactiveDepthGuardNode : public rclcpp::Node {
+   float pos_ned_x_ = 0, pos_ned_y_ = 0, pos_ned_z_ = 0;
+   float heading_ned_ = 0;
+   bool vehicle_pos_received_ = false;
++  rclcpp::Time last_pos_time_;   // receipt time of the last VehicleLocalPosition
+ 
+   std::mutex att_mutex_;
+   Quat attitude_{1.0f, 0.0f, 0.0f, 0.0f};
+@@ -147,6 +148,7 @@ class ReactiveDepthGuardNode : public rclcpp::Node {
+   float floor_reject_angle_rad_;
+   float depth_timeout_s_;
+   float planner_timeout_s_;
++  float px4_timeout_s_;
+ 
+   // ---- CSV log file ----
+   std::ofstream log_file_;
+diff --git a/src/reactive_depth_guard_node.cpp b/src/reactive_depth_guard_node.cpp
+index 8a717d6..02b9e30 100644
+--- a/src/reactive_depth_guard_node.cpp
++++ b/src/reactive_depth_guard_node.cpp
+@@ -37,6 +37,9 @@ ReactiveDepthGuardNode::ReactiveDepthGuardNode(const rclcpp::NodeOptions& option
+   // -- Timeouts --
+   depth_timeout_s_ = declare_parameter("depth_timeout_s", 0.2f);
+   planner_timeout_s_ = declare_parameter("planner_timeout_s", 5.0f);
++  // PX4 -> companion feed (VehicleLocalPosition) silent this long = dead.
++  // Same value as the planner's px4_stale_s.
++  px4_timeout_s_ = declare_parameter("px4_timeout_s", 2.0f);
+ 
+   // -- Topics --
+   // Relative names resolve under the node's launch-time namespace.
+@@ -99,6 +102,7 @@ ReactiveDepthGuardNode::ReactiveDepthGuardNode(const rclcpp::NodeOptions& option
+ 
+   last_depth_time_ = now();
+   last_planner_time_ = now();
++  last_pos_time_ = now();
+ 
+   // -- CSV log file for post-flight debugging --
+   std::string log_dir = declare_parameter("log_dir",
+@@ -178,6 +182,7 @@ void ReactiveDepthGuardNode::vehiclePositionCallback(
+   pos_ned_z_ = msg->z;
+   heading_ned_ = msg->heading;
+   vehicle_pos_received_ = true;
++  last_pos_time_ = now();
+ }
+ 
+ void ReactiveDepthGuardNode::vehicleAttitudeCallback(
+@@ -195,7 +200,35 @@ void ReactiveDepthGuardNode::vehicleAttitudeCallback(
+ // GUARD TIMER (30 Hz) — the core intercept logic
+ // ============================================================
+ void ReactiveDepthGuardNode::guardTimerCallback() {
+-  // Always publish offboard heartbeat so PX4 stays in offboard mode
++  // ---- PX4 feed dead: publish NOTHING ----
++  // Field 2026-10-23, ghost 14:22:20: every /fmu/out topic froze while
++  // setpoints still reached PX4. This node kept the heartbeat alive and
++  // forwarded planner setpoints anchored to the frozen position, so the
++  // vehicle stayed in Offboard oscillating around the freeze point for
++  // ~80 s until the pilot took over. With no heartbeat and no setpoint,
++  // PX4's own offboard-loss failsafe hands the vehicle back to the pilot.
++  {
++    bool pos_seen;
++    rclcpp::Time pos_time;
++    {
++      std::lock_guard<std::mutex> lock(vehicle_mutex_);
++      pos_seen = vehicle_pos_received_;
++      pos_time = last_pos_time_;
++    }
++    double pos_age = (now() - pos_time).seconds();
++    if (pos_seen && pos_age > px4_timeout_s_) {
++      RCLCPP_ERROR_THROTTLE(get_logger(), *get_clock(), 2000,
++          "PX4 feed stale (%.1fs) - offboard heartbeat and setpoints "
++          "STOPPED; PX4 offboard-loss failsafe takes over", pos_age);
++      guard_state_ = GuardState::STOP;
++      stop_reason_ = "PX4_STALE";
++      hold_latched_ = false;   // re-latch on a live position after recovery
++      publishGuardStatus();
++      return;
++    }
++  }
++
++  // Publish offboard heartbeat so PX4 stays in offboard mode
+   publishOffboardMode();
+ 
+   // Snapshot all cached state under locks
+-- 
+2.34.1
+

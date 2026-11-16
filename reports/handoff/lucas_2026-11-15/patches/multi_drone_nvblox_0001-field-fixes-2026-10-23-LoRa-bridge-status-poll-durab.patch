@@ -1,0 +1,66 @@
+From ec67e7d59ac218a91fd49ef37bdecf3d67b6cc6b Mon Sep 17 00:00:00 2001
+From: ssaigarimella <sgarimella34@gatech.edu>
+Date: Mon, 26 Oct 2026 18:32:10 -0400
+Subject: [PATCH 1/2] field fixes 2026-10-23: LoRa bridge status poll, durable
+ metrics CSVs
+
+coordination_stage: lora_bridge polls the radio at 1 Hz (status_poll_hz).
+The firmware only speaks on peer events, so with no peers heard the bridge's
+watchdog took the quiet radio for a dead link and reopened the port every
+2 s. metrics_recorder: fsync every 5 s; flush() stops at the page cache and
+the power cut at the end of every 2026-10-23 session zeroed the CSV tails.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ launch/coordination_stage.launch.py |  7 ++++++-
+ scripts/metrics_recorder.py         | 13 ++++++++++++-
+ 2 files changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/launch/coordination_stage.launch.py b/launch/coordination_stage.launch.py
+index b199bd3..dbd5e60 100644
+--- a/launch/coordination_stage.launch.py
++++ b/launch/coordination_stage.launch.py
+@@ -50,7 +50,12 @@ def _setup(context, *args, **kwargs):
+     if conn != 'wifi_only':
+         nodes.append(Node(
+             package='radiohive', executable='lora_bridge_node.py',
+-            name='lora_bridge_node', namespace=ns, output='screen'))
++            name='lora_bridge_node', namespace=ns, output='screen',
++            # Poll our OWN radio over USB (no airtime). The firmware only
++            # speaks on peer events, so a radio with no peer yet is silent;
++            # without this the bridge watchdog reads that as a dead link and
++            # its reconnect resets the Heltec (RTS), so it never syncs.
++            parameters=[{'status_poll_hz': 1.0}]))
+     if conn != 'lora_only':
+         nodes.append(Node(
+             package='multi_drone_nvblox', executable='keyframe_exchange.py',
+diff --git a/scripts/metrics_recorder.py b/scripts/metrics_recorder.py
+index d4dbae2..1d4bd4a 100755
+--- a/scripts/metrics_recorder.py
++++ b/scripts/metrics_recorder.py
+@@ -237,10 +237,21 @@ class MetricsRecorder(Node):
+ 
+     # ---- 1 Hz roll-up ----
+     def _tick_1hz(self):
+-        # flush everything each second: a crash costs at most 1 s of rows
++        # flush everything each second: a crash costs at most 1 s of rows.
++        # flush() stops at the page cache; a power cut (every drone on
++        # 2026-10-23) loses the unsynced tail, so fsync every 5 s as well.
++        self._fsync_ctr = getattr(self, '_fsync_ctr', 0) + 1
++        do_sync = self._fsync_ctr >= 5
++        if do_sync:
++            self._fsync_ctr = 0
+         for c in (self.c_lora, self.c_swarm, self.c_link, self.c_vio,
+                   self.c_kf, self.c_cov):
+             c.fh.flush()
++            if do_sync:
++                try:
++                    os.fsync(c.fh.fileno())
++                except OSError:
++                    pass
+         self._vio_row('tick', rate=self.vio_n)
+         self.vio_n = 0
+         self.vio_max_jump = 0.0
+-- 
+2.34.1
+

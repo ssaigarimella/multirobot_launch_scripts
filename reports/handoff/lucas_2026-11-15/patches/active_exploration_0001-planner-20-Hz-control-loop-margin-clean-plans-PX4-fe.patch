@@ -1,0 +1,526 @@
+From ef3a6f333f22dead576e4f52c7fdb6e835c9b462 Mon Sep 17 00:00:00 2001
+From: ssaigarimella <sgarimella34@gatech.edu>
+Date: Mon, 26 Oct 2026 18:32:10 -0400
+Subject: [PATCH 1/2] planner: 20 Hz control loop, margin-clean plans, PX4-feed
+ staleness, escape
+
+Fixes from the 2026-10-23 flights, each measured offline before deploying:
+- ESDF slice parsed vectorized: the per-point struct.unpack loop took 1,106 ms
+  per 8.7 MB outdoor slice on the Orin and starved the single-threaded node
+  (control loop 2.3-4.6 Hz on every flight instead of 20). Now 48 ms; the
+  rasterized grid is bit-identical (last point per cell wins, as before).
+- Geofence-edge loop: A* now plans on a copy of the map with the margin band
+  blocked, so a path along the fence or A*'s 1 m goal snap can no longer end
+  outside the margin (delta: viewpoint (3.3,13.5) snapped to (2.3,14.4) and
+  was re-planned twice a second for 23 s). Viewpoints outside the margin are
+  not scored; a far out-of-margin waypoint blacklists the goal and releases
+  the claim; a waypoint at the drone (takeoff on the x=0 line) is skipped as
+  before; DONE when every frontier lies on/outside the margin. Replay of all
+  four flights: out-of-margin plans 5->0 (delta) and 8->0 (thunderstrike),
+  same goal in the other 298 frames.
+- PX4 feed stale > px4_stale_s (2 s): state PX4_STALE, no setpoints at all
+  (ghost 14:22: the FLU->NED offset rebuilt against a frozen NED pose anchored
+  every setpoint to the freeze point; the drone oscillated in Offboard ~80 s).
+  CSV gains a px4_age column.
+- Escape: after 3 NO PATH with the start cell in collision, A* may snap the
+  start up to escape_snap_m (2.5 m); that leg is left to the depth guard.
+- Planner CSV fsync every ~5 s (power cuts zeroed every log tail).
+- Lane assignment ignores radio-only peers (flag bit 7 from coordination_node).
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ scripts/simple_exploration_planner.py | 274 +++++++++++++++++++++-----
+ 1 file changed, 223 insertions(+), 51 deletions(-)
+
+diff --git a/scripts/simple_exploration_planner.py b/scripts/simple_exploration_planner.py
+index ef7b828..e032429 100755
+--- a/scripts/simple_exploration_planner.py
++++ b/scripts/simple_exploration_planner.py
+@@ -21,7 +21,7 @@ Publishes (relative names):
+ """
+ 
+ import math
+-import struct
++import os
+ import time
+ from datetime import datetime
+ from pathlib import Path
+@@ -63,35 +63,35 @@ class State:
+     PLAN = "PLAN"
+     EXECUTE = "EXECUTE"
+     DONE = "DONE"
++    PX4_STALE = "PX4_STALE"   # PX4 -> companion feed dead: publish nothing
+ 
+ 
+ # ---------------------------------------------------------------------------
+ # Helper: read PointCloud2 fields
+ # ---------------------------------------------------------------------------
+-def _pc2_fields(msg: PointCloud2):
+-    """Yield (x, y, intensity) from a PointCloud2 with xyz + intensity."""
+-    x_off = y_off = z_off = i_off = None
+-    for f in msg.fields:
+-        if f.name == "x":
+-            x_off = f.offset
+-        elif f.name == "y":
+-            y_off = f.offset
+-        elif f.name == "z":
+-            z_off = f.offset
+-        elif f.name == "intensity":
+-            i_off = f.offset
+-    if x_off is None or y_off is None or i_off is None:
+-        return
+-    step = msg.point_step
+-    data = bytes(msg.data)
+-    for idx in range(0, len(data), step):
+-        if idx + step > len(data):
+-            break
+-        x = struct.unpack_from("<f", data, idx + x_off)[0]
+-        y = struct.unpack_from("<f", data, idx + y_off)[0]
+-        intensity = struct.unpack_from("<f", data, idx + i_off)[0]
+-        if math.isfinite(x) and math.isfinite(y) and math.isfinite(intensity):
+-            yield x, y, intensity
++def _pc2_xyi(msg: PointCloud2):
++    """(x, y, intensity) float32 arrays from a PointCloud2 with xyz + intensity.
++
++    Vectorized. The per-point struct.unpack loop this replaces starved the
++    planner's single thread outdoors: on 2026-10-23 the ESDF slice reached
++    4.3 MB per message at ~2 Hz and the 20 Hz control loop (setpoints,
++    waypoint-reached, path-blocked) ran at 2.3-4.6 Hz on every flight.
++    Non-finite points are dropped, exactly as before.
++    """
++    offs = {f.name: f.offset for f in msg.fields}
++    empty = np.zeros(0, dtype=np.float32)
++    if (msg.point_step == 0 or
++            not all(k in offs for k in ("x", "y", "intensity"))):
++        return empty, empty, empty
++    n = len(msg.data) // msg.point_step
++    rec = np.dtype({"names": ["x", "y", "i"],
++                    "formats": ["<f4", "<f4", "<f4"],
++                    "offsets": [offs["x"], offs["y"], offs["intensity"]],
++                    "itemsize": msg.point_step})
++    pts = np.frombuffer(msg.data, dtype=rec, count=n)
++    x, y, i = pts["x"], pts["y"], pts["i"]
++    ok = np.isfinite(x) & np.isfinite(y) & np.isfinite(i)
++    return x[ok], y[ok], i[ok]
+ 
+ 
+ # ---------------------------------------------------------------------------
+@@ -99,7 +99,7 @@ def _pc2_fields(msg: PointCloud2):
+ # ---------------------------------------------------------------------------
+ def astar_2d(grid: np.ndarray, start_ij, goal_ij, collision_thresh: float,
+              voxel_size: float, max_expansions: int = 5000,
+-             goal_thresh: float = None):
++             goal_thresh: float = None, start_snap_cells: int = 5):
+     """8-connected A* on the rasterized ESDF grid.
+ 
+     grid values:  -1000 = unknown (passable but 3× cost)
+@@ -108,6 +108,8 @@ def astar_2d(grid: np.ndarray, start_ij, goal_ij, collision_thresh: float,
+ 
+     goal_thresh: separate threshold for the goal cell (default = collision_thresh).
+                  Allows goals closer to walls than the transit corridor.
++    start_snap_cells: how far (in cells) a blocked start may be moved to the
++                 nearest free cell. The planner widens it only to escape.
+ 
+     Returns list of (i, j) grid cells from start to goal, or empty list.
+     """
+@@ -141,10 +143,10 @@ def astar_2d(grid: np.ndarray, start_ij, goal_ij, collision_thresh: float,
+             if found:
+                 break
+ 
+-    # If start is blocked, also try nearby (5-cell = 1m radius)
++    # If start is blocked, also try nearby (default 5-cell = 1m radius)
+     if _is_blocked(grid, si, sj, collision_thresh):
+         found = False
+-        for r in range(1, 6):
++        for r in range(1, start_snap_cells + 1):
+             for di in range(-r, r + 1):
+                 for dj in range(-r, r + 1):
+                     ni, nj = si + di, sj + dj
+@@ -316,6 +318,26 @@ class SimpleExplorationPlanner(Node):
+         self.guard_stop_reason = "NONE"
+         self.geofence_margin = self.declare_parameter("geofence_margin", 0.3).value
+         self.esdf_max_age_s = self.declare_parameter("esdf_max_age_s", 2.0).value
++        # PX4 -> companion feed liveness. 2026-10-23 ghost: every /fmu/out
++        # topic froze at 14:22:20 while setpoints still reached PX4. The
++        # FLU->NED offset was then rebuilt on every odom tick against the
++        # frozen NED pose, so every setpoint was anchored to the freeze point
++        # and the drone oscillated around it in Offboard for ~80 s. A stale
++        # feed now means: publish nothing (the guard drops the offboard
++        # heartbeat too), so PX4's own offboard-loss failsafe hands the
++        # vehicle back to the pilot. 2.0 s: the longest gap between control
++        # ticks of Friday's (starved) planner was 1.31 s.
++        self.px4_stale_s = float(
++            self.declare_parameter("px4_stale_s", 2.0).value)
++        self.px4_last_rx = None
++        # Escape: start cell in collision for 3+ consecutive NO PATH -> let
++        # A* snap the start this far (the default 1 m snap was not enough for
++        # ghost at the launch line, 2026-10-23: 71 NO PATH, start_esdf=0).
++        # The leg to the snapped start is flown on the reactive depth guard
++        # alone, because the map says every cell around the drone is a wall.
++        self.escape_snap_m = float(
++            self.declare_parameter("escape_snap_m", 2.5).value)
++        self.escape_active = False
+         self.gain_weight = self.declare_parameter("gain_weight", 1.0).value
+         # --- coordination (spec 5.3/5.4); inert when COORD_OK is False ---
+         self.vehicle_id = int(self.declare_parameter("vehicle_id", 0).value)
+@@ -503,7 +525,7 @@ class SimpleExplorationPlanner(Node):
+         self.log_file.write(
+             "timestamp,state,flu_x,flu_y,yaw_flu,ned_x,ned_y,ned_z,"
+             "yaw_ned,wp_idx,wp_total,dist_to_wp,n_clusters,tf_valid,"
+-            "armed,offboard,esdf_age,goal_x,goal_y\n")
++            "armed,offboard,esdf_age,goal_x,goal_y,px4_age\n")
+         self.log_flush_ctr = 0
+ 
+         self.get_logger().info(
+@@ -528,11 +550,21 @@ class SimpleExplorationPlanner(Node):
+         floor cells have ESDF ~1.0m at flight height, not ≤0.1m.
+         """
+         self.raw_esdf[:] = -1000.0  # reset to unknown
+-        for x, y, intensity in _pc2_fields(msg):
+-            gi = int((x - self.bbox_min_x) / self.voxel_size)
+-            gj = int((y - self.bbox_min_y) / self.voxel_size)
+-            if 0 <= gi < self.raw_esdf.shape[0] and 0 <= gj < self.raw_esdf.shape[1]:
+-                self.raw_esdf[gi, gj] = intensity
++        x, y, intensity = _pc2_xyi(msg)
++        # float64 + truncation toward zero: identical cell assignment to the
++        # former per-point int((x - min) / voxel)
++        gi = ((x.astype(np.float64) - self.bbox_min_x)
++              / self.voxel_size).astype(np.int64)
++        gj = ((y.astype(np.float64) - self.bbox_min_y)
++              / self.voxel_size).astype(np.int64)
++        nx, ny = self.raw_esdf.shape
++        inb = (gi >= 0) & (gi < nx) & (gj >= 0) & (gj < ny)
++        if np.any(inb):
++            # several ESDF voxels share one planner cell; the LAST point in
++            # message order wins, as it did in the per-point loop
++            lin = (gi[inb] * ny + gj[inb])[::-1]
++            cells, first = np.unique(lin, return_index=True)
++            self.raw_esdf.reshape(-1)[cells] = intensity[inb][::-1][first]
+ 
+         # Compute 2D horizontal distance field
+         # Wall cells: known (> -500) AND ESDF ≤ 0.1m (obstacle at this height)
+@@ -629,7 +661,11 @@ class SimpleExplorationPlanner(Node):
+         self.peer_positions = [
+             (p.peer_id, p.position.x, p.position.y, p.position.z)
+             for p in msg.peers]
+-        self.peer_lane_ids = [p.peer_id for p in msg.peers]
++        # lanes are split among vehicles whose STACK is up; a radio-only peer
++        # (bit 7, set by coordination_node) is a parked drone still beaconing
++        # its last pose -- kept in peer_positions above for keep-out only
++        self.peer_lane_ids = [p.peer_id for p in msg.peers
++                              if not (p.flags & 0x80)]
+ 
+     def _odom_cb(self, msg: Odometry):
+         self.flu_x = msg.pose.pose.position.x
+@@ -647,6 +683,7 @@ class SimpleExplorationPlanner(Node):
+         self.ned_z = msg.z
+         self.ned_yaw = msg.heading
+         self.px4_received = True
++        self.px4_last_rx = time.monotonic()
+         self._update_transform()
+ 
+     def _vstatus_cb(self, msg: VehicleStatus):
+@@ -704,6 +741,17 @@ class SimpleExplorationPlanner(Node):
+         age = (self.get_clock().now() - self.esdf_stamp).nanoseconds * 1e-9
+         return age < self.esdf_max_age_s
+ 
++    def _px4_age(self):
++        """Seconds since the last VehicleLocalPosition (inf before the first)."""
++        if self.px4_last_rx is None:
++            return float("inf")
++        return time.monotonic() - self.px4_last_rx
++
++    def _px4_stale(self):
++        # Only once the feed has been seen: before that, INIT refuses to
++        # plan and the guard holds on NO_POSITION.
++        return self.px4_received and self._px4_age() > self.px4_stale_s
++
+     # ---------------------------------------------------------------
+     # Geofence (2D, cuVSLAM frame)
+     # ---------------------------------------------------------------
+@@ -712,6 +760,31 @@ class SimpleExplorationPlanner(Node):
+         return (self.bbox_min_x + m < x < self.bbox_max_x - m and
+                 self.bbox_min_y + m < y < self.bbox_max_y - m)
+ 
++    def _planning_grid(self):
++        """self.grid with every cell outside the geofence margin blocked.
++
++        A* used to plan on the raw grid and only the 20 Hz loop applied the
++        margin, so a path along the fence, or A*'s 1 m goal snap, ended
++        outside it: delta 2026-10-23 picked viewpoint (3.3, 13.5) inside the
++        margin, the blocked goal snapped to (2.3, 14.4) beyond y_max - 0.3,
++        and the loop rejected it and re-planned the same plan for 23 s.
++        Blocking the band makes every plan margin-clean by construction; a
++        drone standing in the band (takeoff on the x = 0 line) is handled by
++        A*'s start snap, exactly like a start next to a wall."""
++        mask = getattr(self, "_outside_margin", None)
++        if mask is None or mask.shape != self.grid.shape:
++            nx, ny = self.grid.shape
++            xs = self.bbox_min_x + (np.arange(nx) + 0.5) * self.voxel_size
++            ys = self.bbox_min_y + (np.arange(ny) + 0.5) * self.voxel_size
++            m = self.geofence_margin
++            inx = (xs > self.bbox_min_x + m) & (xs < self.bbox_max_x - m)
++            iny = (ys > self.bbox_min_y + m) & (ys < self.bbox_max_y - m)
++            mask = ~(inx[:, None] & iny[None, :])
++            self._outside_margin = mask
++        g = self.grid.copy()
++        g[mask] = 0.0
++        return g
++
+     # ---------------------------------------------------------------
+     # 20 Hz control callback — publish setpoints
+     # ---------------------------------------------------------------
+@@ -733,17 +806,42 @@ class SimpleExplorationPlanner(Node):
+                 f"{self.wp_idx},{len(self.waypoints)},{dist_wp:.3f},"
+                 f"{len(self.viewpoints)},{int(self.tf_valid)},"
+                 f"{int(self.is_armed)},{int(self.is_offboard)},"
+-                f"{esdf_age:.2f},{goal_x:.3f},{goal_y:.3f}\n")
++                f"{esdf_age:.2f},{goal_x:.3f},{goal_y:.3f},"
++                f"{min(self._px4_age(), 999.0):.2f}\n")
+             self.log_flush_ctr += 1
+             if self.log_flush_ctr >= 20:
+                 self.log_file.flush()
+                 self.log_flush_ctr = 0
++                # flush() only reaches the page cache; every drone was
++                # power-cut on 2026-10-23 and lost the tail of this file.
++                self.log_fsync_ctr = getattr(self, "log_fsync_ctr", 0) + 1
++                if self.log_fsync_ctr >= 5:
++                    self.log_fsync_ctr = 0
++                    try:
++                        os.fsync(self.log_file.fileno())
++                    except OSError:
++                        pass
++
++        # PX4 feed dead: publish NOTHING. Any setpoint would be anchored to a
++        # frozen NED pose (see px4_stale_s); with the guard silent as well,
++        # PX4's offboard-loss failsafe returns the vehicle to the pilot.
++        if self._px4_stale() and self.state != State.PX4_STALE:
++            self.get_logger().error(
++                f"PX4 feed stale ({self._px4_age():.1f}s > "
++                f"{self.px4_stale_s:.1f}s) - no more setpoints; PX4's "
++                f"offboard-loss failsafe takes over")
++            self.state = State.PX4_STALE
++            self.waypoints = []
++            self.escape_active = False
+ 
+         # Publish state
+         state_msg = String()
+         state_msg.data = self.state
+         self.state_pub.publish(state_msg)
+ 
++        if self.state == State.PX4_STALE:
++            return
++
+         if self.state == State.EXECUTE and self.wp_idx < len(self.waypoints):
+             wx, wy, wyaw = self.waypoints[self.wp_idx]
+             dist_to_wp = math.hypot(wx - self.flu_x, wy - self.flu_y)
+@@ -765,18 +863,43 @@ class SimpleExplorationPlanner(Node):
+                 self._publish_hold()
+                 return
+ 
+-            # Geofence skip
+-            if not self._in_geofence(wx, wy):
+-                self.get_logger().warn(f"Waypoint outside geofence, skipping")
++            # Geofence. Plans are margin-clean by construction now
++            # (_planning_grid); this is the backstop. A waypoint at the drone
++            # itself (it stands in the margin band, e.g. on the x = 0 launch
++            # line) is skipped as it always was. Any other means the goal is
++            # unreachable inside the box: blacklist it, or the next plan picks
++            # it straight back and the drone hovers re-planning twice a
++            # second (delta's last 23 s and two thunderstrike stalls,
++            # 2026-10-23).
++            if (not self._in_geofence(wx, wy)
++                    and math.hypot(wx - self.flu_x, wy - self.flu_y) < 1.0
++                    and self.wp_idx + 1 < len(self.waypoints)):
+                 self.wp_idx += 1
+-                if self.wp_idx >= len(self.waypoints):
+-                    self.state = State.PLAN
++                return
++            if not self._in_geofence(wx, wy):
++                gx, gy = (self.plan_goal_xy if self.plan_goal_xy is not None
++                          else (self.waypoints[-1][0], self.waypoints[-1][1]))
++                self.get_logger().warn(
++                    f"Waypoint ({wx:.1f},{wy:.1f}) outside geofence - "
++                    f"blacklisting goal ({gx:.1f},{gy:.1f}) for "
++                    f"{self.bl_cooldown:.0f}s, replanning")
++                self._blacklist_goal(gx, gy)
++                if COORD_OK and hasattr(self, 'claim_intent_pub'):
++                    ci = ClaimIntent()          # release: we will not go there
++                    ci.header.stamp = self.get_clock().now().to_msg()
++                    ci.valid = False
++                    ci.reached = False
++                    ci.frontier_exists = True
++                    self.claim_intent_pub.publish(ci)
++                self.waypoints = []
++                self.state = State.PLAN
+                 return
+ 
+             # --- Waypoint reached check (at 20Hz for responsiveness) ---
+             dist_to_wp = math.hypot(wx - self.flu_x, wy - self.flu_y)
+             if dist_to_wp < self.position_tolerance:
+                 self.wp_idx += 1
++                self.escape_active = False    # escape leg done (or none)
+                 self.yaw_aligned_for_wp = -1  # reset yaw gate for next wp
+                 self.yaw_align_latched = False
+                 if self.wp_idx >= len(self.waypoints):
+@@ -866,7 +989,12 @@ class SimpleExplorationPlanner(Node):
+             return False
+ 
+         # Build the sequence: drone → wp[idx] → wp[idx+1] → ... → wp[end]
+-        pts = [(self.flu_x, self.flu_y)]
++        # Escape leg: the map marks every cell around the drone as a wall,
++        # so the drone → first-waypoint leg is left to the depth guard.
++        if self.escape_active and self.wp_idx == 0:
++            pts = []
++        else:
++            pts = [(self.flu_x, self.flu_y)]
+         for i in range(self.wp_idx, len(self.waypoints)):
+             pts.append((self.waypoints[i][0], self.waypoints[i][1]))
+ 
+@@ -948,6 +1076,16 @@ class SimpleExplorationPlanner(Node):
+         armed_ok = self.is_armed or self.debug_skip_arm
+         offboard_ok = self.is_offboard or self.debug_skip_arm
+ 
++        # Feed loss is handled in _control_cb; leave only once it is back.
++        # vehicle_status is then fresh too, so INIT waits for the pilot to
++        # re-engage Offboard (PX4 will have dropped it on heartbeat loss).
++        if self.state == State.PX4_STALE:
++            if not self._px4_stale():
++                self.get_logger().warn(
++                    "PX4 feed back - INIT (re-engage Offboard to resume)")
++                self.state = State.INIT
++            return
++
+         # If we lose offboard/armed while not in INIT, return to INIT
+         if self.state != State.INIT and not (armed_ok and offboard_ok):
+             self.get_logger().warn("Lost offboard/armed — returning to INIT")
+@@ -1000,7 +1138,7 @@ class SimpleExplorationPlanner(Node):
+                 self.state = State.PLAN
+ 
+         elif self.state == State.DONE:
+-            if len(self.viewpoints) > 0:
++            if any(self._in_geofence(vx, vy) for vx, vy, _ in self.viewpoints):
+                 self.get_logger().info("New frontiers — resuming planning")
+                 self.state = State.PLAN
+ 
+@@ -1073,6 +1211,7 @@ class SimpleExplorationPlanner(Node):
+                     wx, wy, wz = self.bous_wps[self.bous_idx]
+                     self.waypoints = [(wx, wy, 0.0)]
+                     self.wp_idx = 0
++                    self.escape_active = False
+                     self.plan_start_time = self.get_clock().now()
+                     self.hold_latched = False
+                     self.yaw_aligned_for_wp = -1
+@@ -1090,10 +1229,27 @@ class SimpleExplorationPlanner(Node):
+                 self.bous_wps = []
+                 self.bous_idx = 0
+ 
++        # Every frontier on or beyond the fence margin: the box is explored.
++        # Hold in DONE rather than re-plan the unreachable edge twice a
++        # second; _fsm_cb resumes as soon as a frontier appears inside.
++        if not any(self._in_geofence(self.viewpoints[k][0],
++                                     self.viewpoints[k][1])
++                   for k in range(n_vp)):
++            self.get_logger().info(
++                f"All {n_vp} frontiers lie on/outside the geofence margin "
++                f"- DONE")
++            self.state = State.DONE
++            return
++
+         # Score and sort frontiers (penalize recently visited positions)
+         scored = []
+         for k in range(n_vp):
+             vx, vy, vyaw = self.viewpoints[k]
++            # FIS detects frontiers right up to the box edge. Apply the same
++            # margin _control_cb applies to waypoints, so an edge goal is
++            # never chosen in the first place.
++            if not self._in_geofence(vx, vy):
++                continue
+             dist = math.hypot(vx - self.flu_x, vy - self.flu_y)
+             gain = self.gains[k] if k < len(self.gains) else 0.0
+ 
+@@ -1132,7 +1288,8 @@ class SimpleExplorationPlanner(Node):
+                 scored.append((score, k))
+         scored.sort(reverse=True)
+ 
+-        # Try clusters in score order
++        # Try clusters in score order, on the margin-blocked grid
++        pgrid = self._planning_grid()
+         start_ij = self.world_to_grid(self.flu_x, self.flu_y)
+         t0 = time.monotonic()
+ 
+@@ -1142,6 +1299,19 @@ class SimpleExplorationPlanner(Node):
+         if 0 <= si < self.grid.shape[0] and 0 <= sj < self.grid.shape[1]:
+             start_esdf = float(self.grid[si, sj])
+ 
++        # Escape (see escape_snap_m): start in collision and still no path
++        snap_cells = 5
++        escaping = (self.consecutive_no_path >= 3 and
++                    -500 < start_esdf < use_thresh)
++        if escaping:
++            snap_cells = max(5, int(round(self.escape_snap_m
++                                          / self.voxel_size)))
++            self.get_logger().warn(
++                f"ESCAPE: start in collision (esdf={start_esdf:.2f}m) after "
++                f"{self.consecutive_no_path} NO PATH - start snap widened to "
++                f"{snap_cells * self.voxel_size:.1f}m",
++                throttle_duration_sec=2.0)
++
+         n_no_path = 0
+         n_tried = 0
+         best_failed_score = None
+@@ -1168,8 +1338,8 @@ class SimpleExplorationPlanner(Node):
+             # Check goal ESDF — pre-filter before running A*
+             ggi, ggj = goal_ij
+             goal_esdf = -1000.0
+-            if 0 <= ggi < self.grid.shape[0] and 0 <= ggj < self.grid.shape[1]:
+-                goal_esdf = float(self.grid[ggi, ggj])
++            if 0 <= ggi < pgrid.shape[0] and 0 <= ggj < pgrid.shape[1]:
++                goal_esdf = float(pgrid[ggi, ggj])
+ 
+             # Quick reject: if goal cell is blocked AND snap can't find a free cell,
+             # skip A* entirely (saves ~500ms per unreachable goal)
+@@ -1180,8 +1350,8 @@ class SimpleExplorationPlanner(Node):
+                     for di in range(-r, r + 1):
+                         for dj in range(-r, r + 1):
+                             ni, nj = ggi + di, ggj + dj
+-                            if 0 <= ni < self.grid.shape[0] and 0 <= nj < self.grid.shape[1]:
+-                                v = self.grid[ni, nj]
++                            if 0 <= ni < pgrid.shape[0] and 0 <= nj < pgrid.shape[1]:
++                                v = pgrid[ni, nj]
+                                 if v >= self.goal_threshold or v < -500:
+                                     snapped = True
+                                     break
+@@ -1206,9 +1376,10 @@ class SimpleExplorationPlanner(Node):
+                             f"grid=({ggi},{ggj})")
+                     continue
+ 
+-            path_ij = astar_2d(self.grid, start_ij, goal_ij,
++            path_ij = astar_2d(pgrid, start_ij, goal_ij,
+                                use_thresh, self.voxel_size,
+-                               goal_thresh=self.goal_threshold)
++                               goal_thresh=self.goal_threshold,
++                               start_snap_cells=snap_cells)
+             if not path_ij:
+                 n_no_path += 1
+                 if best_failed_score is None:
+@@ -1227,7 +1398,7 @@ class SimpleExplorationPlanner(Node):
+                 continue
+ 
+             # Simplify path (line-of-sight pruning)
+-            path_ij = simplify_path(path_ij, self.grid,
++            path_ij = simplify_path(path_ij, pgrid,
+                                     use_thresh, self.voxel_size)
+ 
+             # Convert to world coords and resample at waypoint_spacing
+@@ -1241,6 +1412,7 @@ class SimpleExplorationPlanner(Node):
+             elapsed_ms = (time.monotonic() - t0) * 1000
+             self.waypoints = waypoints
+             self.wp_idx = 0
++            self.escape_active = escaping
+             if COORD_OK and hasattr(self, 'claim_intent_pub'):
+                 ci = ClaimIntent()
+                 ci.header.stamp = self.get_clock().now().to_msg()
+-- 
+2.34.1
+
