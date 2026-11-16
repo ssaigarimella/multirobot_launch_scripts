@@ -1,0 +1,106 @@
+Subject: Re: Simulation state and pipeline coverage, detailed write-up
+
+Hi Lucas,
+
+Thanks, this is thorough, and your map-fusion diagnosis matches what the vehicles do. Since your mail, two vehicles flew together (Nov 13) and I changed the code on all four vehicles because of what that flight showed (Nov 16). That changes what is worth simulating, so this mail has five parts: the EV duty answer, what the flight showed, what is on the vehicles now, your seven questions, and what to run next.
+
+
+1. The 36 and 39 percent were wrong. The field fuses vision 97 to 98 percent of Offboard time, like your sim.
+
+Those two numbers were the share of logged estimator_status_flags samples with cs_ev_pos set. That topic is logged mostly on change, and the logger dropped about half of everything in both flights, so a share of samples is not a share of time. Time-weighted, from the same two logs:
+
+                                         log_70     log_71
+  vision position fused, Offboard time    97 %       98 %
+  vision position fused, in-air time      88 %       83 %
+  share of samples (the old figure)       36 %       39 %
+  last vision message in the log          173 s      303 s
+  log ends                                191 s      353 s
+
+Fusion is on from before take-off until vision messages stop arriving at the very end of each flight; PX4 leaves Offboard about 4 s later and the vehicle is flown down without vision. Quality is 100 in every message and the position innovation test ratio never exceeds 0.07 while messages arrive. The dropouts do not cluster at low height or at take-off. I do not yet know why the messages stop at the end. There is no sim-to-field gap to explain. Plots attached (log_70_ev_fusion.png, log_71_ev_fusion.png).
+
+
+2. What the Nov 13 flight showed
+
+Vehicles 1 and 3, 5 min 42 s both in Offboard, outdoor grass, 35 x 35 m fence, 4.0 m apart on the launch line. Full write-up attached (FLIGHT-ANALYSIS-2026-11-13.md; section 6 is the part written after the fixes). What matters for the sim:
+
+a. The map frame was tilted. The mapper levelled cuVSLAM's frame with a fixed 20 deg, but that frame is the camera's attitude when the tracker starts. Against gravity the camera was 25.2 deg (vehicle 1) and 29.7 deg (vehicle 3) below the horizontal at start. The cameras are not mounted at 20 deg either: 22.7 deg on vehicle 1 and 27.1 deg on vehicle 3 (PX4's attitude against cuVSLAM's orientation over the flight), and the vehicles rested 2 to 3 deg nose down.
+
+b. The height reference is the downward rangefinder (EKF2_HGT_REF 2, EKF2_RNG_CTRL 2, barometer off, MPC_ALT_MODE 2), with EKF2_EV_CTRL 11. PX4 holds the height above the ground: dist_bottom was 1.00 m (0.87 to 1.11) for the whole flight. The field is not level: it falls about 1.0 deg ahead of the launch line (both vehicles measure it), with the ground between -1.4 and +0.2 m relative to the take-off spots over the flown area.
+
+c. Why the vehicles turned back 30.6 m (vehicle 1) and 16.7 m (vehicle 3) ahead. The frontier finder only looks in a slab of heights, 0.1 to 2.0 m above the take-off spot in the map frame. With the tilted map the whole slab was below the ground from about 28 m ahead of vehicle 1 and 14 m ahead of vehicle 3. Both turned back about 2.7 m past those points. This is my reading of the geometry and it fits both vehicles; I have not reproduced it. Your vehicles spawn level on flat ground with a 20 deg camera, so none of a, b or c shows in the sim today.
+
+d. PX4's forward position was short by cos(pitch + 20 deg): 0.72 on vehicle 1 and 0.65 on vehicle 3 (vio_bridge from px4_offboard dev 87c25c5). The peer poses sent over LoRa are PX4's, so they carried the same error. Sideways everything agreed.
+
+e. Inside the reach of c the exploration was inefficient. The team's 3D map covered 78 percent of the fence after 2 min 45 s and 86 percent at the end. Median hop to the next goal 2.8 m and 2.2 m; 58 and 88 percent of goals within 2.5 m of a fence edge; 40 and 60 percent on ground that vehicle had mapped more than 20 s earlier. Causes in the code: score = gain / (distance + 1 m), so the nearest frontier wins; a free cell on the box boundary counted as a frontier, so the fence edge was a frontier for ever; the lane-sweep fallback could never start because its obstacle density counted unknown cells.
+
+f. A defect in the frontier finder that your runs have too. A group of frontier cells below min_cluster_size was dropped but its cells stayed marked as taken for good, so a frontier that first appeared a few cells at a time could never become a cluster. On the bench, a node that had run since the map was empty held 2 clusters where a fresh node on the same map found 96. In the flight the finder still held 200 to 1,400 clusters, so it did not stop the exploration there, but it loses small pockets late in a run.
+
+g. Rates today: IR and depth 60 Hz at the sensor with the projector alternating, so cuVSLAM, PX4 and the mapper all get 30 Hz; colour 15 Hz.
+
+
+3. What is on the vehicles now
+
+All four vehicles run the same build since Nov 16. It passed a four-vehicle bench bring-up three times; it has not flown. It is on GitHub:
+
+  active_exploration   feature/jfr-multi-drone-field   a44e9fc   (Nov 13 flew 37c7d32)
+  multi_drone_nvblox   feature/jfr-multi-drone-field   c91e04a   (Nov 13 flew 3647995)
+  px4_offboard         dev                             180d551   (Nov 13 flew 87c25c5)
+
+The commits that flew on Nov 13 are the parents of these and are on GitHub now as well, so you do not need patches.
+
+- Level from gravity. odom_correction reads the camera accelerometer while the vehicle stands still at tracker start and levels the map with that. It needs /camera0/imu (sensor_msgs/Imu in RealSense optical axes; set imu_optical_axes false if your IMU is in link axes). It publishes the levelled TF and /visual_slam/tracking/odometry_level, and nothing until the level is known. Without a still IMU window it falls back to the fixed 20 deg after imu_wait_s (10 s). To get the old fixed 20 deg on purpose: no IMU topic and imu_wait_s 0.
+- The planner and vio_bridge read /visual_slam/tracking/odometry_level. vio_bridge is rewritten on the levelled pose (include/px4_offboard/vio_math.hpp). It replaces the sign-pair fix 7ac8ad7 on your sim branch; when you merge, take dev. Checked by replaying the Nov 13 odometry through it against PX4's own log: yaw 1.00, sideways 1.00, forward 1/0.72 and 1/0.65 of what flew.
+- Frontier finder: the fence edge is not a frontier; the marked-cells defect of 2f is fixed; a map request that is never answered no longer blocks every later update. These three are in the code and cannot be switched off.
+- Frontier finder, fused map: argument esdf_overlay_service_name. The vehicle's own map stays the source at 1 Hz, and cells it does not know are taken from the shared mapper, so ground a peer has mapped is not a frontier. I did not make the shared mapper the only source because its answers (the whole box at map resolution, 120 MB) reach the frontier finder in phases of 3 to 6 s each on the vehicles, while the own mapper's arrive within a second. I have not found why. Tell me if you see the same in the sim.
+- Frontier finder, height slab: argument follow_terrain. The slab follows the ground under the vehicle (levelled camera height minus PX4's dist_bottom, in 0.25 m steps). It needs /fmu/out/vehicle_local_position with dist_bottom valid, so a rangefinder in the sim.
+- The fleet launcher gives fis_stage.launch.py both: esdf_overlay_service_name:=/nvblox_shared_node/get_esdf_and_gradient follow_terrain:=true. Their defaults are none and false, and fleet_bringup.launch.py does not pass them through, so give them to fis_stage.launch.py yourself.
+- Lane sweep: the trigger now counts known cells only. The mode itself is off (node parameter coverage_mode_enable, default false, in no launch file) and stays off until after the next flights. Leave it off.
+
+Not changed: goal scoring, and ekf2_odom_tf.
+
+
+4. Your questions
+
+1. Logs. log_70 is 54 MB and log_71 is 111 MB, which is why the mail dropped them; I will share both by link. Every parameter you listed is in field_parameters_for_sim.md (attached), with full dumps beside it. No parameter changed during either flight. The ones you named: EVP_NOISE 0.1, EVV_NOISE 0.1, EVA_NOISE 0.05, EV_NOISE_MD 0, EVP_GATE 5, EVV_GATE 3; RNG_NOISE 0.1, RNG_POS_Z 0, RNG_A_HMAX 7; MAG_TYPE 5 (no magnetometer fused), MAG_DECL -5.43; GPS_DELAY 110, REQ_GPS_H 10; MPC_ACC_HOR_MAX 2, MPC_JERK_AUTO 2, MPC_XY_P 2, MPC_Z_P 1.45, MPC_XY_ERR_MAX 1.5, MPC_YAWRAUTO_MAX 20, MPC_YAWRAUTO_ACC 10, MPC_Z_V_AUTO_UP 1.5, MPC_LAND_SPEED 0.6, MPC_LAND_ALT1/2/3 1.0, MPC_LAND_CRWL 0.3; COM_ARM_EKF_VEL 0.5, COM_OF_LOSS_T 1, COM_OBL_RC_ACT 0; SENS_BOARD_X_OFF -1.80, SENS_BOARD_Y_OFF -0.18. The AGP parameters do not exist in this firmware (v1.15.4). Three things to match. EKF2_EV_CTRL is 11 with EV_QMIN 0 on the vehicles and that stays: use 11, not 9. The height reference is the rangefinder (EKF2_HGT_REF 2, EKF2_RNG_CTRL 2, EKF2_BARO_CTRL 0, MPC_ALT_MODE 2); this is the one your field set must not miss. EKF2_GPS_CTRL is 15 but GPS was never fused, so your GPS_CTRL 0 is right.
+
+2. Frontier source. On Nov 13 it was the vehicle's own nvblox ESDF only, so Study C as you ran it matches what flew. The build on the vehicles now uses the own ESDF with the shared mapper's laid under it (part 3).
+
+3. No date for the measured PDR against RSSI curve. It needs a lab session with all four radios that is not scheduled. Table 11 stays provisional. The one field point: on Nov 13 delivery was 99.7 and 99.8 percent over RSSI from -86 to -46 dBm (7,880 packets, SF7, 500 kHz, up to 35 m apart).
+
+4. Entry point: the fleet console, which starts each tab through launch_fleet_tmux.sh, so trust prior is on. fleet_ctl start is not used for flights. The Nov 13 logs confirm it: vehicle 1 integrated 466 of vehicle 3's keyframes with source prior, vehicle 3 integrated 422 of vehicle 1's with source lc, none gated.
+
+5. The 15 Hz describes log_70 and log_71. The fleet now runs 30 Hz. Keep v3 as it is and state 15 Hz. Please add a sensitivity block at 30 Hz stereo and depth, same shape as your EV_CTRL block (baseline and drift, n = 10), and run anything new at 30 Hz.
+
+6. A.3 r07: handled correctly. Keep it in the table, flagged as contact induced, with the cell reported with and without it.
+
+7. Study C step (b): do not run the room. With 2.4 square metres at the field clearance it would test the room, not the stack. Report (a) as it stands: dense vegetation is outside the field envelope, 11 of 35 flights had contact, and the flagged trial stays flagged. The next step is the field replica below.
+
+ekf2_odom_tf. Thank you for that finding. The node is not in the flown pipeline: the fleet maps from cuVSLAM odometry levelled by odom_correction, and the EKF2 path exists on one vehicle's branch and has never flown. I left it as it is, fixed angle included, because the level now comes from odom_correction. Please still push lucas/jfr-sim-studies-2026-09-22 so that your level_odom and lever-arm work and this build do not drift apart.
+
+
+5. What to run next, in this order
+
+A. Re-read your existing Study C v3 runs. No new flights. Per vehicle: how far ahead of its start it got, the share of goals within 2.5 m of the exploration box edge, the median hop to the next goal, the share of goals on ground that vehicle had mapped more than 20 s earlier, and the frontier finder's cluster count over time (the "FIS: N clusters" log line). If the sim shows the pattern of 2e or the low counts of 2f, the explored fractions in Study C (0.47, 0.87, 0.81) are partly the planner and not the grove.
+
+B. Field replica. This replaces step (b).
+   - Ground: open, textured like grass, nothing inside the fence, falling 1.0 deg ahead of the launch line. One level variant as a control.
+   - Fence: 35 m forward by 35 m wide from the launch line, 0 m behind.
+   - PX4: the field set, with EKF2_EV_CTRL 11 and the rangefinder as height reference, flight height 1.0 m above ground.
+   - Vehicles: N = 2, IDs 1 and 3, vehicle 3 placed 4.0 m to the right of vehicle 1, both facing forward, alignment yaml as in the field (range 4.0 m, bearing 90 deg). Then N = 4 at 2, 4 and 6 m.
+   - Cameras as on the vehicles: mounted 22.7 deg down on vehicle 1 and 27.1 deg on vehicle 3, with the optical axis 25.2 and 29.7 deg below the horizontal when the tracker starts. Use 20 deg and level for vehicles 2 and 4 until I have their numbers from a flight (bench: about 14 and 19 deg mounts).
+   - 360 s in Offboard, 30 Hz stereo and depth, 5 seeds per cell.
+   - Two arms. As flown: 37c7d32, 3647995, 87c25c5. New build: a44e9fc, c91e04a, 180d551 with esdf_overlay_service_name and follow_terrain set as in part 3.
+   - Report per arm: how far ahead each vehicle got, share of the fence under the team's 3D map against time, median hop, share of goals within 2.5 m of a fence edge, share of goals on ground already mapped by that vehicle.
+   The sim reproduces the field if the as-flown arm turns back near 31 m (vehicle 1) and 17 m (vehicle 3) with coverage stalling near 80 percent. The new build should reach the far fence. If it does not, that is the result I most need before the next flight.
+
+C. On the new build, one switch at a time against B's new-build arm: follow_terrain false; no overlay map; fixed 20 deg level (no IMU, imu_wait_s 0).
+
+D. The 30 Hz sensitivity block from question 5.
+
+Study D stays on hold until B is in.
+
+Visuals. I still owe you shot and layout feedback on the storyboard and will send it separately. The re-render itself waits for valid runs, as you said, and B on the new build is where they come from: the fused map is placed correctly there and the vehicles should cover the field. So for every B run keep the full-rate recordings (camera images, every vehicle's pose, each vehicle's 3D map and the fused map, frontier and goal markers), so the plates can be cut from them without flying again.
+
+Attached (for_lucas_2026-11-16.zip): field_parameters_for_sim.md, log_70_params.txt, log_71_params.txt, log_70_ev_fusion.png, log_71_ev_fusion.png, FLIGHT-ANALYSIS-2026-11-13.md, where_the_goals_went.png, planning_map_vs_3d_map.png, own_vs_fused_map.png. The two logs follow by link.
+
+Sandilya
