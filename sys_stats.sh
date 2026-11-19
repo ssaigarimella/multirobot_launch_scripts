@@ -23,7 +23,7 @@
 #   mem_avail_mb,swap_used_mb,dirty_mb,writeback_mb
 #   psi_cpu_some10,psi_io_some10,psi_io_full10,psi_mem_some10   pressure stall, % of the last 10 s (empty: kernel has no PSI)
 #   disk,rd_kb_s,wr_kb_s,disk_util_pct,wr_await_ms              the disk under the workspace
-#   temp_max_c,gpu_load_pct,n_ttyusb,ttyusb                     serial adapters present (PX4 FTDI, LoRa)
+#   temp_max_c,gpu_load_pct,n_ttyusb,ttyusb                     serial adapters present (PX4 link, LoRa)
 #   top                                                         three busiest processes, every 5th row
 #
 # The session is named 'fleet_sys' so that `fleet_ctl stop` (which sweeps

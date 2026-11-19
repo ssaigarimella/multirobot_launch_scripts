@@ -39,6 +39,8 @@ BUILD="/tmp/lora_fw_build"
 EPT="$HERE/tools/esptool_py"
 declare -A IPS=( [delta]=192.168.0.40 [buckshee]=192.168.0.60 \
                  [ghost]=192.168.0.50 [thunderstrike]=192.168.0.70 )
+# FLEET_IP_<drone>=<address> overrides the table for one run (a drone that is only on the wired port)
+for d in "${!IPS[@]}"; do v="FLEET_IP_$d"; [ -n "${!v:-}" ] && IPS[$d]="${!v}"; done; true
 
 CHECK_ONLY=0; DRONES=()
 for a in "$@"; do case "$a" in
@@ -50,23 +52,32 @@ esac; done
 
 ssh_d() { sshpass -p "$PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=8 "$1@${IPS[$1]}" "$2"; }
 
-# Resolve the radio's tty by VID:PID (CP2102 10c4:ea60). The PX4 FTDI is
-# 0403:6001 on the same hub and the numbering is per-boot roulette, so never
-# assume ttyUSB0. Flashing the wrong port would push ESP32 firmware at the
-# flight controller link.
+# Resolve the radio's tty: the CP2102 (10c4:ea60) in hub socket 3. Since
+# 2026-11 the PX4 link is a CP2102 too (same serial number), in hub socket 2,
+# and the ttyUSB numbering changes from boot to boot, so neither the chip nor
+# the name tells them apart. A CP2102 that is the only one present and is not
+# in socket 2 also counts (old layout with an FTDI for PX4). Flashing the wrong
+# port would push ESP32 firmware at the flight controller link.
 find_radio() {
-    ssh_d "$1" 'for t in /dev/ttyUSB*; do
+    ssh_d "$1" 'only=""; n=0
+    for t in /dev/ttyUSB*; do
         b=$(basename $t); p=$(readlink -f /sys/class/tty/$b/device)
         for i in 1 2 3 4; do p=$(dirname $p); [ -f "$p/idVendor" ] && break; done
         [ -f "$p/idVendor" ] || continue
-        if [ "$(cat $p/idVendor)" = "10c4" ] && [ "$(cat $p/idProduct)" = "ea60" ]; then echo $t; exit 0; fi
-    done' 2>/dev/null | tr -d '\r'
+        [ "$(cat $p/idVendor)" = "10c4" ] && [ "$(cat $p/idProduct)" = "ea60" ] || continue
+        case $(basename $p) in
+            *.3) echo $t; exit 0 ;;
+            *.2) n=$((n+1)) ;;
+            *)   n=$((n+1)); only=$t ;;
+        esac
+    done
+    [ $n -eq 1 ] && [ -n "$only" ] && echo $only' 2>/dev/null | tr -d '\r'
 }
 
 echo "=== radios ==="
 for d in "${DRONES[@]}"; do
     port=$(find_radio "$d")
-    if [ -z "$port" ]; then echo "  $d: NO CP2102 FOUND (radio unplugged or drone offline)"; continue; fi
+    if [ -z "$port" ]; then echo "  $d: NO RADIO FOUND (no CP2102 in hub socket 3, or drone offline)"; continue; fi
     echo "  $d: radio on $port"
 done
 [ "$CHECK_ONLY" = "1" ] && exit 0

@@ -43,21 +43,49 @@ def sh(cmd, timeout=5, stdin=None):
         return ''
 
 
-def usb_serial():
-    """{'/dev/ttyUSBn': 'radio'|'px4'|'other'} by USB VID:PID, as the host sees it."""
+PX4_HUB_PORT, LORA_HUB_PORT = '2', '3'    # hub sockets of the two serial adapters on every vehicle
+
+
+def classify_serial(ports):
+    """{tty: 'radio'|'px4'|'other'} from [(tty, vid, pid, usb_name)].
+
+    Same rule as the drone code (px4_offboard vio_bridge.launch.py,
+    radiohive lora_bridge_node.py). Since 2026-11 both adapters are CP2102
+    with the same serial number, so the hub socket tells them apart: PX4 in
+    socket 2, radio in socket 3. An FTDI is the old PX4 adapter.
+    """
     out = {}
+    cp = [t for t, v, p, _n in ports if (v, p) == ('10c4', 'ea60')]
+    for tty, vid, pid, name in ports:
+        if vid == '0403':
+            kind = 'px4'
+        elif (vid, pid) == ('10c4', 'ea60') and name.endswith('.' + LORA_HUB_PORT):
+            kind = 'radio'
+        elif name.endswith('.' + PX4_HUB_PORT):
+            kind = 'px4'
+        elif (vid, pid) == ('10c4', 'ea60') and len(cp) == 1:
+            kind = 'radio'
+        else:
+            kind = 'other'
+        out[tty] = kind
+    return out
+
+
+def usb_serial():
+    """{'/dev/ttyUSBn': 'radio'|'px4'|'other'}, as the host sees it."""
+    ports = []
     for tty in sorted(glob.glob('/dev/ttyUSB*')):
         d = os.path.realpath('/sys/class/tty/%s/device' % os.path.basename(tty))
-        kind = 'other'
         for _ in range(5):
             try:
-                vp = (open(d + '/idVendor').read().strip(), open(d + '/idProduct').read().strip())
-                kind = {('10c4', 'ea60'): 'radio', ('0403', '6001'): 'px4'}.get(vp, 'other')
+                ports.append((tty, open(d + '/idVendor').read().strip(),
+                              open(d + '/idProduct').read().strip(), os.path.basename(d)))
                 break
             except OSError:
                 d = os.path.dirname(d)
-        out[tty] = kind
-    return out
+        else:
+            ports.append((tty, '', '', ''))
+    return classify_serial(ports)
 
 
 def realsense_present():

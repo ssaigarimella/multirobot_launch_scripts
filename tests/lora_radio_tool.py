@@ -25,17 +25,25 @@ import time
 
 
 def find_radio():
+    """The radio's tty: the CP2102 in hub socket 3, else a CP2102 that is the
+    only one and not in socket 2 (the PX4 link, a CP2102 too since 2026-11)."""
+    cp = []
     for tty in sorted(glob.glob('/dev/ttyUSB*')):
         d = os.path.realpath('/sys/class/tty/%s/device' % os.path.basename(tty))
         for _ in range(5):
             try:
                 vid = open(d + '/idVendor').read().strip()
                 pid = open(d + '/idProduct').read().strip()
-                if (vid, pid) == ('10c4', 'ea60'):     # CP2102 = Heltec; never the FTDI (PX4)
-                    return tty
+                if (vid, pid) == ('10c4', 'ea60'):
+                    cp.append((tty, os.path.basename(d)))
                 break
             except OSError:
                 d = os.path.dirname(d)
+    for tty, name in cp:
+        if name.endswith('.3'):
+            return tty
+    if len(cp) == 1 and not cp[0][1].endswith('.2'):
+        return cp[0][0]
     return None
 
 
